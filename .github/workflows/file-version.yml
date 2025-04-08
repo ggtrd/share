@@ -12,9 +12,13 @@ jobs:
         id: branch-current
         uses: tj-actions/branch-names@v8
 
-      - name: Get Previous tag
+      - name: Get latest tag
         id: tag-latest
-        uses: oprypin/find-latest-tag@v1
+        uses: joutvhu/get-release@v1
+        with:
+          debug: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Overwrite VERSION file
         uses: DamianReeves/write-file-action@master
