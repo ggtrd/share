@@ -10,7 +10,7 @@ jobs:
     steps:
       - name: Get branch names.
         id: branch-names
-        uses: tj-actions/branch-names@latest
+        uses: tj-actions/branch-names@v8
 
       - name: Checkout repo
         uses: actions/checkout@v3
