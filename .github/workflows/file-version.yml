@@ -16,7 +16,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Overwrite file
-        uses: slegare/write-file-action@latest
+        uses: DamianReeves/write-file-action@master
         with:
           path: .VERSION
           write-mode: overwrite
@@ -24,10 +24,10 @@ jobs:
             console.log('some contents')
             
       - name: Commit & Push
-        uses: Andro999b/push@latest
+        uses: Andro999b/push@v1.3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ steps.branch-names.outputs.base_ref_branch }}
+          branch: ${{ BRANCH_NAME }}
           force: true
           message: 'Overwritten by Github Actions'
 
