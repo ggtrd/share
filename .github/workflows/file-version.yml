@@ -8,26 +8,27 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Get branch names.
-        id: branch-names
+      - name: Get branch names
+        id: branch-current
         uses: tj-actions/branch-names@v8
 
-      - name: Checkout repo
-        uses: actions/checkout@v3
+      - name: Get Previous tag
+        id: tag-latest
+        uses: "WyriHaximus/github-action-get-previous-tag@v1"
 
-      - name: Overwrite file
+      - name: Overwrite VERSION file
         uses: DamianReeves/write-file-action@master
         with:
           path: VERSION
           write-mode: overwrite
           contents: |
-            console.log('some contents')
+            ${{ steps.tag-latest.outputs.tag }}
             
       - name: Commit & Push
         uses: Andro999b/push@v1.3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ steps.branch-names.outputs.current_branch }}
+          branch: ${{ steps.branch-current.outputs.current_branch }}
           force: true
           message: 'Overwritten by Github Actions'
 
