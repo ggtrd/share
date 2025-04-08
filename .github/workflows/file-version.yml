@@ -8,8 +8,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Branch used
-        uses: nelonoel/branch-name@latest
+      - name: Get branch names.
+        id: branch-names
+        uses: tj-actions/branch-names@latest
 
       - name: Checkout repo
         uses: actions/checkout@v3
@@ -23,10 +24,10 @@ jobs:
             console.log('some contents')
             
       - name: Commit & Push
-        uses: Andro999b/push@v1.3
+        uses: Andro999b/push@latest
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ BRANCH_NAME }}
+          branch: ${{ steps.branch-names.outputs.base_ref_branch }}
           force: true
           message: 'Overwritten by Github Actions'
 
