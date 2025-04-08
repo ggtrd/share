@@ -18,7 +18,7 @@ jobs:
       - name: Overwrite file
         uses: DamianReeves/write-file-action@master
         with:
-          path: .VERSION
+          path: VERSION
           write-mode: overwrite
           contents: |
             console.log('some contents')
