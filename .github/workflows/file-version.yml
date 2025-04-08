@@ -1,19 +1,21 @@
-name: Overwrite some file
+name: Write version to file
 
 on:
   push:
     branches: [ dev ]
-  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: Branch used
+        uses: nelonoel/branch-name@latest
+
       - name: Checkout repo
         uses: actions/checkout@v3
 
       - name: Overwrite file
-        uses: "slegare/write-file-action@1.0.2"
+        uses: slegare/write-file-action@latest
         with:
           path: .VERSION
           write-mode: overwrite
@@ -24,6 +26,9 @@ jobs:
         uses: Andro999b/push@v1.3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ github.head_ref }}
+          branch: ${{ BRANCH_NAME }}
           force: true
-          message: 'Overwritten by Github Actions - ${date}'
+          message: 'Overwritten by Github Actions'
+
+
+          
