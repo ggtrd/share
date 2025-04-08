@@ -14,10 +14,7 @@ jobs:
 
       - name: Get latest tag
         id: tag-latest
-        uses: 32teeth/action-github-tag@v1
-        with:
-          # Return only the tag number (e.g., v1.0.0 -> 1.0.0)
-          numbers_only: true
+        uses: JinoArch/get-latest-tag@latest
 
       - name: Overwrite VERSION file
         uses: DamianReeves/write-file-action@master
@@ -25,7 +22,7 @@ jobs:
           path: VERSION
           write-mode: overwrite
           contents: |
-            ${{ steps.tag-latest.outputs.tag }}
+            ${{ steps.tag-latest.outputs.latestTag }}
             
       - name: Commit & Push
         uses: Andro999b/push@v1.3
