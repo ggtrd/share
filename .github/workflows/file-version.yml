@@ -16,8 +16,16 @@
 #         id: tag-latest
 #         uses: JinoArch/get-latest-tag@latest
 
-#       - name: Write in VERSION file
-#         run: |
-#             echo "${{ steps.tag-latest.outputs.latestTag }}" > VERSION
+#       # - name: Overwrite VERSION file
+#       #   uses: DamianReeves/write-file-action@master
+#       #   with:
+#       #     path: VERSION
+#       #     write-mode: overwrite
+#       #     contents: |
+#       #       ${{ steps.tag-latest.outputs.latestTag }}
+
+#       # - name: Write in VERSION file
+#       #   run: |
+#       #       echo "${{ steps.tag-latest.outputs.latestTag }}" > VERSION
 
           

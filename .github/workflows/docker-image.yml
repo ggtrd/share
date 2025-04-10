@@ -31,6 +31,13 @@ jobs:
       - name: Write in VERSION file
         run: |
           echo "${{ steps.meta.outputs.tags }}" > /VERSION
+        # working-directory: /share
+        # uses: DamianReeves/write-file-action@master
+        # with:
+        #   path: ${{ env.home}}/.bashrc
+        #   contents: |
+        #     Hello World!
+        #   write-mode: append
 
       - name: Docker Build And Push
         uses: docker/build-push-action@v5
