@@ -31,7 +31,7 @@ jobs:
       - name: Write in VERSION file
         run: |
           echo "${{ steps.meta.outputs.tags }}" > VERSION
-        working-directory: /share
+        # working-directory: /share
         # uses: DamianReeves/write-file-action@master
         # with:
         #   path: ${{ env.home}}/.bashrc
