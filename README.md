@@ -1,7 +1,7 @@
 <div align="center">
 
 <a href="https://github.com/ggtrd/share" target="_blank" title="Share" style="display: inline;">
-	<img style="height: 100px; margin-bottom: -30px;" alt="Share logo" src="static/default-logo.png">
+	<img style="height: 100px;" alt="Share logo" src="static/default-logo.png">
 </a>
 
 # Share
