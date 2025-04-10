@@ -16,21 +16,16 @@ jobs:
         id: tag-latest
         uses: JinoArch/get-latest-tag@latest
 
-      - name: Overwrite VERSION file
-        uses: DamianReeves/write-file-action@master
-        with:
-          path: VERSION
-          write-mode: overwrite
-          contents: |
-            ${{ steps.tag-latest.outputs.latestTag }}
-            
-      - name: Commit & Push
-        uses: Andro999b/push@v1.3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ steps.branch-current.outputs.current_branch }}
-          force: true
-          message: 'Overwritten by Github Actions'
+      # - name: Overwrite VERSION file
+      #   uses: DamianReeves/write-file-action@master
+      #   with:
+      #     path: VERSION
+      #     write-mode: overwrite
+      #     contents: |
+      #       ${{ steps.tag-latest.outputs.latestTag }}
 
+      - name: Write in VERSION file
+        run: |
+            echo "${{ steps.tag-latest.outputs.latestTag }}" > VERSION
 
           
