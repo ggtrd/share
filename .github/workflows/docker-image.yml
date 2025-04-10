@@ -28,6 +28,10 @@ jobs:
           password: ${{secrets.DOCKERHUB_PWD}}
           logout: true
 
+      - name: Write in VERSION file
+        run: |
+            echo "${{ steps.meta.outputs.tags }}" > VERSION
+
       - name: Docker Build And Push
         uses: docker/build-push-action@v5
         with:

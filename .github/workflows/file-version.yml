@@ -1,31 +1,23 @@
-name: Write version to file
+# name: Write version to file
 
-on:
-  push:
-    branches: [ dev ]
+# on:
+#   push:
+#     branches: [ dev ]
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Get branch names
-        id: branch-current
-        uses: tj-actions/branch-names@v8
+# jobs:
+#   build:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Get branch names
+#         id: branch-current
+#         uses: tj-actions/branch-names@v8
 
-      - name: Get latest tag
-        id: tag-latest
-        uses: JinoArch/get-latest-tag@latest
+#       - name: Get latest tag
+#         id: tag-latest
+#         uses: JinoArch/get-latest-tag@latest
 
-      # - name: Overwrite VERSION file
-      #   uses: DamianReeves/write-file-action@master
-      #   with:
-      #     path: VERSION
-      #     write-mode: overwrite
-      #     contents: |
-      #       ${{ steps.tag-latest.outputs.latestTag }}
-
-      - name: Write in VERSION file
-        run: |
-            echo "${{ steps.tag-latest.outputs.latestTag }}" > VERSION
+#       - name: Write in VERSION file
+#         run: |
+#             echo "${{ steps.tag-latest.outputs.latestTag }}" > VERSION
 
           
