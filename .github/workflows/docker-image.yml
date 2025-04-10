@@ -30,7 +30,7 @@ jobs:
 
       - name: Write in VERSION file
         run: |
-          ls -al /
+          ls -al /share/
           echo "${{ steps.meta.outputs.tags }}" > VERSION
         # working-directory: /share
         # uses: DamianReeves/write-file-action@master
