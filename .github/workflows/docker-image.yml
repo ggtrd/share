@@ -30,8 +30,8 @@ jobs:
 
       - name: Write in VERSION file
         run: |
-          touch VERSION
-          echo "${{ steps.meta.outputs.tags }}" > VERSION
+          cat <<EOF > /share/VERSION
+          "${{ steps.meta.outputs.tags }}"
 
       - name: Docker Build And Push
         uses: docker/build-push-action@v5
