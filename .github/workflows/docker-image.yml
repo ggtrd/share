@@ -39,6 +39,8 @@ jobs:
         run: |
           echo "${{ steps.meta.outputs.tags }}" > VERSION
           cat VERSION
+          ls VERSION
+          pwd
         # working-directory: /share
         # uses: DamianReeves/write-file-action@master
         # with:
