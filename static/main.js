@@ -58,11 +58,12 @@ function displayInfo(message) {
 
 
 
-// Set logo from given file
-function setLogo(fileLogo) {
-	let logoImg = document.createElement('img');
-	logoImg.setAttribute('src', fileLogo);
+// // Set logo from given file
+// function setLogo(fileLogo) {
+// 	let logoImg = document.createElement('object');
+// 	logoImg.setAttribute('type', 'image/svg+xml');
+// 	logoImg.setAttribute('data', fileLogo);
 
-	let logo = document.getElementById('logo');
-	logo.appendChild(logoImg)
-}
+// 	let logo = document.getElementById('logo');
+// 	logo.appendChild(logoImg)
+// }

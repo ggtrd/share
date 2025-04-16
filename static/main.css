@@ -1,7 +1,7 @@
 @import url(https://fonts.googleapis.com/css?family=Lato:400,300,300italic,400italic,700,700italic);
 
 :root {
-    --color: #36BCFF;
+    --color: #368aff;
     /*this default color will be overwritten from custom/theme.css*/
     --darker-color: color-mix(in srgb, #000, var(--color) 40%);
     --darker2-color: color-mix(in srgb, #000, var(--color) 80%);
@@ -16,6 +16,8 @@
 
     --main-input-width: 800px;
     --main-input-height: 200px;
+
+    --toggle-size: 36px;
 }
 
 
@@ -39,12 +41,22 @@ body {
     background-color: color-mix(in srgb, #000, var(--color) 5%);
 }
 
+.dark * .nav-link {
+    color: var(--darker2-color);
+}
+
 
 .dark>*>h1 {
     color: var(--darker2-color);
 }
 
+
 .dark * .title {
+    color: var(--darker2-color);
+}
+
+
+.dark * .label {
     color: var(--darker2-color);
 }
 
@@ -77,6 +89,16 @@ body {
 }
 
 
+.dark * .container-file:hover {
+    background-color: var(--darker-color) !important;
+}
+
+
+.dark * .container-file .text {
+    color: var(--lighter2-color) !important;
+}
+
+
 .dark * input[type=password] {
     border-color: var(--darker2-color) !important;
     color: var(--lighter2-color) !important;
@@ -100,14 +122,20 @@ body {
 }
 
 
-#logo>img {
-    max-width: 60px;
+#logo>* {
+    max-width: 70px;
 
     padding-left: 36px;
     padding-right: 18px;
     padding-top: 18px;
     padding-bottom: 18px;
 }
+
+
+#svg * {
+    fill: var(--color);
+}
+
 
 .right {
     position: fixed;
@@ -165,6 +193,7 @@ body {
     display: inline-block;
 
     vertical-align: text-top;
+    border: var(--debug);
 }
 
 .nav-link {
@@ -178,11 +207,13 @@ body {
     padding-top: 30px;
     padding-bottom: 0px;
 
-
+    vertical-align: middle;
     text-align: center;
 
     font-weight: bold;
     font-size: 28px;
+
+    border: var(--debug);
 }
 
 
@@ -549,4 +580,63 @@ input[type=file]::file-selector-button {
     cursor: pointer;
 
     border: var(--debug);
+}
+
+
+.toggle input[type="checkbox"] {
+    display: none;
+    visibility: hidden;
+}
+
+
+.toggle label {
+    float: left;
+    position: relative;
+
+    width: var(--toggle-size);
+    height: calc(var(--toggle-size) / 2);
+    box-sizing: border-box;
+
+    border: var(--border) solid;
+    border-radius: var(--radius);
+    cursor: pointer;
+
+    color: var(--color);
+}
+
+
+.toggle input[type=checkbox]:checked+label {
+    border-color: var(--darker2-color);
+}
+
+
+.toggle input[type=checkbox]:checked+label:before {
+    left: calc(var(--toggle-size) / 2);
+    border-color: var(--darker2-color);
+    background-color: var(--darker2-color);
+}
+
+
+.toggle label:before {
+    position: absolute;
+    left: 2px;
+    top: 2px;
+    width: calc((var(--toggle-size) / 2) - 10px);
+    height: calc((var(--toggle-size) / 2) - 10px);
+
+    background-color: var(--color);
+    color: var(--color);
+
+    box-sizing: border-box;
+    border: var(--border) solid;
+
+    border-radius: var(--radius);
+
+    transition: .2s ease;
+    content: '';
+}
+
+
+.toggle-darkmode {
+    margin-top: 16px;
 }

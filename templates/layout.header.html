@@ -16,21 +16,67 @@
 <body>
 
   <script>
+
+    function getDarkmodeStatus() {
+      var boolean = (localStorage.getItem('darkmode') === 'true');
+      return boolean;
+    }
+
+
+    function setDarkmode() {
+      document.body.classList.toggle('dark', getDarkmodeStatus());
+    }
+
+
+    // Set the darkmode when entering navigation
+    setDarkmode();
+
+
     window.onload = function () {
 
-      // Dark mode
-      const toggle = document.getElementById('toggle');
-      toggle.addEventListener('change', (e) => {
-        document.body.classList.toggle('dark', e.target.checked)
+      // Darkmode
+      const darkmode = document.getElementById('darkmode');
+      darkmode.checked = getDarkmodeStatus();                       // Check the checkbox according to what's stored in the session storage
+      darkmode.addEventListener('change', (event) => {
+        localStorage.setItem('darkmode', event.target.checked);
+        setDarkmode();
       })
 
-      // Logo      
-      if (! checkUrl('/static/custom/logo.png')) {
-        setLogo('../static/default-logo.png');
+
+      // Logo
+      var logo = document.getElementById('logo');
+      if (!checkUrl('/static/custom/logo.png')) {
+        // Create an object to be able to read the SVG from its file
+        let object = document.createElement('object');
+        object.setAttribute('type', 'image/svg+xml');
+        object.setAttribute('data', '../static/default-logo.svg');
+
+        // Add the object under the logo placeholder
+        logo.appendChild(object);
+
+        // Get the SVG in the DOM to be able to change its color
+        let svg = logo.children[0]; // get the <img> inside the logo div
+        svg.addEventListener('load', function () {
+          let item = svg.contentDocument.getElementById('svg');
+
+          // Trick to get the color from an item that is already used in the DOM to be able to apply it to the SVG
+          let elementThatHasColor = document.getElementsByClassName('nav-link')[0];
+          let color = window.getComputedStyle(elementThatHasColor).getPropertyValue('color');
+
+          item.style.fill = color;
+
+        }, false);
+
       } else {
-        setLogo('../static/custom/logo.png');
+        let img = document.createElement('img');
+        img.setAttribute('src', '../static/custom/logo.png');
+        logo.appendChild(img)
       }
-    }
+
+    };
+
+
+
 
   </script>
 
@@ -38,6 +84,7 @@
   <div class="container-nav">
     <a href="/" class="nav-item">
       <div id="logo">
+        <!-- <img src="../static/default-logo.svg" id="logo-img"> -->
       </div>
     </a>
 
@@ -55,9 +102,12 @@
 
 
     <div class="nav-item right">
-      <input type="checkbox" id="toggle" name="toggle" />
-      <label for="toggle"></label>
+      <div class="nav-link toggle">
+        <input id="darkmode" type="checkbox" />
+        <label for="darkmode" class="toggle-darkmode"></label>
+      </div>
     </div>
+
 
   </div>
 
