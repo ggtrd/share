@@ -5,3 +5,4 @@ share
 uploads
 database
 static/custom
+.env

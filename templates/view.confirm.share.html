@@ -2,59 +2,51 @@
 <h1 class="title">Share created !</h1>
 
 <div class="container-center-inline">
-    <div class="container-left">
-
-        <div class="label">
-            Share link
-            <div class="text text-box">
-                <button class="button-copy" onclick="copyToClipboard('link')"></button>
-                <span id="link">
-                    {{ .Url }}{{ .Link }}
-                </span>
-            </div>
-        </div>
-
-        <br>
-
-        <div class="label">
-            Password
-            <div class="text text-box">
-                <button class="button-copy" onclick="copyToClipboard('password')"></button>
-                <span id="password">
-                    {{ .Password }}
-                </span>
-            </div>
-        </div>
-
-
-        <br>
-        <br>
-
-
-        <div class="label">
-            One click link
-            <div class="text text-box">
-                <button class="button-copy" onclick="copyToClipboard('oneClickLink')"></button>
-                <span id="oneClickLink">
-                    {{ .Url }}{{ .Link }}#{{ .Password }}
-                </span>
-            </div>
-        </div>
-
-
+  <div class="container-left">
+    <div class="label">
+      Share link
+      <div class="text text-box">
+        <button class="button-copy" onclick="copyToClipboard('link')">
+          <i class="fas fa-copy fa-lg"></i>
+        </button>
+        <span id="link"> {{ .Url }}{{ .Link }} </span>
+      </div>
     </div>
+
+    <br />
+
+    <div class="label">
+      Password
+      <div class="text text-box">
+        <button class="button-copy" onclick="copyToClipboard('password')">
+          <i class="fas fa-copy fa-lg"></i>
+        </button>
+        <span id="password"> {{ .Password }} </span>
+      </div>
+    </div>
+
+    <br />
+    <br />
+
+    <div class="label">
+      One click link
+      <div class="text text-box">
+        <button class="button-copy" onclick="copyToClipboard('oneClickLink')">
+          <i class="fas fa-copy fa-lg"></i>
+        </button>
+        <span id="oneClickLink"> {{ .Url }}{{ .Link }}#{{ .Password }} </span>
+      </div>
+    </div>
+  </div>
 </div>
 
-
 <script>
-    function copyToClipboard(copyDiv) {
-        let content = document.getElementById(copyDiv).innerHTML;
-        navigator.clipboard.writeText(content);
+  function copyToClipboard(copyDiv) {
+    let content = document.getElementById(copyDiv).innerHTML;
+    navigator.clipboard.writeText(content);
 
-        displayInfo('Copied !');
-
-    }
+    displayInfo("Copied !");
+  }
 </script>
-
 
 {{ template "layout.footer.html" . }}

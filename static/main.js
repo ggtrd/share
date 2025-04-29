@@ -15,7 +15,7 @@ function element(element) {
 
 
 
-// Display an notification notification
+// Display a notification notification
 function displayError(message) {
 	let notification = document.createElement('div');
 

@@ -1,47 +1,42 @@
-
-<br>
+<br />
 
 <div class="container-center-inline">
-
-    <div>
-        <div class="label">
-            <label for="maxopen">Maximum open allowed</label>
-        </div>
-        <input required type="number" name="maxopen" min="1" max="100" value="1">
+  <div>
+    <div class="label">
+      <label for="maxopen">Maximum open allowed</label>
     </div>
+    <input required type="number" name="maxopen" min="1" max="100" value="1" />
+  </div>
 
-
-    <div>
-        <div class="label">
-            <label for="expiration">Expiration date</label>
-        </div>
-        <input required id="expiration" type="datetime-local" name="expiration">
+  <div>
+    <div class="label">
+      <label for="expiration">Expiration date</label>
     </div>
-
-
+    <input required id="expiration" type="datetime-local" name="expiration" />
+  </div>
 </div>
 
-<br>
+<br />
 
 <input type="submit" id="submit" value="Share !" class="button" />
 
-
-
 <script>
-    var defaultExpiration = new Date();
-    defaultExpiration.setMinutes(defaultExpiration.getMinutes() - defaultExpiration.getTimezoneOffset());
-    defaultExpiration.setHours(defaultExpiration.getHours() + 168);
+  var defaultExpiration = new Date();
+  defaultExpiration.setMinutes(
+    defaultExpiration.getMinutes() - defaultExpiration.getTimezoneOffset()
+  );
+  defaultExpiration.setHours(defaultExpiration.getHours() + 168);
 
-    var min = new Date();
-    min.setMinutes(min.getMinutes() - min.getTimezoneOffset());
-    min.setHours(min.getHours());
+  var min = new Date();
+  min.setMinutes(min.getMinutes() - min.getTimezoneOffset());
+  min.setHours(min.getHours());
 
-    var max = new Date();
-    max.setMinutes(max.getMinutes() - max.getTimezoneOffset());
-    max.setHours(max.getHours() + 504);
+  var max = new Date();
+  max.setMinutes(max.getMinutes() - max.getTimezoneOffset());
+  max.setHours(max.getHours() + 504);
 
-    expiration = document.getElementById('expiration')
-    expiration.value = defaultExpiration.toISOString().slice(0, 16);
-    expiration.min = min.toISOString().slice(0, 16);
-    expiration.max = max.toISOString().slice(0, 16);
+  expiration = document.getElementById("expiration");
+  expiration.value = defaultExpiration.toISOString().slice(0, 16);
+  expiration.min = min.toISOString().slice(0, 16);
+  expiration.max = max.toISOString().slice(0, 16);
 </script>

@@ -12,28 +12,23 @@ import (
 	"html/template"
 	"net/http"
 	"encoding/json"
-
 	"strconv"
-	// "time"
-	// "math/rand"
-
 	"github.com/google/uuid"
-
 	"github.com/ProtonMail/gopenpgp/v3/crypto"
+	"github.com/joho/godotenv"
 )
-
-
-
 
 type App struct {
 	Port string
 }
 
-
-
-
 func main() {
 
+
+	err := godotenv.Load()
+	if err != nil {
+		log.Println("No .env found :", err)
+	}
 
 	server := App{
 		Port: env("PORT", "8080"),
@@ -243,14 +238,9 @@ func unlockShare(w http.ResponseWriter, r *http.Request)  {
 
 	r.ParseForm()
 
-
 	url:= r.Header.Get("Referer")
 	idToUnlock := url[len(url)-36:] // Just get the last 36 char of the url because the IDs are 36 char length
-
-
 	pgpMessageEncrypted := r.FormValue("pgpMessageEncrypted")
-
-
 
 	// Decrypt PGP message
 	// Using GopenPGP
@@ -271,8 +261,6 @@ func unlockShare(w http.ResponseWriter, r *http.Request)  {
 		log.Println("err :", err)
 		return
 	}
-
-
 
 	shareContentMap := getShareContent(idToUnlock)
 	shareContentType := shareContentMap["type"]
@@ -340,30 +328,48 @@ func uploadSecret(w http.ResponseWriter, r *http.Request) {
 
 	// Ensure that a refresh of the page will not submit a new value in the database
 	tokenAvoidRefresh := r.PostFormValue("TokenAvoidRefresh")
-	if tokenAvoidRefresh != "" {
-
-		id := uuid.NewString()
-		shared_id := uuid.NewString()
-		uri := r.Header.Get("Referer")											// Entire path 'http://domain:port/node1/node2/etc.../'
-		 url:= path.Dir(uri)													// Only the 'http://domain:port' part
-		link := strings.Join([]string{"/share/", shared_id}, "")
-
-
-		// Create database entries
-		createSecret(id, shared_id, r.PostFormValue("mySecret"), r.PostFormValue("expiration"), r.PostFormValue("maxopen"))
-
-
-		// Display the confirmation
-		renderTemplate(w, "view.confirm.share.html", struct {
-			Link string				// To permit the user to click on it 
-			Url string				// To permit the user to copy it
-			Password string			// To permit the user to copy it
-		}{
-			Link: link,
-			Url: url,
-			Password: getSharePassword(shared_id),
-		})
+	if tokenAvoidRefresh == "" {
+		http.Error(w, "Invalid form submission", http.StatusBadRequest)
+		return
 	}
+	secret := r.PostFormValue("mySecret")
+	expiration := r.PostFormValue("expiration")
+	maxopenStr := r.PostFormValue("maxopen")
+	
+	// --- Validation ---
+	if len(secret) == 0 || len(secret) > 2500 {
+		http.Error(w, "Secret must be between 1 and 2500 characters", http.StatusBadRequest)
+		return
+	}
+
+	expTime, maxopen, err := validateExpirationAndMaxOpen(expiration, maxopenStr)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+	expirationFormatted := expTime.Format("2006-01-02T15:04")
+
+
+	id := uuid.NewString()
+	shared_id := uuid.NewString()
+	uri := r.Header.Get("Referer")										// Entire path 'http://domain:port/node1/node2/etc.../'
+	url:= path.Dir(uri)													// Only the 'http://domain:port' part
+	link := strings.Join([]string{"/share/", shared_id}, "")
+
+	// Create database entries
+	createSecret(id, shared_id, secret, expirationFormatted, maxopen)
+
+	// Display the confirmation
+	renderTemplate(w, "view.confirm.share.html", struct {
+		Link string				// To permit the user to click on it 
+		Url string				// To permit the user to copy it
+		Password string			// To permit the user to copy it
+	}{
+		Link: link,
+		Url: url,
+		Password: getSharePassword(shared_id),
+	})
+	
 }
 
 
@@ -374,96 +380,102 @@ func uploadFile(w http.ResponseWriter, r *http.Request) {
 
 	// Ensure that a refresh of the page will not submit a new value in the database
 	tokenAvoidRefresh := r.PostFormValue("TokenAvoidRefresh")
-	if tokenAvoidRefresh != "" {
-
-
-		id := uuid.NewString()
-		shared_id := uuid.NewString()
-		uri := r.Header.Get("Referer")										// Entire path 'http://domain:port/node1/node2/etc.../'
-		url:= path.Dir(uri)													// Only the 'http://domain:port' part
-		link := strings.Join([]string{"/share/", shared_id}, "")
-
-
-
-		// Get handler for filename, size and headers
-		file, handler, err := r.FormFile("myFile")
-		if err != nil {
-			// log.Println("err : can't retrieve file", file)
-			log.Println("err :", err)
-			return
-		}
-		defer file.Close()
-		// log.Printf("Uploaded file: %+v\n", handler.Filename)
-		// log.Printf("File size: %+v\n", handler.Size)
-		// log.Printf("MIME header: %+v\n", handler.Header)
-
-
-
-
-		// Create destination directory root
-		dirUploads := "uploads/"
-		if _, err := os.Stat(dirUploads); errors.Is(err, os.ErrNotExist) {
-			err := os.Mkdir(dirUploads, 0700)
-			if err != nil {
-				log.Println("err :", err)
-			}
-		}
-
-		// Create destination directory of the share
-		dir := dirUploads + shared_id
-		if _, err := os.Stat(dir); errors.Is(err, os.ErrNotExist) {
-			err := os.Mkdir(dir, 0700)
-			if err != nil {
-				log.Println("err :", err)
-			}
-		}
-
-		// Create file
-		filePath := filepath.Join(dir, filepath.Base(handler.Filename))
-		dst, err := os.Create(filePath)
-		defer dst.Close()
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-		}
-
-		// Copy the uploaded file to the created file on the filesystem
-		if _, err := io.Copy(dst, file); err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-		}
-
-
-
-
-		stat, err := dst.Stat()
-		if err != nil {
-			log.Fatal(err.Error())
-		}
-
-		size, _ := strconv.Atoi(strconv.FormatInt(stat.Size(), 10))
-		fmt.Println(size)
-
-
-
-
-
-		// Create database entries
-		createFile(id, shared_id, filePath, r.PostFormValue("expiration"), r.PostFormValue("maxopen"))
-
-
-		
-		// Display the confirmation
-		renderTemplate(w, "view.confirm.share.html", struct {
-			Link string				// To permit the user to click on it 
-			Url string				// To permit the user to copy it
-			Password string			// To permit the user to copy it
-		}{
-			Link: link,
-			Url: url,
-			Password: getSharePassword(shared_id),
-		})
+	if tokenAvoidRefresh == "" {
+		http.Error(w, "Invalid form submission", http.StatusBadRequest)
+		return
 	}
+	expiration := r.PostFormValue("expiration")
+	maxopenStr := r.PostFormValue("maxopen")
+
+	expTime, maxopen, err := validateExpirationAndMaxOpen(expiration, maxopenStr)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+	expirationFormatted := expTime.Format("2006-01-02T15:04")
+
+
+	id := uuid.NewString()
+	shared_id := uuid.NewString()
+	uri := r.Header.Get("Referer")										// Entire path 'http://domain:port/node1/node2/etc.../'
+	url:= path.Dir(uri)													// Only the 'http://domain:port' part
+	link := strings.Join([]string{"/share/", shared_id}, "")
+
+
+
+	// Get handler for filename, size and headers
+	file, handler, err := r.FormFile("myFile")
+	if err != nil {
+		// log.Println("err : can't retrieve file", file)
+		log.Println("err :", err)
+		return
+	}
+	defer file.Close()
+	// log.Printf("Uploaded file: %+v\n", handler.Filename)
+	// log.Printf("File size: %+v\n", handler.Size)
+	// log.Printf("MIME header: %+v\n", handler.Header)
+
+
+
+
+	// Create destination directory root
+	dirUploads := "uploads/"
+	if _, err := os.Stat(dirUploads); errors.Is(err, os.ErrNotExist) {
+		err := os.Mkdir(dirUploads, 0700)
+		if err != nil {
+			log.Println("err :", err)
+		}
+	}
+
+	// Create destination directory of the share
+	dir := dirUploads + shared_id
+	if _, err := os.Stat(dir); errors.Is(err, os.ErrNotExist) {
+		err := os.Mkdir(dir, 0700)
+		if err != nil {
+			log.Println("err :", err)
+		}
+	}
+
+	// Create file
+	filePath := filepath.Join(dir, filepath.Base(handler.Filename))
+	dst, err := os.Create(filePath)
+	defer dst.Close()
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	// Copy the uploaded file to the created file on the filesystem
+	if _, err := io.Copy(dst, file); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	stat, err := dst.Stat()
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+
+	size, _ := strconv.Atoi(strconv.FormatInt(stat.Size(), 10))
+	fmt.Println(size)
+
+	// Create database entries
+	createFile(id, shared_id, filePath, expirationFormatted,maxopen)
+
+
+	
+	// Display the confirmation
+	renderTemplate(w, "view.confirm.share.html", struct {
+		Link string				// To permit the user to click on it 
+		Url string				// To permit the user to copy it
+		Password string			// To permit the user to copy it
+	}{
+		Link: link,
+		Url: url,
+		Password: getSharePassword(shared_id),
+	})
+
+
 }
 
 
@@ -480,8 +492,3 @@ func downloadFile(w http.ResponseWriter, r *http.Request) {
 
 	http.ServeFile(w, r, file)
 }
-
-
-
-
-

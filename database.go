@@ -133,7 +133,7 @@ func openDatabase() *sql.DB {
 
 
 
-func createShare(id string, expirationGiven string, maxopenGiven string) {
+func createShare(id string, expirationGiven string, maxopenGiven int) {
 	db := openDatabase()
 	defer db.Close()
 
@@ -162,7 +162,7 @@ func createShare(id string, expirationGiven string, maxopenGiven string) {
 
 
 
-func createFile(id string, shareId string, path string, expiration string, maxopen string) {
+func createFile(id string, shareId string, path string, expiration string, maxopen int) {
 	db := openDatabase()
 	defer db.Close()
 
@@ -176,7 +176,7 @@ func createFile(id string, shareId string, path string, expiration string, maxop
 
 
 
-func createSecret(id string, shareId string, text string, expiration string, maxopen string) {
+func createSecret(id string, shareId string, text string, expiration string, maxopen int) {
 	db := openDatabase()
 	defer db.Close()
 
