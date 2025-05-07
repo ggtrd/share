@@ -1,17 +1,17 @@
 package main
 
 import (
-	"fmt"
-	"log"
-	"os"
-	"io"
-	"errors"
-	"strings"
-	"path"
-	"path/filepath"
-	"html/template"
-	"net/http"
 	"encoding/json"
+	"errors"
+	"fmt"
+	"html/template"
+	"io"
+	"log"
+	"net/http"
+	"os"
+	// "path"
+	"path/filepath"
+	"strings"
 
 	"strconv"
 	// "time"
@@ -344,10 +344,9 @@ func uploadSecret(w http.ResponseWriter, r *http.Request) {
 
 		id := uuid.NewString()
 		shared_id := uuid.NewString()
-		uri := r.Header.Get("Referer")											// Entire path 'http://domain:port/node1/node2/etc.../'
-		 url:= path.Dir(uri)													// Only the 'http://domain:port' part
+		url := r.Header.Get("Origin")
 		link := strings.Join([]string{"/share/", shared_id}, "")
-
+		
 
 		// Create database entries
 		createSecret(id, shared_id, r.PostFormValue("mySecret"), r.PostFormValue("expiration"), r.PostFormValue("maxopen"))
@@ -379,8 +378,7 @@ func uploadFile(w http.ResponseWriter, r *http.Request) {
 
 		id := uuid.NewString()
 		shared_id := uuid.NewString()
-		uri := r.Header.Get("Referer")										// Entire path 'http://domain:port/node1/node2/etc.../'
-		url:= path.Dir(uri)													// Only the 'http://domain:port' part
+		url := r.Header.Get("Origin")
 		link := strings.Join([]string{"/share/", shared_id}, "")
 
 
