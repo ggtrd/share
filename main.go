@@ -1,17 +1,19 @@
 package main
 
 import (
-	"fmt"
-	"log"
-	"os"
-	"io"
+	"encoding/json"
 	"errors"
-	"strings"
+	"fmt"
+	"html/template"
+	"io"
+	"log"
+
+	"net/url"
+		"net/http"
+	"os"
 	"path"
 	"path/filepath"
-	"html/template"
-	"net/http"
-	"encoding/json"
+	"strings"
 
 	"strconv"
 	// "time"
@@ -20,6 +22,10 @@ import (
 	"github.com/google/uuid"
 
 	"github.com/ProtonMail/gopenpgp/v3/crypto"
+
+
+
+
 )
 
 
@@ -344,10 +350,14 @@ func uploadSecret(w http.ResponseWriter, r *http.Request) {
 
 		id := uuid.NewString()
 		shared_id := uuid.NewString()
-		uri := r.Header.Get("Referer")											// Entire path 'http://domain:port/node1/node2/etc.../'
-		 url:= path.Dir(uri)													// Only the 'http://domain:port' part
+		address, _ := url.Parse(r.Header.Get("Referer"))
 		link := strings.Join([]string{"/share/", shared_id}, "")
 
+
+		// fmt.Println(uri)
+		// fmt.Println(url)
+
+		
 
 		// Create database entries
 		createSecret(id, shared_id, r.PostFormValue("mySecret"), r.PostFormValue("expiration"), r.PostFormValue("maxopen"))
@@ -360,7 +370,7 @@ func uploadSecret(w http.ResponseWriter, r *http.Request) {
 			Password string			// To permit the user to copy it
 		}{
 			Link: link,
-			Url: url,
+			Url: address,
 			Password: getSharePassword(shared_id),
 		})
 	}
