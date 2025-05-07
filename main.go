@@ -8,7 +8,7 @@ import (
 	"io"
 	"log"
 	"net/http"
-	"net/url"
+	// "net/url"
 	"os"
 	"path"
 	"path/filepath"
@@ -345,12 +345,15 @@ func uploadSecret(w http.ResponseWriter, r *http.Request) {
 
 		id := uuid.NewString()
 		shared_id := uuid.NewString()
-		address, _ := url.Parse(r.Header.Get("Referer"))
+		url := r.Header.Get("Origin")
 		link := strings.Join([]string{"/share/", shared_id}, "")
 
 
-		// fmt.Println(uri)
-		// fmt.Println(url)
+		// // fmt.Println(uri)
+		// fmt.Println(r.Header)
+		// fmt.Println(address)
+		// fmt.Println(address.Parse)
+		// fmt.Println(address.RequestURI())
 
 		
 
@@ -365,7 +368,7 @@ func uploadSecret(w http.ResponseWriter, r *http.Request) {
 			Password string			// To permit the user to copy it
 		}{
 			Link: link,
-			Url: address,
+			Url: url,
 			Password: getSharePassword(shared_id),
 		})
 	}
