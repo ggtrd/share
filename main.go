@@ -7,9 +7,8 @@ import (
 	"html/template"
 	"io"
 	"log"
-
+	"net/http"
 	"net/url"
-		"net/http"
 	"os"
 	"path"
 	"path/filepath"
@@ -22,10 +21,6 @@ import (
 	"github.com/google/uuid"
 
 	"github.com/ProtonMail/gopenpgp/v3/crypto"
-
-
-
-
 )
 
 
