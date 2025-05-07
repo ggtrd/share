@@ -9,7 +9,7 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"path"
+	// "path"
 	"path/filepath"
 	"strings"
 
@@ -378,8 +378,7 @@ func uploadFile(w http.ResponseWriter, r *http.Request) {
 
 		id := uuid.NewString()
 		shared_id := uuid.NewString()
-		uri := r.Header.Get("Referer")										// Entire path 'http://domain:port/node1/node2/etc.../'
-		url:= path.Dir(uri)													// Only the 'http://domain:port' part
+		url := r.Header.Get("Origin")
 		link := strings.Join([]string{"/share/", shared_id}, "")
 
 
