@@ -8,7 +8,6 @@ import (
 	"io"
 	"log"
 	"net/http"
-	// "net/url"
 	"os"
 	"path"
 	"path/filepath"
@@ -347,14 +346,6 @@ func uploadSecret(w http.ResponseWriter, r *http.Request) {
 		shared_id := uuid.NewString()
 		url := r.Header.Get("Origin")
 		link := strings.Join([]string{"/share/", shared_id}, "")
-
-
-		// // fmt.Println(uri)
-		// fmt.Println(r.Header)
-		// fmt.Println(address)
-		// fmt.Println(address.Parse)
-		// fmt.Println(address.RequestURI())
-
 		
 
 		// Create database entries
