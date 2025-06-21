@@ -141,7 +141,7 @@ func (a *App) Start() {
 	
 	http.Handle("/session", logReq(viewCreateSession))							// Form to create a session
 	http.Handle("/session/created", logReq(uploadSession))						// Confirmation + display the link of the created session
-	http.Handle("/session/{id}", logReq(viewUnlockSession))							// Ask for password to unlock the share
+	http.Handle("/session/{id}", logReq(viewUnlockSession))						// View to access the session
 	http.Handle("/session/{id}/file", logReq(viewCreateFile))					// Form to create a file from a session
 	http.Handle("/session/{id}/secret", logReq(viewCreateSecret))				// Form to create a secret from a session
 	
@@ -380,7 +380,7 @@ func uploadSession(w http.ResponseWriter, r *http.Request) {
 	if tokenAvoidRefresh != "" {
 
 		id := uuid.NewString()
-		// url := r.Header.Get("Origin")
+		url := r.Header.Get("Origin")
 		link := strings.Join([]string{"/session/", id}, "")
 		
 
@@ -390,9 +390,11 @@ func uploadSession(w http.ResponseWriter, r *http.Request) {
 
 		// Display the confirmation
 		renderTemplate(w, "view.confirm.session.html", struct {
-			Link string				// To permit the user to click on it 
+			Link string	
+			Url string
 		}{
 			Link: link,
+			Url: url,
 		})
 	}
 }
@@ -421,9 +423,9 @@ func uploadSecret(w http.ResponseWriter, r *http.Request) {
 
 		// Display the confirmation
 		renderTemplate(w, "view.confirm.share.html", struct {
-			Link string				// To permit the user to click on it 
-			Url string				// To permit the user to copy it
-			Password string			// To permit the user to copy it
+			Link string
+			Url string
+			Password string
 		}{
 			Link: link,
 			Url: url,

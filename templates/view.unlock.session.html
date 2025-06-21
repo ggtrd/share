@@ -4,8 +4,15 @@
 
 <div>
 
-Session created
+    <div class="text">Choose what to share</div>
 
+    <a href="/session/{{ .SessionId }}/file">
+        <div class="button">File</div>
+    </a>
+
+    <a href="/session/{{ .SessionId }}/secret">
+        <div class="button">Secret</div>
+    </a>
 
 </div>
 
