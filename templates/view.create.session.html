@@ -1,0 +1,48 @@
+{{ template "layout.header.html" . }}
+<h1 class="title">Open a session</h1>
+
+<form action="/session/created" method="post" enctype="multipart/form-data" id="form">
+
+	<div class="text">
+		Creating a session will give you a link that you might send to the person you want to receive a share from.
+	</div>
+	<div class="text">
+		This is useful if you need to receive a share from someone who can't access classic share creation (in case of authentication on your Share instance for example).
+	</div>
+
+	<br>
+
+	<input required type="hidden" name="TokenAvoidRefresh" value="{{ .TokenAvoidRefresh }}" />
+
+	<div class="container-center-inline">
+		<div>
+			<div class="label">
+				<label for="expiration">Expiration date</label>
+			</div>
+			<input required id="expiration" type="datetime-local" name="expiration">
+		</div>
+	</div>
+
+	<br>
+
+	<input type="submit" id="submit" value="Open !" class="button" />
+</form>
+
+
+
+
+
+
+<script>
+	var defaultExpiration = new Date();
+	defaultExpiration.setMinutes(defaultExpiration.getMinutes() - defaultExpiration.getTimezoneOffset());
+	defaultExpiration.setHours(defaultExpiration.getHours() + 168);
+
+	expiration = document.getElementById('expiration')
+	expiration.value = defaultExpiration.toISOString().slice(0, 16);
+	expiration.min = min.toISOString().slice(0, 16);
+	expiration.max = max.toISOString().slice(0, 16);
+</script>
+
+
+{{ template "layout.footer.html" . }}

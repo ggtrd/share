@@ -22,7 +22,7 @@ import (
 
 // var dbFile string = "sqlite.db"
 var dbFile string = filepath.Join("database", "sqlite.db")
-var dbFileAuth string = filepath.Join("database", ".auth")
+// var dbFileAuth string = filepath.Join("database", ".auth")
 
 var rowFound    = "  db: records found from table:"
 var rowNotFound = "  db: nothing found from table:"
@@ -55,6 +55,8 @@ func createDatabase() {
 	DELETE FROM file;
 	CREATE TABLE secret (id text not null primary key, text text, share_id text, FOREIGN KEY(share_id) REFERENCES share(id));
 	DELETE FROM secret;
+	CREATE TABLE session (id text not null primary key, expiration text);
+	DELETE FROM session;
 	`
 
 
@@ -185,6 +187,17 @@ func createSecret(id string, shareId string, text string, expiration string, max
 
 
 	createShare(shareId, expiration, maxopen)
+}
+
+
+
+
+func createSession(id string, expiration string) {
+	db := openDatabase()
+	defer db.Close()
+
+
+	db.Exec("INSERT INTO session(id, expiration) values(:id, :expiration)", id, expiration)
 }
 
 

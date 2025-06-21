@@ -138,13 +138,18 @@ func (a *App) Start() {
 	
 	http.Handle("/secret", logReq(viewCreateSecret))							// Form to create a share
 	http.Handle("/secret/shared", logReq(uploadSecret))							// Confirmation + display the link of the share to the creator
-
+	
+	http.Handle("/session", logReq(viewCreateSession))							// Form to create a session
+	http.Handle("/session/created", logReq(uploadSession))						// Confirmation + display the link of the created session
+	http.Handle("/session/{id}", logReq(viewUnlockSession))							// Ask for password to unlock the share
+	http.Handle("/session/{id}/file", logReq(viewCreateFile))					// Form to create a file from a session
+	http.Handle("/session/{id}/secret", logReq(viewCreateSecret))				// Form to create a secret from a session
+	
 	http.Handle("/share/{id}", logReq(viewUnlockShare))							// Ask for password to unlock the share
 	http.Handle("/share/unlock", logReq(unlockShare))							// Non browsable url - verify password to unlock the share
 	http.Handle("/share/uploads/{id}/{file}", logReq(downloadFile))				// Download a shared file
 	
 
-	
 	addr := fmt.Sprintf(":%s", a.Port)
 	log.Printf(" web: starting app on %s", addr)
 	log.Fatal(http.ListenAndServe(addr, nil))
@@ -223,6 +228,22 @@ func viewCreateSecret(w http.ResponseWriter, r *http.Request) {
 
 
 
+func viewCreateSession(w http.ResponseWriter, r *http.Request) {
+
+	// Generate a token that will permit to prevent unwanted record to database due to browse the upload URL without using the form
+	// The trick is that this token is used from an hidden input on the HTML form, and if it's empty it means we're not using the form
+	token := generatePassword()
+
+	renderTemplate(w, "view.create.session.html", struct {
+		TokenAvoidRefresh string
+	}{
+		TokenAvoidRefresh: token,
+	})
+}
+
+
+
+
 func viewUnlockShare(w http.ResponseWriter, r *http.Request) {
 
 	shareId := r.PathValue("id")
@@ -233,6 +254,22 @@ func viewUnlockShare(w http.ResponseWriter, r *http.Request) {
 	}{
 		ShareId: shareId,
 		PgpKeyPublic: getShareKeyPublic(shareId),
+	})
+}
+
+
+
+
+func viewUnlockSession(w http.ResponseWriter, r *http.Request) {
+
+	sessionId := r.PathValue("id")
+
+	renderTemplate(w, "view.unlock.session.html", struct {
+		SessionId string
+		// PgpKeyPublic string
+	}{
+		SessionId: sessionId,
+		// PgpKeyPublic: getShareKeyPublic(sessionId),
 	})
 }
 
@@ -330,6 +367,36 @@ func unlockShare(w http.ResponseWriter, r *http.Request)  {
 	}
 
 }
+
+
+
+
+func uploadSession(w http.ResponseWriter, r *http.Request) {
+
+	r.ParseForm()
+
+	// Ensure that a refresh of the page will not submit a new value in the database
+	tokenAvoidRefresh := r.PostFormValue("TokenAvoidRefresh")
+	if tokenAvoidRefresh != "" {
+
+		id := uuid.NewString()
+		// url := r.Header.Get("Origin")
+		link := strings.Join([]string{"/session/", id}, "")
+		
+
+		// Create database entries
+		createSession(id, r.PostFormValue("expiration"))
+
+
+		// Display the confirmation
+		renderTemplate(w, "view.confirm.session.html", struct {
+			Link string				// To permit the user to click on it 
+		}{
+			Link: link,
+		})
+	}
+}
+
 
 
 
