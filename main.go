@@ -223,12 +223,16 @@ func viewCreateFile(w http.ResponseWriter, r *http.Request) {
 	token := generatePassword()
 		
 	
-	formUrl := "/auth/file/shared"													// formUrl can be either "/auth/file/shared" or "/session/{id}/file/shared"
-	url := r.Header.Get("Referer")													// if URL contains the word "session" it means it's a secret from a session
+	// If no session, formUrl will be "/auth/file/shared"
+	formUrl := "/auth/file/shared"
+	
+	// If session, formUrl will be "/session/{id}/file/shared"
+	// if URL contains the word "session" it means it's a file from a session
+	url := r.URL.Path
 	isSession := strings.Contains(url, "session")
 	if isSession == true {
-		formUrlArray := []string{"/session", r.PathValue("id"), "file/shared"}		
-		formUrl = strings.Join(formUrlArray, "/")									// formUrl := "/session/{id}/file/shared"
+		formUrlArray := []string{"/session", r.PathValue("id"), "file/shared"}
+		formUrl = strings.Join(formUrlArray, "/")
 	}
 
 	renderTemplate(w, "view.create.file.html", struct {
@@ -250,12 +254,16 @@ func viewCreateSecret(w http.ResponseWriter, r *http.Request) {
 	token := generatePassword()
 	
 	
-	formUrl := "/auth/secret/shared"												// formUrl can be either "/auth/secret/shared" or "/session/{id}/secret/shared"
-	url := r.Header.Get("Referer")													// if URL contains the word "session" it means it's a secret from a session
+	// If no session, formUrl will be "/auth/secret/shared"
+	formUrl := "/auth/secret/shared"
+	
+	// If session, formUrl will be "/session/{id}/secret/shared"
+	// if URL contains the word "session" it means it's a secret from a session
+	url := r.URL.Path
 	isSession := strings.Contains(url, "session")
 	if isSession == true {
-		formUrlArray := []string{"/session", r.PathValue("id"), "secret/shared"}		
-		formUrl = strings.Join(formUrlArray, "/")									// formUrl := "/session/{id}/secret/shared"
+		formUrlArray := []string{"/session", r.PathValue("id"), "secret/shared"}
+		formUrl = strings.Join(formUrlArray, "/")
 	}
 
 	renderTemplate(w, "view.create.secret.html", struct {
