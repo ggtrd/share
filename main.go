@@ -131,7 +131,7 @@ func (a *App) Start() {
 
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("./static/"))))
 
-	// http.Handle("/", http.RedirectHandler("/auth/secret", http.StatusSeeOther))				// Redirect to /secret by default
+	http.Handle("/", http.RedirectHandler("/auth/secret", http.StatusSeeOther))				// Redirect to /secret by default
 	// http.Handle("/secret", http.RedirectHandler("/auth/secret", http.StatusSeeOther))		// Quick link to get /auth/secret
 	// http.Handle("/file", http.RedirectHandler("/auth/file", http.StatusSeeOther))			// Quick link to get /auth/file
 	// http.Handle("/session", http.RedirectHandler("/auth/session", http.StatusSeeOther))		// Quick link to get /auth/session
@@ -159,6 +159,16 @@ func (a *App) Start() {
 	http.Handle("/session/{id}/secret/shared", logReq(uploadSecret))				// Confirmation + display the link of the share to the creator
 	
 	
+
+	// http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+	// 	if r.URL.Path != "/s" {
+	// 		w.WriteHeader(http.StatusNotFound)
+	// 		fmt.Fprintf(w, "Error: handler for %s not found")
+	// 		return
+	// 	}
+	// })
+
+
 
 	addr := fmt.Sprintf(":%s", a.Port)
 	log.Printf(" web: starting app on %s", addr)
@@ -211,11 +221,22 @@ func viewCreateFile(w http.ResponseWriter, r *http.Request) {
 	// Generate a token that will permit to prevent unwanted record to database due to browse the upload URL without using the form
 	// The trick is that this token is used from an hidden input on the HTML form, and if it's empty it means we're not using the form
 	token := generatePassword()
+		
 	
+	formUrl := "/auth/file/shared"													// formUrl can be either "/auth/file/shared" or "/session/{id}/file/shared"
+	url := r.Header.Get("Referer")													// if URL contains the word "session" it means it's a secret from a session
+	isSession := strings.Contains(url, "session")
+	if isSession == true {
+		formUrlArray := []string{"/session", r.PathValue("id"), "file/shared"}		
+		formUrl = strings.Join(formUrlArray, "/")									// formUrl := "/session/{id}/file/shared"
+	}
+
 	renderTemplate(w, "view.create.file.html", struct {
 		TokenAvoidRefresh string
+		FormUrl string
 	}{
 		TokenAvoidRefresh: token,
+		FormUrl: formUrl,
 	})
 }
 
@@ -228,21 +249,14 @@ func viewCreateSecret(w http.ResponseWriter, r *http.Request) {
 	// The trick is that this token is used from an hidden input on the HTML form, and if it's empty it means we're not using the form
 	token := generatePassword()
 	
-
-	// formUrl can be either "/auth/secret/shared" or "/session/{id}/secret/shared"
-	formUrl := "/auth/secret/shared"
-
-
-	// Does the URL contains the word "session", if yes it means that it's a secret from a session
-	url := r.Header.Get("Referer")
+	
+	formUrl := "/auth/secret/shared"												// formUrl can be either "/auth/secret/shared" or "/session/{id}/secret/shared"
+	url := r.Header.Get("Referer")													// if URL contains the word "session" it means it's a secret from a session
 	isSession := strings.Contains(url, "session")
 	if isSession == true {
-		formUrlArray := []string{"/session", r.PathValue("id"), "secret/shared"}
-		formUrl = strings.Join(formUrlArray, "/")
-
+		formUrlArray := []string{"/session", r.PathValue("id"), "secret/shared"}		
+		formUrl = strings.Join(formUrlArray, "/")									// formUrl := "/session/{id}/secret/shared"
 	}
-
-	log.Println("BLABLA", formUrl, isSession)
 
 	renderTemplate(w, "view.create.secret.html", struct {
 		TokenAvoidRefresh string
