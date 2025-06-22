@@ -8,7 +8,7 @@
     --lighter-color: color-mix(in srgb, #fff, var(--color) 5%);
     --lighter2-color: color-mix(in srgb, #fff, var(--color) 20%);
     --error-color: #FF4141;
-    --debug: 0px solid red;
+    --debug: 1px solid red;
 
     --radius: 8px;
     --border: 3px;
@@ -194,6 +194,7 @@ body {
 .container-nav {
     /* height: 100px; */
     max-height: 100px;
+    text-align: left;
 
     border: var(--debug)
 }
