@@ -74,6 +74,7 @@
             try {
                 let result = await response.json();
                 let shareContent;
+                let shareFileName;
 
                 // Just to replace the title displayed on the page
                 let title = document.getElementById('title');
@@ -87,8 +88,10 @@
 
                 if (result.shareContentType === "file") {
                     shareFile = document.createElement('a');
-                    shareFile.innerHTML = result.shareContentValue;
+
+                    shareFile.innerHTML = result.shareContentValue.split("/")[2];
                     shareFile.href = result.shareContentValue;
+
 
 
                     shareContent = document.createElement('p');

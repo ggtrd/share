@@ -140,7 +140,7 @@ func createShare(id string, expirationGiven string, maxopenGiven string) {
 	defer db.Close()
 
 
-	t := time.Now()
+	t := time.Now().UTC()
 	now := fmt.Sprintf("%d-%02d-%02dT%02d:%02d", t.Year(), t.Month(), t.Day(), t.Hour(), t.Minute())
 
 	creation := sql.Named("creation", now)
@@ -197,7 +197,7 @@ func createSession(id string, expirationGiven string) {
 	defer db.Close()
 
 
-	t := time.Now()
+	t := time.Now().UTC()
 	now := fmt.Sprintf("%d-%02d-%02dT%02d:%02d", t.Year(), t.Month(), t.Day(), t.Hour(), t.Minute())
 
 	creation := sql.Named("creation", now)
@@ -442,6 +442,27 @@ func deleteShare(shareId string) {
 
 
 
+
+// Delete a session
+func deleteSession(sessionId string) {
+	db := openDatabase()
+	defer db.Close()
+
+
+	row := db.QueryRow("DELETE FROM session WHERE id = :sessionId", sessionId)
+	var rowData string
+	switch err := row.Scan(&rowData); err {
+		case sql.ErrNoRows:
+			log.Println(rowDeleted, "session", sessionId)
+		default:
+			log.Println(" err:", err)
+	}
+
+}
+
+
+
+
 // Get list of shares
 func listShareOpen() {
 	db := openDatabase()
@@ -500,7 +521,7 @@ func periodicCleanExpiredShares() {
 			}
 
 
-			now := time.Now()
+			now := time.Now().UTC()
 			timeLayout := "2006-01-02T15:04"
 			expiration, err := time.Parse(timeLayout, rowDataExpiration)
 			if err != nil {
@@ -511,6 +532,79 @@ func periodicCleanExpiredShares() {
 			// Delete share if its expiration date is before now
 			if now.After(expiration) {
 				go deleteShare(rowDataId)	// Set as Goroutine to avoid database crash due to too many connexion opened
+			}
+
+		}
+	
+    })
+
+    task.StartAsync()
+
+    // Prevent exit
+    select {}
+}
+
+
+
+
+// Set a task to run at a specific date
+// Regularly check for all sessions expiration date, and delete them if expired
+func periodicCleanExpiredSessions() {
+
+	task := gocron.NewScheduler(time.UTC)
+	task.Every(1).Minutes().Do(func() {
+		log.Println("task: periodic clean of expired sessions")
+
+
+		db := openDatabase()
+		defer db.Close()
+
+	
+		rows, err := db.Query("SELECT id, expiration FROM session")
+		if err != nil {
+			log.Println(" err:", err)
+		}
+		defer rows.Close()
+
+
+		for rows.Next() {
+			var rowDataId string
+			var rowDataExpiration string
+
+			err:= rows.Scan(&rowDataId, &rowDataExpiration)
+			if err != nil {
+				log.Println(" err:", err)
+			}
+
+
+			timeLayout := "2006-01-02T15:04"
+
+			now := time.Now().UTC()
+
+	
+			// now2, err := time.Parse(timeLayout, string(now))
+			// if err != nil {
+			// 	log.Println(" err:", err)
+			// }
+
+			expiration, err := time.Parse(timeLayout, rowDataExpiration)
+			if err != nil {
+				log.Println(" err:", err)
+			}
+
+			fmt.Println("now", now)
+			fmt.Println("exp", expiration)
+
+			fmt.Println("333", now.After(expiration))
+
+
+
+				
+
+			// Delete session if its expiration date is before now
+			if now.After(expiration) {
+				fmt.Println("teeeeeeest")
+				go deleteSession(rowDataId)	// Set as Goroutine to avoid database crash due to too many connexion opened
 			}
 
 		}
