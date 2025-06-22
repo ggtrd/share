@@ -63,7 +63,7 @@
 			xhr.addEventListener("load", completeHandler, false);
 			xhr.addEventListener("error", errorHandler, false);
 			xhr.addEventListener("abort", abortHandler, false);
-			xhr.open("POST", "/file/shared", true);
+			xhr.open("POST", "{{ .FormUrl }}", true);
 			xhr.send(formdata);
 		}
 	}

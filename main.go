@@ -572,9 +572,9 @@ func uploadFile(w http.ResponseWriter, r *http.Request) {
 		
 		// Display the confirmation
 		renderTemplate(w, "view.confirm.share.html", struct {
-			Link string				// To permit the user to click on it 
-			Url string				// To permit the user to copy it
-			Password string			// To permit the user to copy it
+			Link string
+			Url string
+			Password string
 		}{
 			Link: link,
 			Url: url,
