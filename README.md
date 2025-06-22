@@ -117,14 +117,20 @@ ServerName share.<domain>
 	SSLCertificateFile      /etc/ssl/certs/<cert>.pem
 	SSLCertificateKeyFile   /etc/ssl/private/<cert>.key
 
+	# Allow everyone to get /static (= style, images and JS files)
+	<Location "/static">
+		AuthType none
+		Satisfy any
+	</Location>
+
 	# Allow everyone to get /share (= unlock share page)
 	<Location "/share">
 		AuthType none
 		Satisfy any
 	</Location>
 
-	# Allow everyone to get /static (= style, images and JS files)
-	<Location "/static">
+	# Allow everyone to get /session (= allows unauthenticated users to browse sessions)
+	<Location "/session">
 		AuthType none
 		Satisfy any
 	</Location>
@@ -133,6 +139,7 @@ ServerName share.<domain>
 	# The authentication can be anything (basic auth, OIDC etc...)
 	<Location "/">
 		AuthType Basic
+		AuthName "Authentication required"
 		AuthUserFile /etc/apache2/.htpasswd
 		Require valid-user
 	</Location>

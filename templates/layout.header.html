@@ -4,13 +4,13 @@
   <meta charset="UTF-8">
   <title>Share</title>
 
-  <link rel="icon" type="image/x-icon" href="../static/default-logo.png">
+  <link rel="icon" type="image/x-icon" href="/static/default-logo.png">
 
 
-  <link rel="stylesheet" href="../static/main.css">
-  <link rel="stylesheet" href="../static/custom/theme.css">
+  <link rel="stylesheet" href="/static/main.css">
+  <link rel="stylesheet" href="/static/custom/theme.css">
 
-  <script type="text/javascript" src="../static/main.js"></script>
+  <script type="text/javascript" src="/static/main.js"></script>
 </head>
 
 <body>
@@ -43,35 +43,35 @@
       })
 
 
-      // Logo
-      var logo = document.getElementById('logo');
-      if (!checkUrl('/static/custom/logo.png')) {
-        // Create an object to be able to read the SVG from its file
-        let object = document.createElement('object');
-        object.setAttribute('type', 'image/svg+xml');
-        object.setAttribute('data', '../static/default-logo.svg');
+      // // Logo
+      // var logo = document.getElementById('logo');
+      // if (!checkUrl('/static/custom/logo.png')) {
+      //   // Create an object to be able to read the SVG from its file
+      //   let object = document.createElement('object');
+      //   object.setAttribute('type', 'image/svg+xml');
+      //   object.setAttribute('data', '../static/default-logo.svg');
 
-        // Add the object under the logo placeholder
-        logo.appendChild(object);
+      //   // Add the object under the logo placeholder
+      //   logo.appendChild(object);
 
-        // Get the SVG in the DOM to be able to change its color
-        let svg = logo.children[0]; // get the <img> inside the logo div
-        svg.addEventListener('load', function () {
-          let item = svg.contentDocument.getElementById('svg');
+      //   // Get the SVG in the DOM to be able to change its color
+      //   let svg = logo.children[0]; // get the <img> inside the logo div
+      //   svg.addEventListener('load', function () {
+      //     let item = svg.contentDocument.getElementById('svg');
 
-          // Trick to get the color from an item that is already used in the DOM to be able to apply it to the SVG
-          let elementThatHasColor = document.getElementsByClassName('nav-link')[0];
-          let color = window.getComputedStyle(elementThatHasColor).getPropertyValue('color');
+      //     // Trick to get the color from an item that is already used in the DOM to be able to apply it to the SVG
+      //     let elementThatHasColor = document.getElementsByClassName('nav-link')[0];
+      //     let color = window.getComputedStyle(elementThatHasColor).getPropertyValue('color');
 
-          item.style.fill = color;
+      //     item.style.fill = color;
 
-        }, false);
+      //   }, false);
 
-      } else {
-        let img = document.createElement('img');
-        img.setAttribute('src', '../static/custom/logo.png');
-        logo.appendChild(img)
-      }
+      // } else {
+      //   let img = document.createElement('img');
+      //   img.setAttribute('src', '../static/custom/logo.png');
+      //   logo.appendChild(img)
+      // }
 
     };
 
@@ -88,19 +88,19 @@
       </div>
     </a>
 
-    <a href="/file" class="nav-item">
+    <a href="/auth/file" class="nav-item">
       <div class="nav-link">
         File
       </div>
     </a>
 
-    <a href="/secret" class="nav-item">
+    <a href="/auth/secret" class="nav-item">
       <div class="nav-link">
         Secret
       </div>
     </a>
 
-    <a href="/session" class="nav-item">
+    <a href="/auth/session" class="nav-item">
       <div class="nav-link">
         Session
       </div>

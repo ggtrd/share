@@ -131,23 +131,34 @@ func (a *App) Start() {
 
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("./static/"))))
 
-	http.Handle("/", http.RedirectHandler("/secret", http.StatusSeeOther))		// Redirect to /secret by default
+	http.Handle("/", http.RedirectHandler("/auth/secret", http.StatusSeeOther))				// Redirect to /secret by default
+	// http.Handle("/secret", http.RedirectHandler("/auth/secret", http.StatusSeeOther))		// Quick link to get /auth/secret
+	// http.Handle("/file", http.RedirectHandler("/auth/file", http.StatusSeeOther))			// Quick link to get /auth/file
+	// http.Handle("/session", http.RedirectHandler("/auth/session", http.StatusSeeOther))		// Quick link to get /auth/session
 
-	http.Handle("/file", logReq(viewCreateFile))								// Form to create a share
-	http.Handle("/file/shared", logReq(uploadFile))								// Confirmation + display the link of the share to the creator
+
+
+
+	http.Handle("/auth/file", logReq(viewCreateFile))								// Form to create a share
+	http.Handle("/auth/file/shared", logReq(uploadFile))							// Confirmation + display the link of the share to the creator
 	
-	http.Handle("/secret", logReq(viewCreateSecret))							// Form to create a share
-	http.Handle("/secret/shared", logReq(uploadSecret))							// Confirmation + display the link of the share to the creator
+	http.Handle("/auth/secret", logReq(viewCreateSecret))							// Form to create a share
+	http.Handle("/auth/secret/shared", logReq(uploadSecret))						// Confirmation + display the link of the share to the creator
 	
-	http.Handle("/session", logReq(viewCreateSession))							// Form to create a session
-	http.Handle("/session/created", logReq(uploadSession))						// Confirmation + display the link of the created session
-	http.Handle("/session/{id}", logReq(viewUnlockSession))						// View to access the session
-	http.Handle("/session/{id}/file", logReq(viewCreateFile))					// Form to create a file from a session
-	http.Handle("/session/{id}/secret", logReq(viewCreateSecret))				// Form to create a secret from a session
+	http.Handle("/share/{id}", logReq(viewUnlockShare))								// Ask for password to unlock the share
+	http.Handle("/share/unlock", logReq(unlockShare))								// Non browsable url - verify password to unlock the share
+	http.Handle("/share/uploads/{id}/{file}", logReq(downloadFile))					// Download a shared file
 	
-	http.Handle("/share/{id}", logReq(viewUnlockShare))							// Ask for password to unlock the share
-	http.Handle("/share/unlock", logReq(unlockShare))							// Non browsable url - verify password to unlock the share
-	http.Handle("/share/uploads/{id}/{file}", logReq(downloadFile))				// Download a shared file
+
+	http.Handle("/auth/session", logReq(viewCreateSession))							// Form to create a session
+	http.Handle("/auth/session/authd", logReq(uploadSession))						// Confirmation + display the link of the created session
+
+	http.Handle("/session/{id}", logReq(viewUnlockSession))							// View to access the session
+	http.Handle("/session/{id}/file", logReq(viewCreateFile))						// Form to create a file from a session
+	http.Handle("/session/{id}/file/shared", logReq(uploadFile))					// Confirmation + display the link of the share to the creator
+	http.Handle("/session/{id}/secret", logReq(viewCreateSecret))					// Form to create a secret from a session
+	http.Handle("/session/{id}/secret/shared", logReq(uploadSecret))				// Confirmation + display the link of the share to the creator
+	
 	
 
 	addr := fmt.Sprintf(":%s", a.Port)
@@ -217,11 +228,29 @@ func viewCreateSecret(w http.ResponseWriter, r *http.Request) {
 	// Generate a token that will permit to prevent unwanted record to database due to browse the upload URL without using the form
 	// The trick is that this token is used from an hidden input on the HTML form, and if it's empty it means we're not using the form
 	token := generatePassword()
+	
+
+	// formUrl can be either "/auth/secret/shared" or "/session/{id}/secret/shared"
+	formUrl := "/auth/secret/shared"
+
+
+	// Does the URL contains the word "session", if yes it means that it's a secret from a session
+	url := r.Header.Get("Referer")
+	isSession := strings.Contains(url, "session")
+	if isSession == true {
+		formUrlArray := []string{"/session", r.PathValue("id"), "secret"}
+		formUrl = strings.Join(formUrlArray, "/")
+
+	}
+
+	log.Println("BLABLA", formUrl, isSession)
 
 	renderTemplate(w, "view.create.secret.html", struct {
 		TokenAvoidRefresh string
+		FormUrl string
 	}{
 		TokenAvoidRefresh: token,
+		FormUrl: formUrl,
 	})
 }
 
