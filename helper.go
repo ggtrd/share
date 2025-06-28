@@ -1,18 +1,15 @@
 package main
 
 import (
+	"crypto/rand"
+	"encoding/base64"
 	"fmt"
+	"io"
 	"log"
 	"os"
 	"strings"
-    "encoding/base64"
-	"crypto/rand"
 	"time"
-	"io"
 )
-
-
-
 
 // Generate a secure string
 func generatePassword() string {
@@ -20,19 +17,15 @@ func generatePassword() string {
 	b := make([]byte, 64)
 	_, err := rand.Read(b)
 	if err != nil {
-	   log.Println("err :", err)
+		log.Println("err :", err)
 	}
 
 	password := base64.StdEncoding.EncodeToString(b)
-	password = strings.Replace(password, "/", "", -1)			// Remove unwanted char to avoid URL issues
-	password = strings.Replace(password, "+", "", -1)			// Remove unwanted char to avoid URL issues
-
+	password = strings.Replace(password, "/", "", -1) // Remove unwanted char to avoid URL issues
+	password = strings.Replace(password, "+", "", -1) // Remove unwanted char to avoid URL issues
 
 	return password
 }
-
-
-
 
 // Delete a file or directory from filesystem
 func createPath(path string) {
@@ -44,10 +37,6 @@ func createPath(path string) {
 	}
 }
 
-
-
-
-
 // Delete a file or directory from filesystem
 func deletePath(path string) {
 	err := os.RemoveAll(path)
@@ -56,23 +45,18 @@ func deletePath(path string) {
 	}
 }
 
-
-
-
 // Copy/paste a file and automatically name it with current datetime
 func backupFile(sourceFile string) {
 
 	t := time.Now()
 	now := fmt.Sprintf("%d-%02d-%02d_%02d-%02d", t.Year(), t.Month(), t.Day(), t.Hour(), t.Minute())
 
-
-	// Open the source file 
+	// Open the source file
 	source, err := os.Open(sourceFile)
 	if err != nil {
 		log.Println("err :", err)
 	}
 	defer source.Close()
- 
 
 	// Create the destination file
 	destination, err := os.Create(sourceFile + "." + now)
@@ -81,17 +65,12 @@ func backupFile(sourceFile string) {
 	}
 	defer destination.Close()
 
-
 	// Copy the contents of source to destination file
-  	_, err = io.Copy(destination, source)
+	_, err = io.Copy(destination, source)
 	if err != nil {
 		log.Println("err :", err)
 	}
-
 }
-
-
-
 
 // Check if a file exists
 func fileExists(path string) bool {
