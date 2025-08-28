@@ -6,9 +6,10 @@ COPY go.mod *.go *.md ./
 COPY templates/ ./templates/
 COPY static/ ./static/
 
-# Download static dependencies
-ADD https://unpkg.com/openpgp@latest/dist/openpgp.min.js static/openpgp.min.js
+# Dynamically download static dependencies
+ADD https://unpkg.com/openpgp@latest/dist/openpgp.min.js static/dynamic/openpgp.min.js
 
+# - Install required packages and configure CGO to run mattn/go-sqlite3 on Alpine
 # - Download Go dependencies
 # - Build
 # - Force create the sqlite.db file to avoid app not start
