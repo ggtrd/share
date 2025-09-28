@@ -12,6 +12,12 @@ Share is a web service that permit to securely share files and secrets to anyone
 | 
 [Docker Hub](https://hub.docker.com/r/ggtrd/share)
 
+
+<div display="block">
+	<img height="290px" alt="demo gif" src=".github/img/demo1.gif">
+	<img height="290px" alt="demo gif" src=".github/img/demo2.gif">
+</div>
+
 </div>
 
 
