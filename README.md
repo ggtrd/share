@@ -30,6 +30,12 @@ Share is a web service that permit to securely share files and secrets to anyone
 
 <br>
 
+<div align="center">
+	<img height="480px" alt="demo gif" src=".github/img/demo1.gif">
+	<br>
+</div>
+
+
 ## Install from sources
 ```
 git clone git@github.com:ggtrd/share.git \
@@ -71,6 +77,13 @@ docker compose up -d
 <br>
 
 ## Customization
+
+<div align="center">
+	<img height="480px" alt="demo gif" src=".github/img/demo2.gif">
+	<br>
+	<br>
+</div>
+
 > Customizations are handled within ```/static/custom``` directory. \
 > A default mount point is configured in [docker-compose.yml](https://raw.githubusercontent.com/ggtrd/share/refs/heads/main/docker-compose.yml). \
 > CSS overwrites must be placed in ```/static/custom/theme.css``` file.
