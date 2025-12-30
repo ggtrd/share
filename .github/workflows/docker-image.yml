@@ -38,4 +38,4 @@ jobs:
           context: .
           push: true
           tags: ${{ steps.metadata.outputs.tags }}
-          build-args: SHARE_VERSION="${{ steps.metadata.outputs.tags }}-${{ github.sha }}"
+          build-args: SHARE_VERSION=${{ steps.metadata.outputs.tags }}-${{ github.sha }}

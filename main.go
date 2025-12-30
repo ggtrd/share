@@ -37,7 +37,6 @@ func main() {
 			// go periodicCleanOrphansFiles()		// Goroutine to clean orphans files
 			os.Setenv("DELETE_DB", "false")
 			backend.CreateDatabase()
-			helper.DownloadStaticDependencies()
 			webapp.Start()
 
 		// go run share init
@@ -45,6 +44,7 @@ func main() {
 		} else if string(os.Args[1]) == "init" {
 			fmt.Println("Looking for database")
 			os.Setenv("DELETE_DB", "false")
+			helper.DownloadStaticDependencies()
 			backend.CreateDatabase()
 
 		// go run share reset
