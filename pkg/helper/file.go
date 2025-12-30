@@ -6,6 +6,8 @@ import (
 	"os"
 	"io"
 	"time"
+	"net/http"
+	// "bufio"
 )
 
 
@@ -45,13 +47,13 @@ func BackupFile(sourceFile string) {
 	t := time.Now()
 	now := fmt.Sprintf("%d-%02d-%02d_%02d-%02d", t.Year(), t.Month(), t.Day(), t.Hour(), t.Minute())
 
-	// Open the source file 
+	// Open the source file
 	source, err := os.Open(sourceFile)
 	if err != nil {
 		log.Println("err :", err)
 	}
 	defer source.Close()
- 
+
 	// Create the destination file
 	destination, err := os.Create(sourceFile + "." + now)
 	if err != nil {
@@ -65,3 +67,30 @@ func BackupFile(sourceFile string) {
 		log.Println("err :", err)
 	}
 }
+
+
+// Download file from URL and store to given path
+func DownloadFile(url, destPath string) error {
+	resp, err := http.Get(url)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+
+	// Ensure HTTP is working
+	if resp.StatusCode != http.StatusOK {
+		return fmt.Errorf("bad status: %s", resp.Status)
+	}
+
+	// Create destination file
+	out, err := os.Create(destPath)
+	if err != nil {
+		return err
+	}
+	defer out.Close()
+
+	// Copy content
+	_, err = io.Copy(out, resp.Body)
+	return err
+}
+

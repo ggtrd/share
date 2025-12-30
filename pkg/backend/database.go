@@ -69,7 +69,7 @@ func CreateDatabase() {
 			return
 		}
 
-		log.Println("Database resetted")
+		log.Println("database resetted")
 	} else {
 
 		// Check if file exists to create it if not
@@ -89,9 +89,9 @@ func CreateDatabase() {
 				return
 			}
 
-			log.Println("Database created")
+			log.Println("database created")
 		} else {
-			log.Println("Database found")
+			log.Println("database found")
 		}
 
 	}

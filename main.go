@@ -12,9 +12,11 @@ import (
 	"share/pkg/backend"
 )
 
+
 type App struct {
 	Port string
 }
+
 
 func main() {
 
@@ -26,7 +28,7 @@ func main() {
 	webapp := server.App{
 		Port: "8080",
 	}
-	
+
 	args := []string(os.Args[1:])
 	if len(args) >= 1 {
 		// go run share web
@@ -35,6 +37,7 @@ func main() {
 			// go periodicCleanOrphansFiles()		// Goroutine to clean orphans files
 			os.Setenv("DELETE_DB", "false")
 			backend.CreateDatabase()
+			helper.DownloadStaticDependencies()
 			webapp.Start()
 
 		// go run share init
