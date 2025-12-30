@@ -3,9 +3,7 @@
 <h1 class="title" id="title">Unlock share</h1>
 
 <div id="future">
-
     <form id="form">
-
         <div class="container-center-inline">
             <div>
                 <div class="label">
@@ -14,14 +12,10 @@
                 <input id="givenPassword" type="password" />
             </div>
         </div>
-
         <br>
         <br>
-
         <input type="submit" value="Unlock" class="button">
-
     </form>
-
 
     <script src="../static/dynamic/openpgp.min.js"></script>
     <script>
@@ -29,16 +23,13 @@
         let form = document.getElementById('form');
         let fragment = decodeURIComponent(window.location.hash.substring(1));       // decodeURIComponent is used because the text is coming from an URL, some char might needs to be decoded (like '=' is '%3d' for example)
 
-
         // This permit to send data to /share/unlock without reloading the HTML.
         // The URL is configured in Go side to return the password
         form.onsubmit = async (e) => {
-
             e.preventDefault();
 
             let future = document.getElementById('future');                         // Element that will be replaced with the content of the share
             let givenPassword = document.getElementById('givenPassword').value;     // Password given by the user
-
 
             // Encrypt givenPassword with the PGP public key of the share generated from backend
             // Using OpenPGP.js
@@ -47,8 +38,6 @@
                 message: await openpgp.createMessage({ text: givenPassword }),
                 encryptionKeys: publicKey,
             });
-
-
 
             // Payload to send to backend
             var details = {
@@ -69,8 +58,6 @@
                 body: formBody
             });
 
-
-
             try {
                 let result = await response.json();
                 let shareContent;
@@ -78,7 +65,6 @@
                 // Just to replace the title displayed on the page
                 let title = document.getElementById('title');
                 title.innerHTML = "Share content";
-
 
                 if (result.shareContentType === "secret") {
                     shareContent = document.createElement('p');
@@ -90,10 +76,8 @@
                     shareFile.innerHTML = result.shareContentValue;
                     shareFile.href = result.shareContentValue;
 
-
                     shareContent = document.createElement('p');
                     shareContent.appendChild(shareFile);
-
                 }
 
                 shareContent.className = 'text';
@@ -111,8 +95,6 @@
             }
         };
 
-
-
         // Read the #fragment again to know if the form must be automatically submitted
         if (fragment) {
             // Automatically set the checksum of the password in the hidden input 'givenPasswordHash' to be able to send it through the form
@@ -124,10 +106,6 @@
                 form.requestSubmit();
             }
         }
-
-
-
-
     </script>
 </div>
 

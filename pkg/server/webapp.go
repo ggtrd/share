@@ -33,15 +33,15 @@ func (a *App) Start() {
 
 	http.Handle("/", http.RedirectHandler("/secret", http.StatusSeeOther))		// Redirect to /secret by default
 
-	http.Handle("/file", logRequest(viewCreateFile))								// Form to create a share
-	http.Handle("/file/shared", logRequest(uploadFile))								// Confirmation + display the link of the share to the creator
+	http.Handle("/file", logRequest(viewCreateShareFile))								// Form to create a share
+	http.Handle("/file/shared", logRequest(uploadShareFile))								// Confirmation + display the link of the share to the creator
 	
-	http.Handle("/secret", logRequest(viewCreateSecret))							// Form to create a share
-	http.Handle("/secret/shared", logRequest(uploadSecret))							// Confirmation + display the link of the share to the creator
+	http.Handle("/secret", logRequest(viewCreateShareSecret))							// Form to create a share
+	http.Handle("/secret/shared", logRequest(uploadShareSecret))							// Confirmation + display the link of the share to the creator
 
 	http.Handle("/share/{id}", logRequest(viewUnlockShare))							// Ask for password to unlock the share
 	http.Handle("/share/unlock", logRequest(unlockShare))							// Non browsable url - verify password to unlock the share
-	http.Handle("/share/uploads/{id}/{file}", logRequest(downloadFile))				// Download a shared file
+	http.Handle("/share/uploads/{id}/{file}", logRequest(downloadShareFile))				// Download a shared file
 	
 	addr := fmt.Sprintf(":%s", a.Port)
 	log.Printf(" web: starting app on %s", addr)
@@ -72,7 +72,7 @@ func renderTemplate(w http.ResponseWriter, name string, data interface{}) {
 }
 
 
-func viewCreateFile(w http.ResponseWriter, r *http.Request) {
+func viewCreateShareFile(w http.ResponseWriter, r *http.Request) {
 
 	// Generate a token that will permit to prevent unwanted record to database due to browse the upload URL without using the form
 	// The trick is that this token is used from an hidden input on the HTML form, and if it's empty it means we're not using the form
@@ -86,7 +86,7 @@ func viewCreateFile(w http.ResponseWriter, r *http.Request) {
 }
 
 
-func viewCreateSecret(w http.ResponseWriter, r *http.Request) {
+func viewCreateShareSecret(w http.ResponseWriter, r *http.Request) {
 
 	// Generate a token that will permit to prevent unwanted record to database due to browse the upload URL without using the form
 	// The trick is that this token is used from an hidden input on the HTML form, and if it's empty it means we're not using the form
@@ -169,7 +169,8 @@ func unlockShare(w http.ResponseWriter, r *http.Request)  {
 				return
 			}
 		
-			w.Write(jsonData) // write JSON to JS
+			// write JSON to JS
+			w.Write(jsonData)
 
 			// Check if this open is the last allowed and delete it, if it is (many 2 letters "i" words here ^^)
 			shareOpenMap := backend.GetShareOpen(idToUnlock)
@@ -189,7 +190,7 @@ func unlockShare(w http.ResponseWriter, r *http.Request)  {
 }
 
 
-func uploadSecret(w http.ResponseWriter, r *http.Request) {
+func uploadShareSecret(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
 
 	// Ensure that a refresh of the page will not submit a new value in the database
@@ -223,7 +224,7 @@ func uploadSecret(w http.ResponseWriter, r *http.Request) {
 	link := strings.Join([]string{"/share/", shared_id}, "")
 
 	// Create database entries
-	backend.CreateSecret(id, shared_id, secret, expirationFormatted, maxopen)
+	backend.CreateShareSecret(id, shared_id, secret, expirationFormatted, maxopen)
 
 	// Display the confirmation
 	renderTemplate(w, "view.confirm.share.html", struct {
@@ -239,7 +240,7 @@ func uploadSecret(w http.ResponseWriter, r *http.Request) {
 }
 
 
-func uploadFile(w http.ResponseWriter, r *http.Request) {
+func uploadShareFile(w http.ResponseWriter, r *http.Request) {
 	r.ParseMultipartForm(10 << 20)
 
 	// Ensure that a refresh of the page will not submit a new value in the database
@@ -320,9 +321,7 @@ func uploadFile(w http.ResponseWriter, r *http.Request) {
 	fmt.Println(size)
 
 	// Create database entries
-	backend.CreateFile(id, shared_id, filePath, expirationFormatted,maxopen)
-
-
+	backend.CreateShareFile(id, shared_id, filePath, expirationFormatted,maxopen)
 	
 	// Display the confirmation
 	renderTemplate(w, "view.confirm.share.html", struct {
@@ -334,13 +333,10 @@ func uploadFile(w http.ResponseWriter, r *http.Request) {
 		Url: url,
 		Password: backend.GetSharePassword(shared_id),
 	})
-
-
 }
 
 
-func downloadFile(w http.ResponseWriter, r *http.Request) {
-
+func downloadShareFile(w http.ResponseWriter, r *http.Request) {
 	url:= r.Header.Get("Referer")
 	shareId := url[len(url)-36:]	// Just get the last 36 char of the url because the IDs are 36 char length
 	shareContentMap := backend.GetShareContent(shareId)

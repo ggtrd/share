@@ -10,7 +10,6 @@ import (
 
 	"database/sql"
 	_ "github.com/mattn/go-sqlite3"
-	"github.com/go-co-op/gocron"
 	"github.com/ProtonMail/gopenpgp/v3/crypto"
 
 	"share/pkg/helper"
@@ -26,7 +25,6 @@ var rowDeleted  = "  db: delete record from table:"
 
 
 func CreateDatabase() {
-
 	// first start             => create db if not exists, then run webserver          => DELETE_DB = false
 	// init                    => create db if not exists                              => DELETE_DB = false
 	// running without reset   => do nothing, then run webserver                       => DELETE_DB = false
@@ -137,7 +135,7 @@ func CreateShare(id string, expirationGiven string, maxopenGiven int) {
 }
 
 
-func CreateFile(id string, shareId string, path string, expiration string, maxopen int) {
+func CreateShareFile(id string, shareId string, path string, expiration string, maxopen int) {
 	db := openDatabase()
 	defer db.Close()
 
@@ -147,7 +145,7 @@ func CreateFile(id string, shareId string, path string, expiration string, maxop
 }
 
 
-func CreateSecret(id string, shareId string, text string, expiration string, maxopen int) {
+func CreateShareSecret(id string, shareId string, text string, expiration string, maxopen int) {
 	db := openDatabase()
 	defer db.Close()
 
@@ -377,54 +375,6 @@ func ListShareOpen() {
 			log.Println(" err:", err)
 		}
 		fmt.Println("ID:" + id + "; Created:" + creation + "; Expire:" + expiration)
-
 	}
 }
 
-
-// Set a task to run at a specific date
-// Regularly check for all shares expiration date, and delete them if expired
-func PeriodicCleanExpiredShares() {
-
-	task := gocron.NewScheduler(time.UTC)
-	task.Every(1).Minutes().Do(func() {
-		log.Println("task: periodic clean of expired shares")
-
-
-		db := openDatabase()
-		defer db.Close()
-
-	
-		rows, err := db.Query("SELECT id, expiration FROM share")
-		if err != nil {
-			log.Println(" err:", err)
-		}
-		defer rows.Close()
-
-		for rows.Next() {
-			var rowDataId string
-			var rowDataExpiration string
-
-			err:= rows.Scan(&rowDataId, &rowDataExpiration)
-			if err != nil {
-				log.Println(" err:", err)
-			}
-
-			now := time.Now()
-			timeLayout := "2006-01-02T15:04"
-			expiration, err := time.Parse(timeLayout, rowDataExpiration)
-			if err != nil {
-				log.Println(" err:", err)
-			}
-
-			// Delete share if its expiration date is before now
-			if now.After(expiration) {
-				go DeleteShare(rowDataId)	// Set as Goroutine to avoid database crash due to too many connexion opened
-			}
-		}
-    })
-    task.StartAsync()
-
-    // Prevent exit
-    select {}
-}

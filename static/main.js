@@ -7,12 +7,10 @@ function checkUrl(url) {
 }
 
 
-
 // Shortcut to get element
 function element(element) {
 	return document.getElementById(element);
 }
-
 
 
 // Display a notification notification
@@ -21,7 +19,6 @@ function displayError(message) {
 
 	// Set the ID to always replace the same element with the notification
 	notification.setAttribute("id", "error");
-
 	notification.innerHTML = message;
 	notification.className = 'notification notification-error';
 
@@ -35,15 +32,12 @@ function displayError(message) {
 }
 
 
-
-
 // Display an notification notification
 function displayInfo(message) {
 	let notification = document.createElement('div');
 
 	// Set the ID to always replace the same element with the notification
 	notification.setAttribute("id", "info");
-
 	notification.innerHTML = message;
 	notification.className = 'notification notification-info';
 
@@ -56,14 +50,3 @@ function displayInfo(message) {
 
 }
 
-
-
-// // Set logo from given file
-// function setLogo(fileLogo) {
-// 	let logoImg = document.createElement('object');
-// 	logoImg.setAttribute('type', 'image/svg+xml');
-// 	logoImg.setAttribute('data', fileLogo);
-
-// 	let logo = document.getElementById('logo');
-// 	logo.appendChild(logoImg)
-// }
