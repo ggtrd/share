@@ -1,13 +1,15 @@
 package main
 
 import (
-	"fmt"
-	"log"
-	"os"
-	"io"
+	"encoding/json"
 	"errors"
-	"strings"
-	"path"
+	"fmt"
+	"html/template"
+	"io"
+	"log"
+	"net/http"
+	"os"
+	// "path"
 	"path/filepath"
 	"html/template"
 	"net/http"
