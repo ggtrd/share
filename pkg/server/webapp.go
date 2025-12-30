@@ -78,7 +78,7 @@ func viewAbout(w http.ResponseWriter, r *http.Request) {
 	renderTemplate(w, "view.about.html", struct {
 		Version string
 	}{
-		Version: helper.GetVersion("_VERSION"),
+		Version: helper.GetVersion(),
 	})
 }
 

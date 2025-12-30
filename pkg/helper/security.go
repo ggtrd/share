@@ -39,9 +39,9 @@ func ValidateExpirationAndMaxOpen(expiration string, maxopenStr string) (time.Ti
 // Generate a secure string
 func GeneratePassword() string {
 	// get the secret key
-	secret := os.Getenv("SECRET_KEY")
+	secret := os.Getenv("SHARE_SECRET_KEY")
 	if secret == "" {
-		log.Println("SECRET_KEY missing")
+		log.Println("SHARE_SECRET_KEY missing")
 	}
 
 	// Generate random 32 bytes (256 bits)

@@ -24,12 +24,6 @@ jobs:
           images: ${{ env.REGISTRY }}/${{ env.REPOSITORY }}
           tags: type=semver,pattern={{version}}
 
-      - name: Create file _VERSION
-        uses: finnp/create-file-action@2
-        env:
-          FILE_NAME: "_VERSION"
-          FILE_DATA: ${{ steps.metadata.outputs.tags }}
-
       - name: Login registry
         uses: docker/login-action@v3
         with:
@@ -44,3 +38,4 @@ jobs:
           context: .
           push: true
           tags: ${{ steps.metadata.outputs.tags }}
+          build-args: SHARE_VERSION="${{ steps.metadata.outputs.tags }}-${{ github.sha }}"
