@@ -7,7 +7,6 @@ import (
 	"io"
 	"time"
 	"net/http"
-	// "bufio"
 )
 
 
@@ -43,7 +42,6 @@ func DeletePath(path string) {
 
 // Copy/paste a file and automatically name it with current datetime
 func BackupFile(sourceFile string) {
-
 	t := time.Now()
 	now := fmt.Sprintf("%d-%02d-%02d_%02d-%02d", t.Year(), t.Month(), t.Day(), t.Hour(), t.Minute())
 
@@ -94,3 +92,11 @@ func DownloadFile(url, destPath string) error {
 	return err
 }
 
+
+func GetFileContent(path string) string {
+	data, err := os.ReadFile(path)
+	if err != nil {
+		log.Println("error:", err)
+	}
+	return string(data)
+}

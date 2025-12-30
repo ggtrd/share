@@ -33,15 +33,17 @@ func (a *App) Start() {
 
 	http.Handle("/", http.RedirectHandler("/secret", http.StatusSeeOther))		// Redirect to /secret by default
 
-	http.Handle("/file", logRequest(viewCreateShareFile))								// Form to create a share
-	http.Handle("/file/shared", logRequest(uploadShareFile))								// Confirmation + display the link of the share to the creator
-	
-	http.Handle("/secret", logRequest(viewCreateShareSecret))							// Form to create a share
-	http.Handle("/secret/shared", logRequest(uploadShareSecret))							// Confirmation + display the link of the share to the creator
+	http.Handle("/about", logRequest(viewAbout))								// About
 
-	http.Handle("/share/{id}", logRequest(viewUnlockShare))							// Ask for password to unlock the share
-	http.Handle("/share/unlock", logRequest(unlockShare))							// Non browsable url - verify password to unlock the share
-	http.Handle("/share/uploads/{id}/{file}", logRequest(downloadShareFile))				// Download a shared file
+	http.Handle("/file", logRequest(viewCreateShareFile))						// Form to create a share
+	http.Handle("/file/shared", logRequest(uploadShareFile))					// Confirmation + display the link of the share to the creator
+	
+	http.Handle("/secret", logRequest(viewCreateShareSecret))					// Form to create a share
+	http.Handle("/secret/shared", logRequest(uploadShareSecret))				// Confirmation + display the link of the share to the creator
+
+	http.Handle("/share/{id}", logRequest(viewUnlockShare))						// Ask for password to unlock the share
+	http.Handle("/share/unlock", logRequest(unlockShare))						// Non browsable url - verify password to unlock the share
+	http.Handle("/share/uploads/{id}/{file}", logRequest(downloadShareFile))	// Download a shared file
 	
 	addr := fmt.Sprintf(":%s", a.Port)
 	log.Printf(" web: starting app on %s", addr)
@@ -72,8 +74,16 @@ func renderTemplate(w http.ResponseWriter, name string, data interface{}) {
 }
 
 
-func viewCreateShareFile(w http.ResponseWriter, r *http.Request) {
+func viewAbout(w http.ResponseWriter, r *http.Request) {
+	renderTemplate(w, "view.about.html", struct {
+		Version string
+	}{
+		Version: helper.GetVersion("_VERSION"),
+	})
+}
 
+
+func viewCreateShareFile(w http.ResponseWriter, r *http.Request) {
 	// Generate a token that will permit to prevent unwanted record to database due to browse the upload URL without using the form
 	// The trick is that this token is used from an hidden input on the HTML form, and if it's empty it means we're not using the form
 	token := helper.GeneratePassword()
@@ -87,7 +97,6 @@ func viewCreateShareFile(w http.ResponseWriter, r *http.Request) {
 
 
 func viewCreateShareSecret(w http.ResponseWriter, r *http.Request) {
-
 	// Generate a token that will permit to prevent unwanted record to database due to browse the upload URL without using the form
 	// The trick is that this token is used from an hidden input on the HTML form, and if it's empty it means we're not using the form
 	token := helper.GeneratePassword()
@@ -236,7 +245,6 @@ func uploadShareSecret(w http.ResponseWriter, r *http.Request) {
 		Url: url,
 		Password: backend.GetSharePassword(shared_id),
 	})
-	
 }
 
 

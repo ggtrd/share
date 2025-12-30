@@ -64,6 +64,11 @@ Share is a web service that allows to securely share files and secrets to anyone
 	```
 	curl -O https://raw.githubusercontent.com/ggtrd/share/refs/heads/main/docker-compose.yml
 	```
+* Get `.env`
+	```
+	curl https://raw.githubusercontent.com/ggtrd/share/refs/heads/main/.env.example -o .env
+	```
+* Fill `.env` according to your needs
 * Start
 	```
 	docker compose up -d
