@@ -1,7 +1,7 @@
 <div align="center">
 
 <a href="https://github.com/ggtrd/share" target="_blank" title="Share" style="display: inline;">
-	<img height="90px" alt="Share logo" src="https://raw.githubusercontent.com/ggtrd/share/refs/heads/dev/static/default-logo.png">
+	<img height="90px" alt="Share logo" src="static/default-logo.png">
 </a>
 
 # Share
@@ -37,40 +37,41 @@ Share is a web service that allows to securely share files and secrets to anyone
 
 
 ## Install from sources
-
-```
-git clone git@github.com:ggtrd/share.git \
-cd share \
-go mod tidy \
-go build
-```
-
-```
-./share help
-```
-
-```
-./share web
-```
+* Install sources
+	```
+	git clone git@github.com:ggtrd/share.git \
+	&& cd share \
+	&& go mod tidy \
+	&& go build
+	```
+* Install Javascript dependencies
+	```
+	curl --create-dirs -Lk https://unpkg.com/openpgp@latest/dist/openpgp.min.js -o static/dynamic/openpgp.min.js
+	```
+* Initialize database
+	```
+	./share init
+	```
+* Start
+	```
+	./share web
+	```
 
 <br>
 
 ## Install with Docker
-
-**Get docker-compose.yml**
-
-```
-curl -O https://raw.githubusercontent.com/ggtrd/share/refs/heads/main/docker-compose.yml
-```
-
-```
-docker compose up -d
-```
+* Get `docker-compose.yml`
+	```
+	curl -O https://raw.githubusercontent.com/ggtrd/share/refs/heads/main/docker-compose.yml
+	```
+* Start
+	```
+	docker compose up -d
+	```
 
 <br>
 
 ## Use the CLI
-
 > If run with Docker:
 > `docker exec -it <container> sh`
 
@@ -94,8 +95,8 @@ docker compose up -d
 
 ### Logo
 
-- Drop an image at `/static/custom/logo.png`
-- Overwrite logo size
+* Drop an image at `/static/custom/logo.png`
+* Overwrite logo size
 
 ```static/custom/theme.css
 #logo>img {
@@ -106,7 +107,7 @@ docker compose up -d
 
 ### Color
 
-- Overwrite color
+* Overwrite color
   > A color theme will be automatically calculated from this color
 
 ```static/custom/theme.css

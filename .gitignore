@@ -1,8 +1,15 @@
-go.sum
+.*
+-*
+
 LICENSE.md
+
+go.sum
+go.mod
+
 *.db
+
 share
 uploads
 database
 static/custom
-.env
+static/dyanmic
