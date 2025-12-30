@@ -1,6 +1,7 @@
 services:
   share:
-    build: .
+    # build: .
+    image: ggtrd/share:latest
     ports:
       - "8080:8080"
     env_file:
