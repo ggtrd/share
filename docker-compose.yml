@@ -1,8 +1,10 @@
 services:
   share:
-    image: ggtrd/share:latest
+    build: .
     ports:
       - "8080:8080"
+    env_file:
+      - .env
     restart: unless-stopped
     volumes:
       - share-database:/share/database
