@@ -7,21 +7,18 @@ function checkUrl(url) {
 }
 
 
-
 // Shortcut to get element
 function element(element) {
 	return document.getElementById(element);
 }
 
 
-
-// Display an notification notification
+// Display a notification notification
 function displayError(message) {
 	let notification = document.createElement('div');
 
 	// Set the ID to always replace the same element with the notification
 	notification.setAttribute("id", "error");
-
 	notification.innerHTML = message;
 	notification.className = 'notification notification-error';
 
@@ -31,10 +28,7 @@ function displayError(message) {
 	setTimeout(function () {
 		document.body.removeChild(notification);
 	}, 3000);
-
 }
-
-
 
 
 // Display an notification notification
@@ -43,7 +37,6 @@ function displayInfo(message) {
 
 	// Set the ID to always replace the same element with the notification
 	notification.setAttribute("id", "info");
-
 	notification.innerHTML = message;
 	notification.className = 'notification notification-info';
 
@@ -53,17 +46,14 @@ function displayInfo(message) {
 	setTimeout(function () {
 		document.body.removeChild(notification);
 	}, 3000);
-
 }
 
 
+// Convert date locale to UTC
+function timeLocalToUtc(dateLocalToConvert) {
+	const dateLocal = new Date(dateLocalToConvert);
+	const dateUtc = new Date(dateLocal.getTime() - dateLocal.getTimezoneOffset());
+	const dateUtcFormatted = dateUtc.toISOString().slice(0, 16).toString();
 
-// // Set logo from given file
-// function setLogo(fileLogo) {
-// 	let logoImg = document.createElement('object');
-// 	logoImg.setAttribute('type', 'image/svg+xml');
-// 	logoImg.setAttribute('data', fileLogo);
-
-// 	let logo = document.getElementById('logo');
-// 	logo.appendChild(logoImg)
-// }
+	return dateUtcFormatted
+}

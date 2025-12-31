@@ -1,0 +1,66 @@
+package helper
+
+import (
+	"fmt"
+	"log"
+	"os"
+	"strings"
+    "encoding/base64"
+	"crypto/rand"
+	"crypto/hmac"
+	"crypto/sha256"
+	"time"
+	"strconv"
+)
+
+
+func ValidateExpirationAndMaxOpen(expirationStr string, maxopenStr string) (time.Time, int, error) {
+	// Parse expiration date
+	expiration, err := time.Parse(GetTimeLayout(), expirationStr)
+	if err != nil {
+		return time.Time{}, 0, fmt.Errorf("expiration date must be in format", GetTimeLayout())
+	}
+
+	// Check if in the future
+	if !expiration.After(GetNow()) {
+		return time.Time{}, 0, fmt.Errorf("expiration date must be in the future")
+	}
+
+	// Parse maxopen into integer
+	maxopen, err := strconv.Atoi(maxopenStr)
+	if err != nil || maxopen < 1 || maxopen > 100 {
+		return time.Time{}, 0, fmt.Errorf("max open must be a number between 1 and 100")
+	}
+
+	return expiration, maxopen, nil
+}
+
+
+// Generate a secure string
+func GeneratePassword() string {
+	// get the secret key
+	secret := os.Getenv("SHARE_SECRET_KEY")
+	if secret == "" {
+		log.Println("SHARE_SECRET_KEY missing")
+	}
+
+	// Generate random 32 bytes (256 bits)
+	randomBytes := make([]byte, 32)
+	_, err := rand.Read(randomBytes)
+	if err != nil {
+		log.Println("Random generation error :", err)
+	}
+
+	// Optional : sign with HMAC
+	h := hmac.New(sha256.New, []byte(secret))
+	h.Write(randomBytes)
+	signed := h.Sum(nil)
+
+	// Encdoing in base64 URL-safe
+	token := base64.URLEncoding.EncodeToString(signed)
+
+	// Remove padding `=`
+	token = strings.TrimRight(token, "=")
+
+	return token
+}

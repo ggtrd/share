@@ -1,0 +1,24 @@
+{{ template "layout.header.html" . }}
+<h1 class="title">About</h1>
+
+<div class="container-center-inline">
+  <div class="container-left">
+    <div class="label">
+      Project
+      <div class="text text-box">
+        https://github.com/ggtrd/share
+      </div>
+    </div>
+
+    <br/>
+
+    <div class="label">
+      Version
+      <div class="text text-box">
+        {{ .Version }}
+      </div>
+    </div>
+  </div>
+</div>
+
+{{ template "layout.footer.html" . }}
