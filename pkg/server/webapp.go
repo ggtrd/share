@@ -348,10 +348,11 @@ func downloadShareFile(w http.ResponseWriter, r *http.Request) {
 	url:= r.Header.Get("Referer")
 	shareId := url[len(url)-36:]	// Just get the last 36 char of the url because the IDs are 36 char length
 	shareContentMap := backend.GetShareContent(shareId)
-	file := shareContentMap["value"]
+	filePath := shareContentMap["value"]
+	fileName := strings.Split(filePath, "/")[2]
 
 	w.Header().Set("Content-Type", "application/json")
-	w.Header().Set("Content-Disposition", "attachment; filename=" + file)
+	w.Header().Set("Content-Disposition", "attachment; filename=" + fileName)
 
-	http.ServeFile(w, r, file)
+	http.ServeFile(w, r, filePath)
 }

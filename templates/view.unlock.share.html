@@ -72,8 +72,10 @@
                 }
 
                 if (result.shareContentType === "file") {
+                    fileName = result.shareContentValue.split('/')[2]
+
                     shareFile = document.createElement('a');
-                    shareFile.innerHTML = result.shareContentValue;
+                    shareFile.innerHTML = fileName;
                     shareFile.href = result.shareContentValue;
 
                     shareContent = document.createElement('p');
