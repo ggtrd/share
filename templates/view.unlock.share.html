@@ -33,66 +33,73 @@
 
             // Encrypt givenPassword with the PGP public key of the share generated from backend
             // Using OpenPGP.js
-            const publicKey = await openpgp.readKey({ armoredKey: `{{ .PgpKeyPublic }}` });
-            const pgpMessageEncrypted = await openpgp.encrypt({
-                message: await openpgp.createMessage({ text: givenPassword }),
-                encryptionKeys: publicKey,
-            });
-
-            // Payload to send to backend
-            var details = {
-                'pgpMessageEncrypted': pgpMessageEncrypted,
-            };
-            var formBody = [];
-            for (var property in details) {
-                var encodedKey = encodeURIComponent(property);
-                var encodedValue = encodeURIComponent(details[property]);
-                formBody.push(encodedKey + "=" + encodedValue);
-            }
-            formBody = formBody.join("&");
-            let response = await fetch('/share/unlock', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
-                },
-                body: formBody
-            });
-
             try {
-                let result = await response.json();
-                let shareContent;
+                const publicKey = await openpgp.readKey({ armoredKey: `{{ .PgpKeyPublic }}` });
+                const pgpMessageEncrypted = await openpgp.encrypt({
+                    message: await openpgp.createMessage({ text: givenPassword }),
+                    encryptionKeys: publicKey,
+                });
 
-                // Just to replace the title displayed on the page
-                let title = document.getElementById('title');
-                title.innerHTML = "Share content";
-
-                if (result.shareContentType === "secret") {
-                    shareContent = document.createElement('p');
-                    shareContent.innerHTML = result.shareContentValue;
+                // Payload to send to backend
+                var details = {
+                    'pgpMessageEncrypted': pgpMessageEncrypted,
+                };
+                var formBody = [];
+                for (var property in details) {
+                    var encodedKey = encodeURIComponent(property);
+                    var encodedValue = encodeURIComponent(details[property]);
+                    formBody.push(encodedKey + "=" + encodedValue);
                 }
+                formBody = formBody.join("&");
+                let response = await fetch('/share/unlock', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+                    },
+                    body: formBody
+                });
 
-                if (result.shareContentType === "file") {
-                    fileName = result.shareContentValue.split('/')[2]
+                // try {
+                    let result = await response.json();
+                    let shareContent;
 
-                    shareFile = document.createElement('a');
-                    shareFile.innerHTML = fileName;
-                    shareFile.href = result.shareContentValue;
+                    // Just to replace the title displayed on the page
+                    let title = document.getElementById('title');
+                    title.innerHTML = "Share content";
 
-                    shareContent = document.createElement('p');
-                    shareContent.appendChild(shareFile);
-                }
+                    if (result.shareContentType === "secret") {
+                        shareContent = document.createElement('p');
+                        shareContent.innerHTML = result.shareContentValue;
+                    }
 
-                shareContent.className = 'text';
-                shareContent.className = 'text-box';
+                    if (result.shareContentType === "file") {
+                        fileName = result.shareContentValue.split('/')[2]
 
-                future.replaceWith(shareContent)
+                        shareFile = document.createElement('a');
+                        shareFile.innerHTML = fileName;
+                        shareFile.href = result.shareContentValue;
+
+                        shareContent = document.createElement('p');
+                        shareContent.appendChild(shareFile);
+                    }
+
+                    shareContent.className = 'text';
+                    shareContent.className = 'text-box';
+
+                    future.replaceWith(shareContent)
             } catch (e) {
-                // console.log(e);
+                // if (!e.readKey) {
+                //     displayError("Share not found. Wrong password or expired?")
+                // } else if (!givenPassword) {
+                //     displayError('Please fill the password');
+                // } else {
+                //     displayError("Share not found. Wrong password or expired?")
+                // }
 
                 if (!givenPassword) {
                     displayError('Please fill the password');
                 } else {
-                    displayError('Wrong password');
+                    displayError("Share not found. Wrong password or expired?")
                 }
             }
         };
@@ -101,7 +108,6 @@
         if (fragment) {
             // Automatically set the checksum of the password in the hidden input 'givenPasswordHash' to be able to send it through the form
             document.getElementById("givenPassword").value = fragment;
-
 
             if (document.getElementById("givenPassword").value) {
                 // requestSubmit permit to use the submit button of the form 
