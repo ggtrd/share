@@ -28,7 +28,6 @@ function displayError(message) {
 	setTimeout(function () {
 		document.body.removeChild(notification);
 	}, 3000);
-
 }
 
 
@@ -47,6 +46,19 @@ function displayInfo(message) {
 	setTimeout(function () {
 		document.body.removeChild(notification);
 	}, 3000);
-
 }
 
+
+// Convert date locale to UTC
+function timeLocalToUtc(dateLocalToConvert) {
+	const dateLocal = new Date(dateLocalToConvert);
+	// const dateUtc = new Date(dateLocal.getTime() - dateLocal.getTimezoneOffset()*60000);
+	const dateUtc = new Date(dateLocal.getTime() - dateLocal.getTimezoneOffset());
+	const dateUtcFormatted = dateUtc.toISOString().slice(0, 16).toString();
+
+	console.log("Loc:", dateLocal);
+	console.log("UTC:", dateUtc);
+	console.log("UTC:", dateUtcFormatted);
+
+	return dateUtcFormatted
+}

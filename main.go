@@ -22,7 +22,7 @@ func main() {
 
 	err := godotenv.Load()
 	if err != nil {
-		log.Println("error: file '.env' found :", err)
+		log.Println("error:", err)
 	}
 
 	webapp := server.App{
@@ -80,6 +80,10 @@ func main() {
 			} else {
 				fmt.Println("Please provide a share id")
 			}
+
+		// go run share about
+		} else if string(os.Args[1]) == "about" {
+			helper.GetVersion()
 
 		// go run share help
 		} else if string(os.Args[1]) == "help" {

@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"time"
 	"strconv"
 	"path/filepath"
 
@@ -115,7 +114,7 @@ func CreateShare(id string, expirationGiven string, maxopenGiven int) {
 	db := openDatabase()
 	defer db.Close()
 
-	t := time.Now()
+	t := helper.GetNow()
 	now := fmt.Sprintf("%d-%02d-%02dT%02d:%02d", t.Year(), t.Month(), t.Day(), t.Hour(), t.Minute())
 
 	creation := sql.Named("creation", now)

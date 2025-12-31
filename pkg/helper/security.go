@@ -14,15 +14,15 @@ import (
 )
 
 
-func ValidateExpirationAndMaxOpen(expiration string, maxopenStr string) (time.Time, int, error) {
+func ValidateExpirationAndMaxOpen(expirationStr string, maxopenStr string) (time.Time, int, error) {
 	// Parse expiration date
-	expTime, err := time.Parse("2006-01-02T15:04", expiration)
+	expiration, err := time.Parse(GetTimeLayout(), expirationStr)
 	if err != nil {
-		return time.Time{}, 0, fmt.Errorf("expiration date must be in format YYYY-MM-DDTHH:MM")
+		return time.Time{}, 0, fmt.Errorf("expiration date must be in format", GetTimeLayout())
 	}
 
 	// Check if in the future
-	if !expTime.After(time.Now()) {
+	if !expiration.After(GetNow()) {
 		return time.Time{}, 0, fmt.Errorf("expiration date must be in the future")
 	}
 
@@ -32,7 +32,7 @@ func ValidateExpirationAndMaxOpen(expiration string, maxopenStr string) (time.Ti
 		return time.Time{}, 0, fmt.Errorf("max open must be a number between 1 and 100")
 	}
 
-	return expTime, maxopen, nil
+	return expiration, maxopen, nil
 }
 
 

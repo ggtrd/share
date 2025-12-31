@@ -98,5 +98,6 @@ func GetFileContent(path string) string {
 	if err != nil {
 		log.Println("error:", err)
 	}
+
 	return string(data)
 }

@@ -218,18 +218,17 @@ func uploadShareSecret(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	expTime, maxopen, err := helper.ValidateExpirationAndMaxOpen(expiration, maxopenStr)
+	expirationValidated, maxopen, err := helper.ValidateExpirationAndMaxOpen(expiration, maxopenStr)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	expirationFormatted := expTime.Format("2006-01-02T15:04")
-
+	expirationFormatted := expirationValidated.Format(helper.GetTimeLayout())
 
 	id := uuid.NewString()
 	shared_id := uuid.NewString()
 	uri := r.Header.Get("Referer")										// Entire path 'http://domain:port/node1/node2/etc.../'
-	url:= path.Dir(uri)													// Only the 'http://domain:port' part
+	url := path.Dir(uri)													// Only the 'http://domain:port' part
 	link := strings.Join([]string{"/share/", shared_id}, "")
 
 	// Create database entries
@@ -260,18 +259,18 @@ func uploadShareFile(w http.ResponseWriter, r *http.Request) {
 	expiration := r.PostFormValue("expiration")
 	maxopenStr := r.PostFormValue("maxopen")
 
-	expTime, maxopen, err := helper.ValidateExpirationAndMaxOpen(expiration, maxopenStr)
+	expirationValidated, maxopen, err := helper.ValidateExpirationAndMaxOpen(expiration, maxopenStr)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	expirationFormatted := expTime.Format("2006-01-02T15:04")
+	expirationFormatted := expirationValidated.Format(helper.GetTimeLayout())
 
 
 	id := uuid.NewString()
 	shared_id := uuid.NewString()
 	uri := r.Header.Get("Referer")										// Entire path 'http://domain:port/node1/node2/etc.../'
-	url:= path.Dir(uri)													// Only the 'http://domain:port' part
+	url := path.Dir(uri)													// Only the 'http://domain:port' part
 	link := strings.Join([]string{"/share/", shared_id}, "")
 
 	// Get handler for filename, size and headers

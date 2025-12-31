@@ -1,5 +1,3 @@
-<br />
-
 <div class="container-center-inline">
   <div>
     <div class="label">
@@ -12,7 +10,11 @@
     <div class="label">
       <label for="expiration">Expiration date</label>
     </div>
-    <input required id="expiration" type="datetime-local" name="expiration" />
+    <!-- expiration here is in local format (so it might brings problems on date calculation on backend, it's why there's an hidden input below) -->
+    <input required type="datetime-local" id="expirationLocal" name="expirationLocal" />
+
+    <!-- hidden element to send expiration in UTC to backend -->
+    <input type="hidden" name="expiration" id="expiration">
   </div>
 </div>
 
@@ -20,12 +22,11 @@
 
 <input type="submit" id="submit" value="Share !" class="button" />
 
+
 <script>
   var defaultExpiration = new Date();
-  defaultExpiration.setMinutes(
-    defaultExpiration.getMinutes() - defaultExpiration.getTimezoneOffset()
-  );
-  defaultExpiration.setHours(defaultExpiration.getHours() + 168);
+  defaultExpiration.setMinutes(defaultExpiration.getMinutes() - defaultExpiration.getTimezoneOffset());
+  defaultExpiration.setHours(defaultExpiration.getHours() + 168); // +7 days
 
   var min = new Date();
   min.setMinutes(min.getMinutes() - min.getTimezoneOffset());
@@ -35,8 +36,17 @@
   max.setMinutes(max.getMinutes() - max.getTimezoneOffset());
   max.setHours(max.getHours() + 504);
 
-  expiration = document.getElementById("expiration");
-  expiration.value = defaultExpiration.toISOString().slice(0, 16);
-  expiration.min = min.toISOString().slice(0, 16);
-  expiration.max = max.toISOString().slice(0, 16);
+  expirationLocal = element('expirationLocal')
+  expirationLocal.value = defaultExpiration.toISOString().slice(0, 16);
+  expirationLocal.min = min.toISOString().slice(0, 16);
+  expirationLocal.max = max.toISOString().slice(0, 16);
+
+  expirationUTC = element('expiration');
+
+  // Set the UTC format in hidden input 'expirationUTC' when submitting the form
+  const form = document.querySelector("form");
+  form.addEventListener("submit", (e) => {
+    expirationUTC.value = timeLocalToUtc(expirationLocal.value);
+  });
+
 </script>
