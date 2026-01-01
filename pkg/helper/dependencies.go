@@ -17,6 +17,7 @@ func DownloadStaticDependencies() {
 
 	var dependencies = []StaticDependency{
 		StaticDependency{"https://unpkg.com/openpgp@latest/dist/openpgp.min.js", "static/dynamic/openpgp.min.js"},
+		StaticDependency{"https://unpkg.com/slate@latest/dist/index.js", "static/dynamic/slate.js"},
 	}
 
 	CreatePath(path)

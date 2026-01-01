@@ -212,9 +212,9 @@ func uploadShareSecret(w http.ResponseWriter, r *http.Request) {
 	expiration := r.PostFormValue("expiration")
 	maxopenStr := r.PostFormValue("maxopen")
 	
-	// --- Validation ---
-	if len(secret) == 0 || len(secret) > 2500 {
-		http.Error(w, "Secret must be between 1 and 2500 characters", http.StatusBadRequest)
+	// Validation
+	if len(secret) == 0 || len(secret) > 999999999 {
+		http.Error(w, "Secret must be between 1 and 999999999 characters", http.StatusBadRequest)
 		return
 	}
 

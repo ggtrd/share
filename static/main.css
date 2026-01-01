@@ -377,7 +377,7 @@ input[type="password"] {
   box-sizing: border-box;
 }
 
-textarea {
+.textarea {
   width: var(--main-input-width);
   height: var(--main-input-height);
   max-width: 100%;
