@@ -28,7 +28,7 @@ body {
 }
 
 .dark * .text-box {
-  background-color: var(--darker-color);
+  background-color: var(--darker3-color);
 }
 
 .dark * .button {
@@ -37,8 +37,8 @@ body {
 }
 
 .dark * .textarea {
-  background-color: var(--lighter2-color);
-  color: var(--darker-color) !important;
+  background-color: transparent;
+  color: var(--lighter2-color) !important;
   border-color: var(--darker-color) !important;
 }
 
@@ -93,8 +93,12 @@ body {
 
 .container > div {
   width: var(--main-input-width);
+}
 
-  background-color: var(--lighter2-color);
+.container-left {
+  text-align: left;
+
+  border: var(--debug);
 }
 
 .container-center-inline {
@@ -175,7 +179,6 @@ h1 {
   margin-right: auto;
 
   border-radius: var(--radius);
-
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
 
   background-color: var(--lighter2-color);
@@ -183,10 +186,10 @@ h1 {
   word-wrap: break-word;
 }
 
-.text-box > .button-copy {
+* > .button-copy {
   float: right;
-  margin-top: -11px;
-  margin-right: -26px;
+  margin: -11px;
+  margin-right: -16px;
 }
 
 .button-copy {
@@ -208,37 +211,26 @@ h1 {
   cursor: pointer;
 }
 
-.button-small {
+/* .button-small {
   text-align: center !important;
 
   width: 30px !important;
   padding: 2px 0px 2px 0px !important;
 
   font-size: 16px !important;
-}
+} */
 
 .button {
-  text-align: center !important;
-
   width: var(--main-input-width);
-
-  /* margin: 10px; */
   padding: 24px 36px 24px 36px;
 
   border-radius: var(--radius);
-  background-color: var(--color);
-
-  /* border-color: var(--darker-color) !important;
-  border-left: none;
-  border-right: none;
-  border-top: none;
-  border-bottom: 3px solid; */
-
   border: none;
-
+  background-color: var(--color);
   color: var(--lighter-color);
-  font-weight: bold;
 
+  text-align: center !important;
+  font-weight: bold;
   font-size: 20px;
 }
 
@@ -248,18 +240,15 @@ h1 {
 }
 
 .button:active {
-  cursor: press;
-
   background-color: var(--darker-color);
 }
 
-input {
+input, .text-copiable {
   display: block;
-  width: 250px;
   padding: 12px 20px 12px 20px;
 
-  border: none;
   border-radius: var(--radius);
+  border: var(--border-grey);
 
   background-color: var(--lighter-color);
   color: var(--darker-color);
@@ -271,12 +260,23 @@ input {
   box-sizing: border-box;
 }
 
-.dark * input {
+input {
+  width: 250px;
+}
+
+.text-copiable {
+  border: var(--border-grey);
+
+  font-weight: bold;
+  font-size: 12px;
+}
+
+.dark * input, .dark * .text-copiable {
   color: var(--darker-color) !important;
   background-color: var(--lighter2-color);
 }
 
-.input-unlock {
+.main-input-width {
     width: var(--main-input-width);
 }
 
@@ -290,8 +290,7 @@ input {
   margin: none;
 
   background-color: var(--lighter-color);
-  border-color: var(--color) !important;
-  border: none;
+  border: var(--border-grey);
   border-radius: var(--radius);
 
   font-weight: bold;
@@ -304,7 +303,7 @@ input {
 }
 
 .textarea:focus {
-  border: var(--border) solid;
+  border-color: var(--color) !important;
 }
 
 .notification {
@@ -320,7 +319,7 @@ input {
   padding: 12px 20px;
   width: 30%;
 
-  border: var(--border) solid;
+  border: var(--border-size) solid;
   border-radius: var(--radius);
 
   color: var(--lighter-color);
@@ -376,11 +375,11 @@ input {
   margin-left: auto;
   margin-right: auto;
   margin-top: 0;
-  margin-bottom: calc(var(--border) * -2);
+  margin-bottom: calc(var(--border-size) * -2);
 
   background-color: var(--lighter-color);
   border-radius: var(--radius);
-  outline: var(--border) var(--color) dashed;
+  outline: var(--border-size) var(--color) dashed;
 
   cursor: pointer;
 }

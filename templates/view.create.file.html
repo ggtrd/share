@@ -1,4 +1,6 @@
 {{ template "layout.header.html" . }}
+<div class="text-box">
+
 <form action="/file/shared" method="post" enctype="multipart/form-data" id="form">
 
 	<input required type="hidden" name="TokenAvoidRefresh" value="{{ .TokenAvoidRefresh }}" />
@@ -100,4 +102,5 @@
 	}
 </script>
 
+</div>
 {{ template "layout.footer.html" . }}

@@ -32,9 +32,9 @@
   background-color: var(--color);
 }
 
-/* .dark * .nav-ul li:hover .text {
-  background-color: var(--darker-color) !important;
-} */
+.dark * li:hover .text {
+  background-color: var(--darker-color);
+}
 
 .nav-ul li img {
   height: var(--navigation-height);
@@ -112,7 +112,7 @@
   height: calc(var(--toggle-size) / 2);
   box-sizing: border-box;
 
-  border: var(--border) solid;
+  border: var(--border-size) solid;
   border-radius: var(--radius);
   cursor: pointer;
 
@@ -140,7 +140,7 @@
   color: var(--darker-color);
 
   box-sizing: border-box;
-  border: var(--border) solid;
+  border: var(--border-size) solid;
 
   border-radius: var(--radius);
 

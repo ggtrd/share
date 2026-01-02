@@ -1,11 +1,13 @@
 {{ template "layout.header.html" . }}
+<div class="container-left text-box">
+
 <div id="future">
     <form id="form">
             <div>
                 <div class="text">
                     <label for="givenPassword">Password</label>
                 </div>
-                <input id="givenPassword" type="password" class="input-unlock" />
+                <input id="givenPassword" type="password" class="main-input-width" />
             </div>
         <br>
         <br>
@@ -58,12 +60,13 @@
                     let result = await response.json();
                     let shareContent;
 
-                    // Just to replace the title displayed on the page
-                    let title = document.getElementById('title');
-                    title.innerHTML = "Share content";
+                    // // Just to replace the title displayed on the page
+                    // let title = document.getElementById('title');
+                    // title.innerHTML = "Share content";
 
+                    shareContent = document.createElement('div');
+                    shareContent.className = 'text-copiable';
                     if (result.shareContentType === "secret") {
-                        shareContent = document.createElement('div');
 
                         // Span element that contain the text (to avoid copy/paste button to copy entire HTML div)
                         realText = document.createElement('span');
@@ -74,7 +77,7 @@
                         copyButton = document.createElement('button');
                         copyButton.className = 'button-copy"';
                         copyButtonIcon = document.createElement('i');
-                        copyButtonIcon.className = 'fas fa-copy fa-lg"';
+                        copyButtonIcon.className = 'fas fa-copy fa-lg';
                         copyButton.addEventListener("click", function () {
                             copyToClipboard(realText.id);
                         });
@@ -92,12 +95,8 @@
                         shareFile.innerHTML = fileName;
                         shareFile.href = result.shareContentValue;
 
-                        shareContent = document.createElement('div');
                         shareContent.appendChild(shareFile);
                     }
-
-                    shareContent.className = 'text';
-                    shareContent.className = 'text-box';
 
                     future.replaceWith(shareContent)
             } catch (e) {
@@ -128,6 +127,7 @@
             }
         }
     </script>
+</div>
 </div>
 
 {{ template "layout.footer.html" . }}
