@@ -57,3 +57,16 @@ function timeLocalToUtc(dateLocalToConvert) {
 
 	return dateUtcFormatted
 }
+
+
+// Copy content of a div (from its ID) to clipboard
+function copyToClipboard(div) {
+    let content = document.getElementById(div).innerText;
+
+    // Replace unwanted HTML characters
+    content = content.replace(/\u00A0/g, ' ');
+
+    navigator.clipboard.writeText(content)
+        .then(() => displayInfo("Copied!"))
+        .catch(err => displayError("Failed to copy"));
+}

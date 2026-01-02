@@ -396,11 +396,13 @@ input[type="password"] {
 
   resize: none;
   outline: none;
+
+  overflow: hidden;
 }
 
 .notification {
   z-index: 999;
-  position: absolute;
+  position: fixed;
 
   top: 10px;
   left: 25%;

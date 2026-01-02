@@ -68,8 +68,26 @@
                     title.innerHTML = "Share content";
 
                     if (result.shareContentType === "secret") {
-                        shareContent = document.createElement('p');
-                        shareContent.innerHTML = result.shareContentValue;
+                        shareContent = document.createElement('div');
+
+                        // Span element that contain the text (to avoid copy/paste button to copy entire HTML div)
+                        realText = document.createElement('span');
+                        realText.innerHTML = result.shareContentValue;
+                        realText.id = "shareContent";
+
+                        // Copy/paste button
+                        copyButton = document.createElement('button');
+                        copyButton.className = 'button-copy"';
+                        copyButtonIcon = document.createElement('i');
+                        copyButtonIcon.className = 'fas fa-copy fa-lg"';
+                        copyButton.addEventListener("click", function () {
+                            copyToClipboard(realText.id);
+                        });
+
+                        // Display elements in order
+                        shareContent.appendChild(realText);
+                        shareContent.appendChild(copyButton);
+                        copyButton.appendChild(copyButtonIcon);
                     }
 
                     if (result.shareContentType === "file") {
@@ -79,7 +97,7 @@
                         shareFile.innerHTML = fileName;
                         shareFile.href = result.shareContentValue;
 
-                        shareContent = document.createElement('p');
+                        shareContent = document.createElement('div');
                         shareContent.appendChild(shareFile);
                     }
 

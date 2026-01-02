@@ -40,13 +40,4 @@
   </div>
 </div>
 
-<script>
-  function copyToClipboard(copyDiv) {
-    let content = document.getElementById(copyDiv).innerHTML;
-    navigator.clipboard.writeText(content);
-
-    displayInfo("Copied !");
-  }
-</script>
-
 {{ template "layout.footer.html" . }}

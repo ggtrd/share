@@ -46,7 +46,8 @@ Share is a web service that allows to securely share files and secrets to anyone
 	```
 * Install Javascript dependencies
 	```
-	curl --create-dirs -Lk https://unpkg.com/openpgp@latest/dist/openpgp.min.js -o static/dynamic/openpgp.min.js
+	curl --create-dirs -Lk https://unpkg.com/openpgp@latest/dist/openpgp.min.js -o static/dynamic/openpgp.min.js \
+	curl --create-dirs -Lk https://unpkg.com/slate@latest/dist/index.js -o static/dynamic/slate.js \
 	```
 * Initialize database
 	```
