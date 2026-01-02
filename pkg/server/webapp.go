@@ -31,14 +31,16 @@ func (a *App) Start() {
 
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("./static/"))))
 
-	http.Handle("/", http.RedirectHandler("/secret", http.StatusSeeOther))		// Redirect to /secret by default
+	http.Handle("/", http.RedirectHandler("/password", http.StatusSeeOther))		// Redirect to /secret by default
 
 	http.Handle("/about", logRequest(viewAbout))								// About
 
-	http.Handle("/file", logRequest(viewCreateShareFile))						// Form to create a share
+	http.Handle("/file", logRequest(viewCreateShareFile))						// Form to share a file
 	http.Handle("/file/shared", logRequest(uploadShareFile))					// Confirmation + display the link of the share to the creator
 	
-	http.Handle("/secret", logRequest(viewCreateShareSecret))					// Form to create a share
+	http.Handle("/password", logRequest(viewCreateShareSecretTextarea))			// Form to share a password
+	http.Handle("/text", logRequest(viewCreateShareSecretRicheditor))			// Form to share a text
+	http.Handle("/snippet", logRequest(viewCreateShareSecretRicheditor))		// Form to share a snippet
 	http.Handle("/secret/shared", logRequest(uploadShareSecret))				// Confirmation + display the link of the share to the creator
 
 	http.Handle("/share/{id}", logRequest(viewUnlockShare))						// Ask for password to unlock the share
@@ -96,12 +98,25 @@ func viewCreateShareFile(w http.ResponseWriter, r *http.Request) {
 }
 
 
-func viewCreateShareSecret(w http.ResponseWriter, r *http.Request) {
+func viewCreateShareSecretTextarea(w http.ResponseWriter, r *http.Request) {
 	// Generate a token that will permit to prevent unwanted record to database due to browse the upload URL without using the form
 	// The trick is that this token is used from an hidden input on the HTML form, and if it's empty it means we're not using the form
 	token := helper.GeneratePassword()
 
-	renderTemplate(w, "view.create.secret.html", struct {
+	renderTemplate(w, "view.create.secret.textarea.html", struct {
+		TokenAvoidRefresh string
+	}{
+		TokenAvoidRefresh: token,
+	})
+}
+
+
+func viewCreateShareSecretRicheditor(w http.ResponseWriter, r *http.Request) {
+	// Generate a token that will permit to prevent unwanted record to database due to browse the upload URL without using the form
+	// The trick is that this token is used from an hidden input on the HTML form, and if it's empty it means we're not using the form
+	token := helper.GeneratePassword()
+
+	renderTemplate(w, "view.create.secret.richeditor.html", struct {
 		TokenAvoidRefresh string
 	}{
 		TokenAvoidRefresh: token,

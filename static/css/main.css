@@ -1,24 +1,3 @@
-@import url(https://fonts.googleapis.com/css?family=Lato:400,300,300italic,400italic,700,700italic);
-
-:root {
-  --color: #368aff;
-  /*this default color will be overwritten from custom/theme.css*/
-  --darker-color: color-mix(in srgb, #000, var(--color) 40%);
-  --darker2-color: color-mix(in srgb, #000, var(--color) 80%);
-  --lighter-color: color-mix(in srgb, #fff, var(--color) 5%);
-  --lighter2-color: color-mix(in srgb, #fff, var(--color) 20%);
-  --error-color: #ff4141;
-  --debug: 0px solid red;
-
-  --radius: 8px;
-  --border: 3px;
-
-  --main-input-width: 800px;
-  --main-input-height: 200px;
-
-  --toggle-size: 36px;
-}
-
 * {
   font-family: "Lato", Helvetica, sans-serif;
   line-height: 1.5;
@@ -36,9 +15,9 @@ body {
   background-color: color-mix(in srgb, #000, var(--color) 5%);
 }
 
-.dark * .nav-link {
+/* .dark * .nav-link {
   color: var(--darker2-color);
-}
+} */
 
 .dark > * > h1 {
   color: var(--darker2-color);
@@ -65,7 +44,7 @@ body {
   color: var(--lighter2-color) !important;
 }
 
-.dark * textarea {
+.dark * .textarea {
   border-color: var(--darker2-color) !important;
   color: var(--lighter2-color) !important;
 }
@@ -102,23 +81,23 @@ body {
   outline-color: var(--lighter2-color);
 }
 
-#logo > * {
+/* #logo > * {
   max-width: 70px;
 
   padding-left: 36px;
   padding-right: 18px;
   padding-top: 18px;
   padding-bottom: 18px;
-}
+} */
 
-#svg * {
+/* #svg * {
   fill: var(--color);
-}
+} */
 
-.right {
+/* .right {
   position: fixed;
   right: 0;
-}
+} */
 
 .hidden {
   visibility: hidden;
@@ -160,6 +139,8 @@ body {
 }
 
 .nav-item {
+  height: 40px;
+
   text-decoration: none !important;
   display: inline-block;
 
@@ -167,29 +148,32 @@ body {
   border: var(--debug);
 }
 
-.nav-link {
-  width: 100px;
-  height: 20px;
+/* .nav-link {
+  /* width: 100px; */
+  /* height: 20px; */
+  /* height: 100%;
 
+  background-color: var(--lighter2-color);
   color: var(--color);
 
   padding-left: 0px;
   padding-right: 0px;
-  padding-top: 30px;
+  padding-top: 0px;
   padding-bottom: 0px;
 
   vertical-align: middle;
   text-align: center;
 
   font-weight: bold;
-  font-size: 28px;
+  font-size: 20px;
 
   border: var(--debug);
 }
 
 .nav-link:hover {
+  background-color: var(--darker2-color);
   color: var(--darker-color);
-}
+} */
 
 .content {
   min-height: calc(100vh - 120px);

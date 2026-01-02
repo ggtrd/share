@@ -1,24 +1,24 @@
 <div class="container-center-inline">
   <div>
     <div class="label">
-      <label for="maxopen">Maximum open allowed</label>
+      <label for="maxopen">Views</label>
     </div>
-    <input required type="number" name="maxopen" min="1" max="100" value="1" />
+    <input required type="number" name="maxopen" min="1" max="100" value="1"/>
   </div>
 
   <div>
     <div class="label">
-      <label for="expiration">Expiration date</label>
+      <label for="expiration">Expiration</label>
     </div>
     <!-- expiration here is in local format (so it might brings problems on date calculation on backend, it's why there's an hidden input below) -->
-    <input required type="datetime-local" id="expirationLocal" name="expirationLocal" />
+    <input required type="datetime-local" id="expirationLocal" name="expirationLocal"/>
 
     <!-- hidden element to send expiration in UTC to backend -->
     <input type="hidden" name="expiration" id="expiration">
   </div>
 </div>
 
-<br />
+<br/>
 
 <input type="submit" id="submit" value="Share !" class="button" />
 

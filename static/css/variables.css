@@ -1,0 +1,23 @@
+@import url(https://fonts.googleapis.com/css?family=Lato:400,300,300italic,400italic,700,700italic);
+
+:root {
+  /*this default color will be overwritten from custom/theme.css*/
+  --color: #368aff;
+
+  --darker-color: color-mix(in srgb, #000, var(--color) 40%);
+  --darker2-color: color-mix(in srgb, #000, var(--color) 80%);
+  --lighter-color: color-mix(in srgb, #fff, var(--color) 10%);
+  --lighter2-color: color-mix(in srgb, #fff, var(--color) 40%);
+  --error-color: #ff4141;
+  /* --debug: 1px solid red; */
+
+  --radius: 8px;
+  --border: 3px;
+
+  --main-input-width: 800px;
+  --main-input-height: 200px;
+
+  --toggle-size: 36px;
+
+  --navigation-height: 50px;
+}

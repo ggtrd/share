@@ -124,9 +124,12 @@ Share is a web service that allows to securely share files and secrets to anyone
 
 <br>
 
-## Reverse proxy example
+## Advanced
+### Instance details
+Details (such as version) are available at URL/about
 
-### Apache HTTP Server with authentication on share creation
+### Reverse proxy example
+> Apache HTTP Server with authentication on share creation
 
 ```
 sudo a2enmod ssl proxy proxy_http

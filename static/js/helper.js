@@ -7,6 +7,13 @@ function checkUrl(url) {
 }
 
 
+// Get current browsed page
+function getCurrentUrlPage(url) {
+	var page = document.URL.split('/')[3]
+	return page;
+}
+
+
 // Shortcut to get element
 function element(element) {
 	return document.getElementById(element);
