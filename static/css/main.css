@@ -15,10 +15,6 @@ body {
   background-color: color-mix(in srgb, #000, var(--color) 5%);
 }
 
-/* .dark * .nav-link {
-  color: var(--darker2-color);
-} */
-
 .dark > * > h1 {
   color: var(--darker2-color);
 }
@@ -81,24 +77,6 @@ body {
   outline-color: var(--lighter2-color);
 }
 
-/* #logo > * {
-  max-width: 70px;
-
-  padding-left: 36px;
-  padding-right: 18px;
-  padding-top: 18px;
-  padding-bottom: 18px;
-} */
-
-/* #svg * {
-  fill: var(--color);
-} */
-
-/* .right {
-  position: fixed;
-  right: 0;
-} */
-
 .hidden {
   visibility: hidden;
 }
@@ -130,50 +108,6 @@ body {
 
   border: var(--debug);
 }
-
-.container-nav {
-  /* height: 100px; */
-  max-height: 100px;
-
-  border: var(--debug);
-}
-
-.nav-item {
-  height: 40px;
-
-  text-decoration: none !important;
-  display: inline-block;
-
-  vertical-align: text-top;
-  border: var(--debug);
-}
-
-/* .nav-link {
-  /* width: 100px; */
-  /* height: 20px; */
-  /* height: 100%;
-
-  background-color: var(--lighter2-color);
-  color: var(--color);
-
-  padding-left: 0px;
-  padding-right: 0px;
-  padding-top: 0px;
-  padding-bottom: 0px;
-
-  vertical-align: middle;
-  text-align: center;
-
-  font-weight: bold;
-  font-size: 20px;
-
-  border: var(--debug);
-}
-
-.nav-link:hover {
-  background-color: var(--darker2-color);
-  color: var(--darker-color);
-} */
 
 .content {
   min-height: calc(100vh - 120px);

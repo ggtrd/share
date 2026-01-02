@@ -31,7 +31,7 @@
 }
 
 .dark * .nav-ul li:hover {
-  background-color: var(--darker2-color);
+  background-color: var(--color) !important;
 }
 
 .nav-ul li img {
