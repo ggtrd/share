@@ -59,6 +59,17 @@
   border: var(--debug);
 }
 
+.nav-ul li .toggle {
+  padding-left: 16px;
+  padding-right: 16px;
+  padding-top: 16px;
+  padding-bottom: 16px;
+
+  height: var(--navigation-height);
+
+  border: var(--debug);
+}
+
 .active {
   background-color: var(--lighter2-color);
 }
@@ -86,4 +97,57 @@
 
 .dark * .default-logo {
   background-color: var(--darker2-color);
+}
+
+.toggle input[type="checkbox"] {
+  display: none;
+  visibility: hidden;
+}
+
+.toggle label {
+  float: left;
+  position: relative;
+
+  width: var(--toggle-size);
+  height: calc(var(--toggle-size) / 2);
+  box-sizing: border-box;
+
+  border: var(--border) solid;
+  border-radius: var(--radius);
+  cursor: pointer;
+
+  color: var(--darker-color);
+}
+
+.toggle input[type="checkbox"]:checked + label {
+  border-color: var(--darker2-color);
+}
+
+.toggle input[type="checkbox"]:checked + label:before {
+  left: calc(var(--toggle-size) / 2);
+  border-color: var(--darker2-color);
+  background-color: var(--darker2-color);
+}
+
+.toggle label:before {
+  position: absolute;
+  left: 2px;
+  top: 2px;
+  width: calc((var(--toggle-size) / 2) - 8px);
+  height: calc((var(--toggle-size) / 2) - 8px);
+
+  background-color: var(--darker-color);
+  color: var(--darker-color);
+
+  box-sizing: border-box;
+  border: var(--border) solid;
+
+  border-radius: var(--radius);
+
+  transition: 0.2s ease;
+  content: "";
+}
+
+.toggle-darkmode {
+  margin-top: 16px;
 }

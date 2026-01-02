@@ -15,9 +15,10 @@
 		<div id="progressbar" class="progress text"></div>
 	</div>
 
+	<br>
+
 	{{ template "layout.form.share.html" . }}
 </form>
-
 
 <script>
 	// This trick permit to center the name of the file in the drop area
@@ -40,7 +41,6 @@
 		myFile.files = event.dataTransfer.files; // Get the file from event to apply it on the input
 		uploadLabel.innerHTML = event.dataTransfer.files[0].name // Edit the text of the label
 	});
-
 
 
 	var submit = document.getElementById('submit');
@@ -99,6 +99,5 @@
 		progressbar.style.width = width + "%";
 	}
 </script>
-
 
 {{ template "layout.footer.html" . }}

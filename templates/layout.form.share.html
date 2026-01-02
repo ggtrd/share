@@ -1,13 +1,15 @@
+<br>
+
 <div class="container-center-inline">
   <div>
-    <div class="label">
+    <div class="text">
       <label for="maxopen">Views</label>
     </div>
     <input required type="number" name="maxopen" min="1" max="100" value="1"/>
   </div>
 
   <div>
-    <div class="label">
+    <div class="text">
       <label for="expiration">Expiration</label>
     </div>
     <!-- expiration here is in local format (so it might brings problems on date calculation on backend, it's why there's an hidden input below) -->
@@ -18,10 +20,11 @@
   </div>
 </div>
 
-<br/>
+<br>
+<br>
+<br>
 
 <input type="submit" id="submit" value="Share !" class="button" />
-
 
 <script>
   var defaultExpiration = new Date();

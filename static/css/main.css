@@ -3,10 +3,6 @@
   line-height: 1.5;
 }
 
-*:hover {
-  transition: 0.2s;
-}
-
 body {
   background-color: var(--lighter-color);
 }
@@ -41,13 +37,18 @@ body {
 }
 
 .dark * .textarea {
-  border-color: var(--darker2-color) !important;
-  color: var(--lighter2-color) !important;
+  background-color: var(--lighter2-color);
+  color: var(--darker-color) !important;
+  border-color: var(--darker-color) !important;
 }
 
 .dark * input[type="file"] {
   border-color: var(--darker2-color) !important;
   color: var(--lighter2-color) !important;
+}
+
+.dark * .container-file {
+  background-color: transparent !important;
 }
 
 .dark * .container-file:hover {
@@ -58,18 +59,7 @@ body {
   color: var(--lighter2-color) !important;
 }
 
-.dark * input[type="password"] {
-  border-color: var(--darker2-color) !important;
-  color: var(--lighter2-color) !important;
-}
-
-.dark * input[type="number"] {
-  border-color: var(--darker2-color) !important;
-  color: var(--lighter2-color) !important;
-}
-
-.dark * input[type="datetime-local"] {
-  border-color: var(--darker2-color) !important;
+.dark * .container-file:hover .text {
   color: var(--lighter2-color) !important;
 }
 
@@ -85,19 +75,30 @@ body {
   visibility: visible;
 }
 
+.ghost {
+  /* This class is to hide an elem and make it not creating unwanted blank space */
+  z-index: -999;
+  visibility: hidden;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+}
+
 .container {
-  text-align: center;
-  padding-left: 10%;
-  padding-right: 10%;
-  padding-top: 0;
-  padding-bottom: 5%;
+  display: flex;
+  justify-content: center;
 
   border: var(--debug);
 }
 
-.container-left {
-  text-align: left;
+.container > div {
+  width: var(--main-input-width);
 
+  background-color: var(--lighter2-color);
+}
+
+.container-center-inline {
+  text-align: center;
   border: var(--debug);
 }
 
@@ -105,6 +106,8 @@ body {
   display: inline-block;
   margin-left: 30px;
   margin-right: 30px;
+
+  text-align: left;
 
   border: var(--debug);
 }
@@ -166,13 +169,16 @@ h1 {
 }
 
 .text-box {
-  width: 900px;
-  padding: 16px 32px 16px 32px;
+  width: var(--main-input-width);
+  padding: 16px;
   margin-left: auto;
   margin-right: auto;
 
-  background-color: var(--lighter2-color);
   border-radius: var(--radius);
+
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+
+  background-color: var(--lighter2-color);
 
   word-wrap: break-word;
 }
@@ -214,27 +220,30 @@ h1 {
 .button {
   text-align: center !important;
 
-  width: 200px;
+  width: var(--main-input-width);
 
-  margin: 10px;
+  /* margin: 10px; */
   padding: 24px 36px 24px 36px;
 
   border-radius: var(--radius);
   background-color: var(--color);
 
-  border-color: var(--darker-color) !important;
+  /* border-color: var(--darker-color) !important;
   border-left: none;
   border-right: none;
   border-top: none;
-  border-bottom: 3px solid;
+  border-bottom: 3px solid; */
 
-  color: var(--lighter-color) !important;
+  border: none;
+
+  color: var(--lighter-color);
   font-weight: bold;
 
   font-size: 20px;
 }
 
 .button:hover {
+  background-color: var(--darker2-color);
   cursor: pointer;
 }
 
@@ -244,55 +253,31 @@ h1 {
   background-color: var(--darker-color);
 }
 
-input[type="number"] {
+input {
+  display: block;
   width: 250px;
   padding: 12px 20px 12px 20px;
 
-  background-color: transparent;
-  border-color: var(--color) !important;
-  border: var(--border) solid;
+  border: none;
   border-radius: var(--radius);
+
+  background-color: var(--lighter-color);
+  color: var(--darker-color);
 
   font-weight: bold;
   font-size: 16px;
 
-  display: block;
   outline: none;
   box-sizing: border-box;
 }
 
-input[type="datetime-local"] {
-  width: 250px;
-  padding: 12px 20px 12px 20px;
-
-  background-color: transparent;
-  border-color: var(--color) !important;
-  border: var(--border) solid;
-  border-radius: var(--radius);
-
-  font-weight: bold;
-  font-size: 16px;
-
-  display: block;
-  outline: none;
-  box-sizing: border-box;
+.dark * input {
+  color: var(--darker-color) !important;
+  background-color: var(--lighter2-color);
 }
 
-input[type="password"] {
-  width: var(--main-input-width);
-  padding: 12px 20px 12px 20px;
-
-  background-color: transparent;
-  border-color: var(--color) !important;
-  border: var(--border) solid;
-  border-radius: var(--radius);
-
-  font-weight: bold;
-  font-size: 16px;
-
-  display: block;
-  outline: none;
-  box-sizing: border-box;
+.input-unlock {
+    width: var(--main-input-width);
 }
 
 .textarea {
@@ -304,9 +289,9 @@ input[type="password"] {
 
   margin: none;
 
-  background-color: transparent;
+  background-color: var(--lighter-color);
   border-color: var(--color) !important;
-  border: var(--border) solid;
+  border: none;
   border-radius: var(--radius);
 
   font-weight: bold;
@@ -316,6 +301,10 @@ input[type="password"] {
   outline: none;
 
   overflow: hidden;
+}
+
+.textarea:focus {
+  border: var(--border) solid;
 }
 
 .notification {
@@ -386,10 +375,12 @@ input[type="password"] {
   right: 25%;
   margin-left: auto;
   margin-right: auto;
+  margin-top: 0;
+  margin-bottom: calc(var(--border) * -2);
 
-  border-color: var(--color) !important;
-  border: var(--border) dashed;
+  background-color: var(--lighter-color);
   border-radius: var(--radius);
+  outline: var(--border) var(--color) dashed;
 
   cursor: pointer;
 }
@@ -410,12 +401,13 @@ input[type="password"] {
 
 .container-file:hover,
 .container-file.drag-active {
-  background-color: var(--lighter2-color);
+  background-color: var(--color);
+  outline-color: var(--darker2-color);
 }
 
 input[type="file"] {
-  border-radius: var(--radius);
-  cursor: pointer;
+  /* border-radius: var(--radius);
+  cursor: pointer; */
   display: none;
 
   border: var(--debug);
@@ -431,57 +423,4 @@ input[type="file"]::file-selector-button {
   cursor: pointer;
 
   border: var(--debug);
-}
-
-.toggle input[type="checkbox"] {
-  display: none;
-  visibility: hidden;
-}
-
-.toggle label {
-  float: left;
-  position: relative;
-
-  width: var(--toggle-size);
-  height: calc(var(--toggle-size) / 2);
-  box-sizing: border-box;
-
-  border: var(--border) solid;
-  border-radius: var(--radius);
-  cursor: pointer;
-
-  color: var(--color);
-}
-
-.toggle input[type="checkbox"]:checked + label {
-  border-color: var(--darker2-color);
-}
-
-.toggle input[type="checkbox"]:checked + label:before {
-  left: calc(var(--toggle-size) / 2);
-  border-color: var(--darker2-color);
-  background-color: var(--darker2-color);
-}
-
-.toggle label:before {
-  position: absolute;
-  left: 2px;
-  top: 2px;
-  width: calc((var(--toggle-size) / 2) - 10px);
-  height: calc((var(--toggle-size) / 2) - 10px);
-
-  background-color: var(--color);
-  color: var(--color);
-
-  box-sizing: border-box;
-  border: var(--border) solid;
-
-  border-radius: var(--radius);
-
-  transition: 0.2s ease;
-  content: "";
-}
-
-.toggle-darkmode {
-  margin-top: 16px;
 }

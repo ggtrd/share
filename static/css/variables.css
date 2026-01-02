@@ -11,10 +11,10 @@
   --error-color: #ff4141;
   /* --debug: 1px solid red; */
 
-  --radius: 8px;
-  --border: 3px;
+  --radius: 12px;
+  --border: 2px;
 
-  --main-input-width: 800px;
+  --main-input-width: 1000px;
   --main-input-height: 200px;
 
   --toggle-size: 36px;

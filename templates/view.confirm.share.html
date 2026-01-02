@@ -1,11 +1,9 @@
 {{ template "layout.header.html" . }}
-<h1 class="title">Share created !</h1>
-
 <div class="container-center-inline">
-  <div class="container-left">
+  <!-- <div class="container-left"> -->
     <div class="label">
       Share link
-      <div class="text text-box">
+      <div class="text">
         <button class="button-copy" onclick="copyToClipboard('link')">
           <i class="fas fa-copy fa-lg"></i>
         </button>
@@ -13,11 +11,11 @@
       </div>
     </div>
 
-    <br />
+    <br>
 
     <div class="label">
       Password
-      <div class="text text-box">
+      <div class="text">
         <button class="button-copy" onclick="copyToClipboard('password')">
           <i class="fas fa-copy fa-lg"></i>
         </button>
@@ -25,19 +23,19 @@
       </div>
     </div>
 
-    <br />
-    <br />
+    <br>
+    <br>
 
     <div class="label">
       One click link
-      <div class="text text-box">
+      <div class="text">
         <button class="button-copy" onclick="copyToClipboard('oneClickLink')">
           <i class="fas fa-copy fa-lg"></i>
         </button>
         <span id="oneClickLink">{{ .Url }}{{ .Link }}#{{ .Password }}</span>
       </div>
     </div>
-  </div>
+  <!-- </div> -->
 </div>
 
 {{ template "layout.footer.html" . }}
