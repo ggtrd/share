@@ -45,16 +45,26 @@
       const navigationLinks = Array.from(navigation.querySelectorAll("a"));
       navigationLinks.forEach((link = 'a.href') => {
         if (link == document.URL) {
-          link.parentNode.classList.add('active');
+          link.classList.add('active');
         } 
       });
+
+      // Logo
+      var logo = document.getElementById('logo')
+      if (checkUrl("/static/custom/logo.png")) {
+        logoCustom = document.createElement('img');
+        logoCustom.src = "../static/custom/logo.png"
+        logo.appendChild(logoCustom);
+      } else {
+        logo.classList.add("default-logo");
+        logo.appendChild(logoDefault);
+      }
     };
   </script>
 
   <ul id="navigation" class="nav-ul">
-    <!-- <li><a class="logo" href="/"><img src="../static/default-logo.svg"></a></li> -->
     <li>
-      <a class="default-logo" href="/"></a>
+      <a id="logo" class="logo" href="/"></a>
     </li>
     <li><a class="text" href="/password"><i class="fa-solid fa-key"></i>Password</a></li>
     <li><a class="text" href="/file"><i class="fa-solid fa-file"></i>File</a></li>
