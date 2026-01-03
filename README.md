@@ -105,10 +105,9 @@ Share is a web service that allows to securely share files and secrets to anyone
 * Overwrite logo size
 
 ```static/custom/theme.css
-#logo>img {
-    max-width: 200px;
+:root {
+    --logo-height: 60px;
 }
-
 ```
 
 ### Color
@@ -118,7 +117,7 @@ Share is a web service that allows to securely share files and secrets to anyone
 
 ```static/custom/theme.css
 :root {
-    --color: #000000;
+    --color: #4cd137;
 }
 ```
 

@@ -30,14 +30,16 @@
 
 .nav-ul li:hover .text {
   background-color: var(--color);
+  color: var(--lighter-color);
 }
 
 .dark * li:hover .text {
   background-color: var(--darker-color);
+  color: var(--lighter2-color);
 }
 
 .nav-ul li img {
-  height: var(--navigation-height);
+  height: var(--logo-height);
 }
 
 .nav-ul li a {
@@ -79,7 +81,7 @@
 }
 
 .logo {
-  height: var(--navigation-height);
+  height: var(--logo-height);
 }
 
 .default-logo {
@@ -149,5 +151,5 @@
 }
 
 .toggle-darkmode {
-  margin-top: 16px;
+  margin-top: 6px;
 }

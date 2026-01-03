@@ -22,4 +22,5 @@
   --toggle-size: 36px;
 
   --navigation-height: 30px;
+  --logo-height: var(--navigation-height);
 }

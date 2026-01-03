@@ -55,6 +55,10 @@
         logoCustom = document.createElement('img');
         logoCustom.src = "../static/custom/logo.png"
         logo.appendChild(logoCustom);
+      } else if (checkUrl("/static/custom/logo.svg")) {
+        logoCustom = document.createElement('img');
+        logoCustom.src = "../static/custom/logo.svg"
+        logo.appendChild(logoCustom);
       } else {
         logo.classList.add("default-logo");
       }
@@ -63,7 +67,7 @@
 
   <ul id="navigation" class="nav-ul">
     <li>
-      <a id="logo" class="logo" href="/"></a>
+      <a id="logo" href="/"></a>
     </li>
     <li>
       <a class="text" href="/password">
