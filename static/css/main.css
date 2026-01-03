@@ -342,7 +342,7 @@ input {
   right: 25%;
   margin-left: auto;
   margin-right: auto;
-  margin-top: calc(var(--main-input-height) * -1.015);
+  margin-top: calc(var(--main-input-height) * -1);
 
   border: var(--debug);
 }
@@ -355,6 +355,10 @@ input {
   background: var(--lighter2-color);
 
   border-radius: var(--radius);
+}
+
+.dark * .container-progress > .progress {
+  background: var(--darker-color);
 }
 
 .container-file {
