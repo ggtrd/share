@@ -101,7 +101,7 @@ Share is a web service that allows to securely share files and secrets to anyone
 
 ### Logo
 
-* Drop an image at `/static/custom/logo.png`
+* Drop an image at `/static/custom/logo.png` or `/static/custom/logo.svg`
 * Overwrite logo size
 
 ```static/custom/theme.css
