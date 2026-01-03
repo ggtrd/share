@@ -1,12 +1,25 @@
 <br>
 
 <div class="container-center-inline">
-  <div>
+  <!-- <div>
     <div class="text">
       <label for="maxopen">Views</label>
     </div>
     <input required type="number" name="maxopen" min="1" max="100" value="1"/>
+  </div> -->
+
+  <div>
+    <div class="text">
+      <label for="maxopen">Views</label>
+    </div>
+    <div class="text input-number">
+      <input required type="number" name="maxopen" min="1" max="100" value="1"/>
+      <div class="input-number-button minus" aria-label="Decrease"><i class="fa-solid fa-minus"></i></div>
+      &nbsp;
+      <div class="input-number-button plus" aria-label="Increase"><i class="fa-solid fa-plus"></i></div>
+    </div>
   </div>
+
 
   <div>
     <div class="text">
@@ -50,5 +63,44 @@
   form.addEventListener("submit", (e) => {
     expirationUTC.value = timeLocalToUtc(expirationLocal.value);
   });
+
+
+
+
+  // Input number
+  function setupHold(button, action) {
+  let timeout;
+  let interval;
+  const start = () => {
+    action(); // 1rst immediate action
+
+    timeout = setTimeout(() => {
+        interval = setInterval(action, 60); // repetition speed
+      }, 300); // repetition delay
+    };
+
+    const stop = () => {
+      clearTimeout(timeout);
+      clearInterval(interval);
+    };
+
+    button.addEventListener('mousedown', start);
+    button.addEventListener('mouseup', stop);
+    button.addEventListener('mouseleave', stop);
+
+    // Mobile
+    button.addEventListener('touchstart', start);
+    button.addEventListener('touchend', stop);
+  }
+  document.querySelectorAll('.input-number').forEach(wrapper => {
+    const input = wrapper.querySelector('input');
+    setupHold(wrapper.querySelector('.plus'), () => input.stepUp());
+    setupHold(wrapper.querySelector('.minus'), () => input.stepDown());
+  });
+  button.addEventListener('keydown', e => {
+    if (e.key === ' ' || e.key === 'Enter') start();
+  });
+  button.addEventListener('keyup', stop);
+
 
 </script>

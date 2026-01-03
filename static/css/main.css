@@ -415,3 +415,43 @@ input[type="file"]::file-selector-button {
 
   border: var(--debug);
 }
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+}
+input[type="number"] {
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+
+.input-number {
+  display: inline-flex;
+  overflow: hidden;
+}
+
+.input-number-button {
+  position: relative;
+  right: 80px;
+
+  width: 12px;
+  height: 12px;
+  padding: 12px;
+  margin: auto;
+
+  color: var(--darker-color);
+
+  border-radius: var(--radius);
+  border: none;
+  cursor: pointer;
+  user-select: none;
+
+  font-size: 10px;
+  font-weight: bold;
+}
+
+.input-number-button:hover {
+  color: var(--lighter-color);
+  background-color: var(--darker2-color);
+}
+
