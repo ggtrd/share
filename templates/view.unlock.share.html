@@ -75,7 +75,7 @@
 
                         // Copy/paste button
                         copyButton = document.createElement('button');
-                        copyButton.className = 'button-copy"';
+                        copyButton.className = 'button-copy';
                         copyButtonIcon = document.createElement('i');
                         copyButtonIcon.className = 'fas fa-copy fa-lg';
                         copyButton.addEventListener("click", function () {
@@ -83,9 +83,9 @@
                         });
 
                         // Display elements in order
-                        shareContent.appendChild(realText);
                         shareContent.appendChild(copyButton);
                         copyButton.appendChild(copyButtonIcon);
+                        shareContent.appendChild(realText);
                     }
 
                     if (result.shareContentType === "file") {

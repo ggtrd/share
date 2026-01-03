@@ -64,6 +64,7 @@ body {
 }
 
 .dark * .button-copy {
+  background-color: var(--lighter2-color);
   outline-color: var(--lighter2-color);
 }
 
@@ -202,25 +203,15 @@ h1 {
   vertical-align: sub;
 
   color: var(--darker-color);
-  background-color: transparent;
+  background-color: var(--lighter-color);
   border: none;
-  border-radius: calc(var(--radius) + 20%);
+  border-radius: var(--radius);
 }
 
 .button-copy:hover {
-  /* background-color: var(--lighter-color); */
   color: var(--color);
   cursor: pointer;
 }
-
-/* .button-small {
-  text-align: center !important;
-
-  width: 30px !important;
-  padding: 2px 0px 2px 0px !important;
-
-  font-size: 16px !important;
-} */
 
 .button {
   width: var(--main-input-width);
@@ -401,8 +392,8 @@ input {
 
 .container-file:hover,
 .container-file.drag-active {
-  background-color: var(--color);
-  outline-color: var(--darker2-color);
+  background-color: var(--lighter2-color);
+  outline: var(--border-size) var(--color) dashed;
 }
 
 input[type="file"] {

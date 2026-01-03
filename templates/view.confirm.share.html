@@ -4,10 +4,10 @@
     <div class="text">
       Share link
       <div class="text-copiable">
-        <span id="link">{{ .Url }}{{ .Link }}</span>
         <button class="button-copy" onclick="copyToClipboard('link')">
           <i class="fas fa-copy fa-lg"></i>
         </button>
+        <span id="link">{{ .Url }}{{ .Link }}</span>
       </div>
     </div>
 
@@ -16,10 +16,10 @@
     <div class="text">
       Password
       <div class="text-copiable">
-        <span id="password">{{ .Password }}</span>
         <button class="button-copy" onclick="copyToClipboard('password')">
           <i class="fas fa-copy fa-lg"></i>
         </button>
+        <span id="password">{{ .Password }}</span>
       </div>
     </div>
 
@@ -29,10 +29,10 @@
     <div class="text">
       One click link
       <div class="text-copiable">
-        <span id="oneClickLink">{{ .Url }}{{ .Link }}#{{ .Password }}</span>
         <button class="button-copy" onclick="copyToClipboard('oneClickLink')">
           <i class="fas fa-copy fa-lg"></i>
         </button>
+        <span id="oneClickLink">{{ .Url }}{{ .Link }}#{{ .Password }}</span>
       </div>
     </div>
   <!-- </div> -->
