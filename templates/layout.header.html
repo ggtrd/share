@@ -6,14 +6,15 @@
 
   <link rel="icon" type="image/x-icon" href="../static/default-logo.png" />
 
-  <link rel="stylesheet" href="../static/main.css" />
+  <link rel="stylesheet" href="../static/css/variables.css" />
+  <link rel="stylesheet" href="../static/css/main.css" />
+  <link rel="stylesheet" href="../static/css/navigation.css" />
+
   <link rel="stylesheet" href="../static/custom/theme.css" />
 
-  <script type="text/javascript" src="../static/main.js"></script>
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-  />
+  <script type="text/javascript" src="../static/js/helper.js"></script>
+
+  <link rel="stylesheet" href="../static/dynamic/fonts/css/fontawesome.all.min.css">
 </head>
 
 <body>
@@ -39,65 +40,66 @@
         setDarkmode();
       });
 
+      // Set a color on current active page menu
+      const navigation = document.getElementById("navigation");
+      const navigationLinks = Array.from(navigation.querySelectorAll("a"));
+      navigationLinks.forEach((link = 'a.href') => {
+        if (link == document.URL) {
+          link.classList.add('active');
+        } 
+      });
+
       // Logo
-      var logo = document.getElementById("logo");
-      if (!checkUrl("/static/custom/logo.png")) {
-        // Create an object to be able to read the SVG from its file
-        let object = document.createElement("object");
-        object.setAttribute("type", "image/svg+xml");
-        object.setAttribute("data", "../static/default-logo.svg");
-
-        // Add the object under the logo placeholder
-        logo.appendChild(object);
-
-        // Get the SVG in the DOM to be able to change its color
-        let svg = logo.children[0]; // get the <img> inside the logo div
-        svg.addEventListener(
-          "load",
-          function () {
-            let item = svg.contentDocument.getElementById("svg");
-
-            // Trick to get the color from an item that is already used in the DOM to be able to apply it to the SVG
-            let elementThatHasColor =
-              document.getElementsByClassName("nav-link")[0];
-            let color = window
-              .getComputedStyle(elementThatHasColor)
-              .getPropertyValue("color");
-
-            item.style.fill = color;
-          },
-          false
-        );
+      var logo = document.getElementById('logo')
+      if (checkUrl("/static/custom/logo.png")) {
+        logoCustom = document.createElement('img');
+        logoCustom.src = "../static/custom/logo.png"
+        logo.appendChild(logoCustom);
+      } else if (checkUrl("/static/custom/logo.svg")) {
+        logoCustom = document.createElement('img');
+        logoCustom.src = "../static/custom/logo.svg"
+        logo.appendChild(logoCustom);
       } else {
-        let img = document.createElement("img");
-        img.setAttribute("src", "../static/custom/logo.png");
-        logo.appendChild(img);
+        logo.classList.add("default-logo");
       }
     };
   </script>
 
-  <div class="container-nav">
-    <a href="/" class="nav-item">
-      <div id="logo">
-        <!-- <img src="../static/default-logo.svg" id="logo-img"> -->
-      </div>
-    </a>
-
-    <a href="/file" class="nav-item">
-      <div class="nav-link">File</div>
-    </a>
-
-    <a href="/secret" class="nav-item">
-      <div class="nav-link">Secret</div>
-    </a>
-
-    <div class="nav-item right">
-      <div class="nav-link toggle">
+  <ul id="navigation" class="nav-ul">
+    <li>
+      <a id="logo" href="/"></a>
+    </li>
+    <li>
+      <a class="text" href="/password">
+        <i class="fa-solid fa-key"></i>
+        &nbsp; Password
+      </a>
+    </li>
+    <li>
+      <a class="text" href="/file">
+        <i class="fa-solid fa-file"></i>
+        &nbsp; File
+      </a>
+    </li>
+    <li>
+      <a class="text" href="/text">
+        <i class="fa-solid fa-pencil"></i>
+        &nbsp; Secure text
+      </a>
+    </li>
+    <li>
+      <a class="text" href="/snippet">
+        <i class="fa-solid fa-code"></i>
+        &nbsp; Snippet
+      </a>
+    </li>
+    <li class="right">
+      <div class="toggle">
         <input id="darkmode" type="checkbox" />
         <label for="darkmode" class="toggle-darkmode"></label>
       </div>
-    </div>
-  </div>
+    </li>
+  </ul>
 
   <div class="content">
     <div class="container">

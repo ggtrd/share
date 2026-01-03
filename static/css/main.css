@@ -1,0 +1,461 @@
+* {
+  font-family: "Lato", Helvetica, sans-serif;
+  line-height: 1.5;
+}
+
+body {
+  background-color: var(--lighter-color);
+}
+
+.dark {
+  background-color: color-mix(in srgb, #000, var(--color) 5%);
+}
+
+.dark > * > h1 {
+  color: var(--darker2-color);
+}
+
+.dark * .title {
+  color: var(--darker2-color);
+}
+
+.dark * .label {
+  color: var(--darker2-color);
+}
+
+.dark * .text {
+  color: var(--lighter2-color);
+}
+
+.dark * .text-box {
+  background-color: var(--darker3-color);
+}
+
+.dark * .button {
+  background-color: var(--darker2-color) !important;
+  color: var(--lighter2-color) !important;
+}
+
+.dark * .textarea {
+  background-color: transparent;
+  color: var(--lighter2-color) !important;
+  border-color: var(--darker-color) !important;
+}
+
+.dark * input[type="file"] {
+  border-color: var(--darker2-color) !important;
+  color: var(--lighter2-color) !important;
+}
+
+.dark * .container-file {
+  background-color: transparent !important;
+}
+
+.dark * .container-file:hover {
+  background-color: var(--darker-color) !important;
+}
+
+.dark * .container-file .text {
+  color: var(--lighter2-color) !important;
+}
+
+.dark * .container-file:hover .text {
+  color: var(--lighter2-color) !important;
+}
+
+.dark * .button-copy {
+  background-color: var(--lighter2-color);
+  outline-color: var(--lighter2-color);
+}
+
+.hidden {
+  visibility: hidden;
+}
+
+.visible {
+  visibility: visible;
+}
+
+.ghost {
+  /* This class is to hide an elem and make it not creating unwanted blank space */
+  z-index: -999;
+  visibility: hidden;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+
+  border: var(--debug);
+}
+
+.container > div {
+  width: var(--main-input-width);
+}
+
+.container-left {
+  text-align: left;
+
+  border: var(--debug);
+}
+
+.container-center-inline {
+  text-align: center;
+  border: var(--debug);
+}
+
+.container-center-inline > div {
+  display: inline-block;
+  margin-left: 30px;
+  margin-right: 30px;
+
+  text-align: left;
+
+  border: var(--debug);
+}
+
+.content {
+  min-height: calc(100vh - 150px);
+}
+
+.footer {
+  height: 24px;
+  margin-top: 0;
+
+  left: 25%;
+  right: 25%;
+  text-align: center;
+
+  border: var(--debug);
+}
+
+.footer-item {
+  text-decoration: none !important;
+}
+
+.footer-link {
+  padding-top: 4px;
+  padding-bottom: 4px;
+
+  text-align: center;
+
+  color: color-mix(in srgb, #000, var(--lighter2-color) 80%);
+  font-weight: bold;
+  font-size: 12px;
+}
+
+.footer-link:hover {
+  color: color-mix(in srgb, #000, var(--lighter2-color) 60%);
+}
+
+h1 {
+  font-size: 30px !important;
+  margin: 0 0 20px 0;
+}
+
+.title {
+  color: var(--color);
+  font-weight: bold;
+  font-size: 22px;
+}
+
+.label {
+  color: var(--color);
+  font-weight: bold;
+  font-size: 18px;
+  text-align: left !important;
+}
+
+.text {
+  color: var(--darker-color);
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.text-box {
+  width: var(--main-input-width);
+  padding: 16px;
+  margin-left: auto;
+  margin-right: auto;
+
+  border-radius: var(--radius);
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+
+  background-color: var(--lighter2-color);
+
+  word-wrap: break-word;
+}
+
+* > .button-copy {
+  float: right;
+  margin: -11px;
+  margin-right: -16px;
+}
+
+.button-copy {
+  width: 40px;
+  height: 40px;
+
+  text-align: center;
+  vertical-align: sub;
+
+  color: var(--darker-color);
+  background-color: var(--lighter-color);
+  border: none;
+  border-radius: var(--radius);
+}
+
+.button-copy:hover {
+  color: var(--color);
+  cursor: pointer;
+}
+
+.button {
+  width: var(--main-input-width);
+  padding: 24px 36px 24px 36px;
+
+  border-radius: var(--radius);
+  border: none;
+  background-color: var(--color);
+  color: var(--lighter-color);
+
+  text-align: center !important;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.button:hover {
+  background-color: var(--darker2-color);
+  cursor: pointer;
+}
+
+.button:active {
+  background-color: var(--darker-color);
+}
+
+input, .text-copiable {
+  display: block;
+  padding: 12px 20px 12px 20px;
+
+  border-radius: var(--radius);
+  border: var(--border-grey);
+
+  background-color: var(--lighter-color);
+  color: var(--darker-color);
+
+  font-weight: bold;
+  font-size: 16px;
+
+  outline: none;
+  box-sizing: border-box;
+}
+
+input {
+  width: 250px;
+}
+
+.text-copiable {
+  border: var(--border-grey);
+
+  font-weight: bold;
+  font-size: 12px;
+}
+
+.dark * input, .dark * .text-copiable {
+  color: var(--darker-color) !important;
+  background-color: var(--lighter2-color);
+}
+
+.main-input-width {
+    width: var(--main-input-width);
+}
+
+.textarea {
+  width: var(--main-input-width);
+  height: var(--main-input-height);
+  max-width: 100%;
+  padding: 12px 20px;
+  box-sizing: border-box;
+
+  margin: none;
+
+  background-color: var(--lighter-color);
+  border: var(--border-grey);
+  border-radius: var(--radius);
+
+  font-weight: bold;
+  font-size: 18px;
+
+  resize: none;
+  outline: none;
+
+  overflow: hidden;
+}
+
+.textarea:focus {
+  border-color: var(--color) !important;
+}
+
+.notification {
+  z-index: 999;
+  position: fixed;
+
+  top: 10px;
+  left: 25%;
+  right: 25%;
+  margin-left: auto;
+  margin-right: auto;
+
+  padding: 12px 20px;
+  width: 30%;
+
+  border: var(--border-size) solid;
+  border-radius: var(--radius);
+
+  color: var(--lighter-color);
+  font-weight: bold;
+  font-size: 16px;
+  text-align: center;
+}
+
+.notification-error {
+  border-color: var(--error-color) !important;
+  background-color: var(--error-color) !important;
+}
+
+.notification-info {
+  border-color: var(--color) !important;
+  background-color: var(--color) !important;
+}
+
+.container-progress {
+  display: block;
+  text-align: left;
+
+  width: var(--main-input-width);
+  height: var(--main-input-height);
+
+  left: 25%;
+  right: 25%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: calc(var(--main-input-height) * -1);
+
+  border: var(--debug);
+}
+
+.container-progress > .progress {
+  display: inline-block;
+  vertical-align: top;
+
+  height: 100%;
+  background: var(--lighter2-color);
+
+  border-radius: var(--radius);
+}
+
+.dark * .container-progress > .progress {
+  background: var(--darker-color);
+}
+
+.container-file {
+  display: block;
+
+  width: var(--main-input-width);
+  height: var(--main-input-height);
+
+  left: 25%;
+  right: 25%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 0;
+  margin-bottom: calc(var(--border-size) * -2);
+
+  background-color: var(--lighter-color);
+  border-radius: var(--radius);
+  outline: var(--border-size) var(--color) dashed;
+
+  cursor: pointer;
+}
+
+.container-file > div {
+  width: var(--main-input-width);
+  height: var(--main-input-height);
+
+  max-width: 100%;
+
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.container-file:hover,
+.container-file.drag-active {
+  background-color: var(--lighter2-color);
+  outline: var(--border-size) var(--color) dashed;
+}
+
+input[type="file"] {
+  /* border-radius: var(--radius);
+  cursor: pointer; */
+  display: none;
+
+  border: var(--debug);
+}
+
+input[type="file"]::file-selector-button {
+  width: 0px;
+  height: 0px;
+  margin: 0px;
+  padding: 0px;
+
+  background-color: transparent;
+  cursor: pointer;
+
+  border: var(--debug);
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+}
+input[type="number"] {
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+
+.input-number {
+  display: inline-flex;
+  overflow: hidden;
+}
+
+.input-number-button {
+  position: relative;
+  right: 80px;
+
+  width: 12px;
+  height: 12px;
+  padding: 12px;
+  margin: auto;
+
+  color: var(--darker-color);
+
+  border-radius: var(--radius);
+  border: none;
+  cursor: pointer;
+  user-select: none;
+
+  font-size: 10px;
+  font-weight: bold;
+}
+
+.input-number-button:hover {
+  color: var(--lighter-color);
+  background-color: var(--darker2-color);
+}
+

@@ -1,5 +1,5 @@
 {{ template "layout.header.html" . }}
-<h1 class="title">Share a file</h1>
+<div class="text-box">
 
 <form action="/file/shared" method="post" enctype="multipart/form-data" id="form">
 
@@ -17,11 +17,10 @@
 		<div id="progressbar" class="progress text"></div>
 	</div>
 
+	<br>
 
 	{{ template "layout.form.share.html" . }}
 </form>
-
-
 
 <script>
 	// This trick permit to center the name of the file in the drop area
@@ -44,7 +43,6 @@
 		myFile.files = event.dataTransfer.files; // Get the file from event to apply it on the input
 		uploadLabel.innerHTML = event.dataTransfer.files[0].name // Edit the text of the label
 	});
-
 
 
 	var submit = document.getElementById('submit');
@@ -104,5 +102,5 @@
 	}
 </script>
 
-
+</div>
 {{ template "layout.footer.html" . }}

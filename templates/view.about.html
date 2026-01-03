@@ -1,22 +1,36 @@
 {{ template "layout.header.html" . }}
-<h1 class="title">About</h1>
-
-<div class="container-center-inline">
-  <div class="container-left">
-    <div class="label">
-      Project
-      <div class="text text-box">
-        https://github.com/ggtrd/share
-      </div>
+<div class="container-left text-box">
+  <div class="text">
+    Project
+    <div class="text-copiable main-input-width">
+      <a target="_blank" href="https://github.com/ggtrd/share">https://github.com/ggtrd/share</a>
     </div>
+  </div>
 
-    <br/>
+  <br>
 
-    <div class="label">
-      Version
-      <div class="text text-box">
-        {{ .Version }}
-      </div>
+  <div class="text">
+    Version
+    <div class="text-copiable main-input-width">
+      {{ .Version }}
+    </div>
+  </div>
+
+  <br>
+
+  <div class="text">
+    Found a bug ?
+    <div class="text-copiable main-input-width">
+      Open an issue at <a target="_blank" href="https://github.com/ggtrd/share/issues">https://github.com/ggtrd/share/issues</a>
+    </div>
+  </div>
+
+  <br>
+
+  <div class="text">
+    Want to contribute ?
+    <div class="text-copiable main-input-width">
+      Any improvement is welcomed at <a target="_blank" href="https://github.com/ggtrd/share/pulls">https://github.com/ggtrd/share/pulls</a>
     </div>
   </div>
 </div>

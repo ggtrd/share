@@ -1,17 +1,14 @@
 {{ template "layout.header.html" . }}
-
-<h1 class="title" id="title">Unlock share</h1>
+<div class="container-left text-box">
 
 <div id="future">
     <form id="form">
-        <div class="container-center-inline">
             <div>
-                <div class="label">
+                <div class="text">
                     <label for="givenPassword">Password</label>
                 </div>
-                <input id="givenPassword" type="password" />
+                <input id="givenPassword" type="password" class="main-input-width" />
             </div>
-        </div>
         <br>
         <br>
         <input type="submit" value="Unlock" class="button">
@@ -63,13 +60,32 @@
                     let result = await response.json();
                     let shareContent;
 
-                    // Just to replace the title displayed on the page
-                    let title = document.getElementById('title');
-                    title.innerHTML = "Share content";
+                    // // Just to replace the title displayed on the page
+                    // let title = document.getElementById('title');
+                    // title.innerHTML = "Share content";
 
+                    shareContent = document.createElement('div');
+                    shareContent.className = 'text-copiable';
                     if (result.shareContentType === "secret") {
-                        shareContent = document.createElement('p');
-                        shareContent.innerHTML = result.shareContentValue;
+
+                        // Span element that contain the text (to avoid copy/paste button to copy entire HTML div)
+                        realText = document.createElement('span');
+                        realText.innerHTML = result.shareContentValue;
+                        realText.id = "shareContent";
+
+                        // Copy/paste button
+                        copyButton = document.createElement('button');
+                        copyButton.className = 'button-copy';
+                        copyButtonIcon = document.createElement('i');
+                        copyButtonIcon.className = 'fas fa-copy fa-lg';
+                        copyButton.addEventListener("click", function () {
+                            copyToClipboard(realText.id);
+                        });
+
+                        // Display elements in order
+                        shareContent.appendChild(copyButton);
+                        copyButton.appendChild(copyButtonIcon);
+                        shareContent.appendChild(realText);
                     }
 
                     if (result.shareContentType === "file") {
@@ -79,12 +95,8 @@
                         shareFile.innerHTML = fileName;
                         shareFile.href = result.shareContentValue;
 
-                        shareContent = document.createElement('p');
                         shareContent.appendChild(shareFile);
                     }
-
-                    shareContent.className = 'text';
-                    shareContent.className = 'text-box';
 
                     future.replaceWith(shareContent)
             } catch (e) {
@@ -115,6 +127,7 @@
             }
         }
     </script>
+</div>
 </div>
 
 {{ template "layout.footer.html" . }}

@@ -7,6 +7,13 @@ function checkUrl(url) {
 }
 
 
+// Get current browsed page
+function getCurrentUrlPage(url) {
+	var page = document.URL.split('/')[3]
+	return page;
+}
+
+
 // Shortcut to get element
 function element(element) {
 	return document.getElementById(element);
@@ -56,4 +63,17 @@ function timeLocalToUtc(dateLocalToConvert) {
 	const dateUtcFormatted = dateUtc.toISOString().slice(0, 16).toString();
 
 	return dateUtcFormatted
+}
+
+
+// Copy content of a div (from its ID) to clipboard
+function copyToClipboard(div) {
+    let content = document.getElementById(div).innerText;
+
+    // Replace unwanted HTML characters
+    content = content.replace(/\u00A0/g, ' ');
+
+    navigator.clipboard.writeText(content)
+        .then(() => displayInfo("Copied!"))
+        .catch(err => displayError("Failed to copy"));
 }

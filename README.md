@@ -46,7 +46,8 @@ Share is a web service that allows to securely share files and secrets to anyone
 	```
 * Install Javascript dependencies
 	```
-	curl --create-dirs -Lk https://unpkg.com/openpgp@latest/dist/openpgp.min.js -o static/dynamic/openpgp.min.js
+	curl --create-dirs -Lk https://unpkg.com/openpgp@latest/dist/openpgp.min.js -o static/dynamic/openpgp.min.js \
+	curl --create-dirs -Lk https://unpkg.com/slate@latest/dist/index.js -o static/dynamic/slate.js \
 	```
 * Initialize database
 	```
@@ -100,14 +101,13 @@ Share is a web service that allows to securely share files and secrets to anyone
 
 ### Logo
 
-* Drop an image at `/static/custom/logo.png`
+* Drop an image at `/static/custom/logo.png` or `/static/custom/logo.svg`
 * Overwrite logo size
 
 ```static/custom/theme.css
-#logo>img {
-    max-width: 200px;
+:root {
+    --logo-height: 60px;
 }
-
 ```
 
 ### Color
@@ -117,15 +117,18 @@ Share is a web service that allows to securely share files and secrets to anyone
 
 ```static/custom/theme.css
 :root {
-    --color: #000000;
+    --color: #4cd137;
 }
 ```
 
 <br>
 
-## Reverse proxy example
+## Advanced
+### Instance details
+Details (such as version) are available at URL/about
 
-### Apache HTTP Server with authentication on share creation
+### Reverse proxy example
+> Apache HTTP Server with authentication on share creation
 
 ```
 sudo a2enmod ssl proxy proxy_http
