@@ -182,12 +182,13 @@ h1 {
   margin-right: auto;
 
   border-radius: var(--radius);
-  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
-
   background-color: var(--lighter2-color);
+
+  box-shadow: var(--shadow-extern);
 
   word-wrap: break-word;
 }
+
 
 * > .button-copy {
   float: right;
@@ -221,6 +222,8 @@ h1 {
   border: none;
   background-color: var(--color);
   color: var(--lighter-color);
+
+  box-shadow: var(--shadow-intern);
 
   text-align: center !important;
   font-weight: bold;
