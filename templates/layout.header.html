@@ -19,25 +19,32 @@
 
 <body>
   <script>
-    function getDarkmodeStatus() {
+    function getDarkmodeVariable() {
       var boolean = localStorage.getItem("darkmode") === "true";
       return boolean;
     }
 
-    function setDarkmode() {
-      document.body.classList.toggle("dark", getDarkmodeStatus());
+    function setDarkmode(boolean) {
+      document.body.classList.toggle("dark", boolean);
+      localStorage.setItem("darkmode", boolean);
     }
 
-    // Set the darkmode when entering navigation
-    setDarkmode();
+    // Set dark/light modes according to computer theme
+    // Fallback to darkmode localStorage variable if it exists
+    if (localStorage.getItem("darkmode") == null) {
+      if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        setDarkmode(true);
+      }
+    } else {
+      setDarkmode(getDarkmodeVariable());
+    }
 
     window.onload = function () {
-      // Darkmode
+      // Toggle darkmode checkbox according to current mode
       const darkmode = document.getElementById("darkmode");
-      darkmode.checked = getDarkmodeStatus(); // Check the checkbox according to what's stored in the session storage
+      darkmode.checked = getDarkmodeVariable(); // Toggle checkbox
       darkmode.addEventListener("change", (event) => {
-        localStorage.setItem("darkmode", event.target.checked);
-        setDarkmode();
+        setDarkmode(event.target.checked);
       });
 
       // Set a color on current active page menu
