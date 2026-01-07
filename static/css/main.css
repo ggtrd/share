@@ -244,7 +244,9 @@ input, .text-copiable {
   padding: 12px 20px 12px 20px;
 
   border-radius: var(--radius);
-  border: var(--border-grey);
+  /* border: var(--border-grey); */
+  border: none;
+  box-shadow: var(--shadow-intern);
 
   background-color: var(--lighter-color);
   color: var(--darker-color);

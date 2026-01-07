@@ -7,8 +7,8 @@
   --darker-color: color-mix(in srgb, #000, var(--color) 40%);
   --darker2-color: color-mix(in srgb, #000, var(--color) 80%);
   --darker3-color: color-mix(in srgb, #000, var(--color) 10%);
-  --lighter2-color: color-mix(in srgb, #fff, var(--color) 10%);
-  --lighter-color: color-mix(in srgb, #fff, var(--color) 40%);
+  --lighter-color: color-mix(in srgb, #fff, var(--color) 10%);
+  --lighter2-color: color-mix(in srgb, #fff, var(--color) 40%);
   --error-color: #ff4141;
   /* --debug: 1px solid red; */
 
@@ -25,5 +25,6 @@
   --logo-height: var(--navigation-height);
 
   --shadow-extern: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px, rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;
-  --shadow-intern: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+  /* --shadow-intern: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset; */
+  --shadow-intern: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
 }

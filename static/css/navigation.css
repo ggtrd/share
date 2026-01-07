@@ -34,6 +34,7 @@
 .nav-ul li:hover .text {
   background-color: var(--color);
   color: var(--lighter-color);
+  box-shadow: var(--shadow-intern);
 }
 
 .dark * li:hover .text {
