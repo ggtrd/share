@@ -42,11 +42,58 @@
     }
 
     window.onload = function () {
+
+      // Set custom logo or fallback on default logo
+      function setLogoImage(path) {
+        var logo = document.getElementById('logo')
+        logoCustom = document.createElement('img');
+        logoCustom.src = path
+        logo.appendChild(logoCustom);
+      }
+
+      // Display default or custom logo according to darkmode
+      //  - darkmode true  => custom-logo-darkmode (png -> svg) -> custom-logo (png -> svg) -> default-logo
+      //  - darkmode false => custom-logo (png -> svg) -> default-logo
+      function setLogo() {
+        if (getDarkmodeVariable()) {
+          if (checkUrl("/static/custom/logo-darkmode.png")) {
+            setLogoImage("../static/custom/logo-darkmode.png");
+          } else if (checkUrl("/static/custom/logo-darkmode.svg")) {
+            setLogoImage("../static/custom/logo-darkmode.svg");
+          } else if (checkUrl("/static/custom/logo.png")) {
+            setLogoImage("../static/custom/logo.png");
+          } else if (checkUrl("/static/custom/logo.svg")) {
+            setLogoImage("../static/custom/logo.svg");
+          } else {
+            logo.classList.add("default-logo");
+          }
+        } else {
+          if (checkUrl("/static/custom/logo.png")) {
+            setLogoImage("../static/custom/logo.png");
+          } else if (checkUrl("/static/custom/logo.svg")) {
+            setLogoImage("../static/custom/logo.svg");
+          } else {
+            logo.classList.add("default-logo");
+          }
+        }
+      }
+
+      // Display logo a first time
+      setLogo()
+
       // Toggle darkmode checkbox according to current mode
       const darkmode = document.getElementById("darkmode");
       darkmode.checked = getDarkmodeVariable(); // Toggle checkbox
       darkmode.addEventListener("change", (event) => {
         setDarkmode(event.target.checked);
+
+        // Change logo according to darkmode
+        var logo = document.getElementById('logo')
+        var existingLogo = logo.children[0]
+        if (existingLogo) {
+          existingLogo.remove();
+          setLogo()
+        }
       });
 
       // Set a color on current active page menu
@@ -58,19 +105,6 @@
         } 
       });
 
-      // Logo
-      var logo = document.getElementById('logo')
-      if (checkUrl("/static/custom/logo.png")) {
-        logoCustom = document.createElement('img');
-        logoCustom.src = "../static/custom/logo.png"
-        logo.appendChild(logoCustom);
-      } else if (checkUrl("/static/custom/logo.svg")) {
-        logoCustom = document.createElement('img');
-        logoCustom.src = "../static/custom/logo.svg"
-        logo.appendChild(logoCustom);
-      } else {
-        logo.classList.add("default-logo");
-      }
 
       // Remove href from logo to avoid miss click in small screens
       removeHrefFromLogo()
