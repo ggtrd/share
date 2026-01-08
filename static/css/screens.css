@@ -1,0 +1,79 @@
+@media only screen and (min-width : 0px) and (max-width : 320px) {
+  :root {
+    --main-input-width: 140px;
+  }
+}
+
+@media only screen and (min-width : 320px) and (max-width : 480px) {
+  :root {
+    --main-input-width: 300px;
+  }
+}
+
+@media only screen and (min-width : 480px) and (max-width : 768px) {
+  :root {
+    --main-input-width: 420px;
+  }
+}
+
+@media only screen and (min-width : 768px) and (max-width : 1024px) {
+  :root {
+    --main-input-width: 720px;
+  }
+}
+
+#nav-mobile-icon {
+  display: none;
+}
+
+@media screen and (max-width: 800px) {
+  #nav-mobile-icon {
+    display: block;
+    position: fixed;
+    padding-top: 20px;
+    padding-bottom: 40px;
+    padding-left: 200px;
+    padding-right: 20px;
+    right: 0;
+    top: 0;
+  }
+
+  .nav-ul li {
+    float: none;
+  }
+/* 
+  .nav-ul li.toggle {
+    padding: 0;
+  } */
+
+  .nav-ul li:not(:first-child) {
+    display: none;
+  }
+
+  .nav-ul.responsive-menu {
+    position: relative;
+  }
+
+  .nav-ul.responsive-menu .icon {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  .nav-ul.responsive-menu li {
+    float: none;
+    display: block;
+    text-align: left;
+  }
+
+  .container-center-inline > div {
+    margin-top: 0px;
+    margin-bottom: 30px;
+    margin-left: 0px;
+    margin-right: 0px;
+  }
+
+  input {
+    width: var(--main-input-width);
+    font-size: 10px;
+  }
+}
