@@ -2,6 +2,7 @@
 
 <head>
   <meta charset="UTF-8" />
+
   <title>Share</title>
 
   <link rel="icon" type="image/x-icon" href="../static/default-logo.png" />
@@ -9,6 +10,7 @@
   <link rel="stylesheet" href="../static/css/variables.css" />
   <link rel="stylesheet" href="../static/css/main.css" />
   <link rel="stylesheet" href="../static/css/navigation.css" />
+  <link rel="stylesheet" href="../static/css/screens.css" />
 
   <link rel="stylesheet" href="../static/custom/theme.css" />
 
@@ -69,7 +71,35 @@
       } else {
         logo.classList.add("default-logo");
       }
+
+      // Remove href from logo to avoid miss click in small screens
+      removeHrefFromLogo()
     };
+
+
+    // Remove href from logo to avoid miss click in small screens
+    function removeHrefFromLogo() {
+      var logo = document.getElementById("logo")
+      if (window.innerWidth <= 800) {
+        logo.removeAttribute("href");
+      } else {
+        logo.href = '/';
+      }
+    }
+    window.onresize = (event) => {
+      removeHrefFromLogo()
+    }
+
+
+    // Display a icon to open menu for small screens
+    function smallScreenMenu() {
+      var navigation = document.getElementById("navigation");
+      if (navigation.className === "nav-ul") {
+        navigation.classList.add("responsive-menu");
+      } else {
+        navigation.className = "nav-ul";
+      }
+    }
   </script>
 
   <ul id="navigation" class="nav-ul">
@@ -107,6 +137,10 @@
       </div>
     </li>
   </ul>
+
+  <a href="javascript:void(0);" id="nav-mobile-icon" class="text" onclick="smallScreenMenu()">
+    <i class="fa fa-bars"></i>
+  </a>
 
   <div class="content">
     <div class="container">

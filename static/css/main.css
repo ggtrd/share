@@ -1,6 +1,7 @@
 * {
   font-family: "Lato", Helvetica, sans-serif;
   line-height: 1.5;
+  transition: ease 0.2s;
 }
 
 body {
@@ -74,15 +75,6 @@ body {
 
 .visible {
   visibility: visible;
-}
-
-.ghost {
-  /* This class is to hide an elem and make it not creating unwanted blank space */
-  z-index: -999;
-  visibility: hidden;
-  position: fixed;
-  bottom: 0;
-  left: 0;
 }
 
 .container {
@@ -172,7 +164,7 @@ h1 {
 .text {
   color: var(--darker-color);
   font-weight: bold;
-  font-size: 16px;
+  font-size: 14px;
 }
 
 .text-box {
@@ -219,7 +211,7 @@ h1 {
   padding: 24px 36px 24px 36px;
 
   border-radius: var(--radius);
-  border: none;
+  border: var(--border-grey);
   background-color: var(--color);
   color: var(--lighter-color);
 
@@ -260,6 +252,11 @@ input, .text-copiable {
 
 input {
   width: 250px;
+  border: var(--border-grey);
+}
+
+.input:focus {
+  border-color: var(--color) !important;
 }
 
 .text-copiable {
