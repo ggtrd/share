@@ -1,6 +1,7 @@
 * {
   font-family: "Lato", Helvetica, sans-serif;
   line-height: 1.5;
+  transition: ease 0.2s;
 }
 
 body {
@@ -39,7 +40,11 @@ body {
 .dark * .textarea {
   background-color: transparent;
   color: var(--lighter2-color) !important;
-  border-color: var(--darker-color) !important;
+  border-color: var(--color) !important;
+}
+
+.dark * .textarea:focus {
+  border-color: var(--lighter2-color) !important;
 }
 
 .dark * input[type="file"] {
@@ -65,7 +70,6 @@ body {
 
 .dark * .button-copy {
   background-color: var(--lighter2-color);
-  outline-color: var(--lighter2-color);
 }
 
 .hidden {
@@ -74,15 +78,6 @@ body {
 
 .visible {
   visibility: visible;
-}
-
-.ghost {
-  /* This class is to hide an elem and make it not creating unwanted blank space */
-  z-index: -999;
-  visibility: hidden;
-  position: fixed;
-  bottom: 0;
-  left: 0;
 }
 
 .container {
@@ -172,7 +167,7 @@ h1 {
 .text {
   color: var(--darker-color);
   font-weight: bold;
-  font-size: 16px;
+  font-size: 14px;
 }
 
 .text-box {
@@ -181,10 +176,11 @@ h1 {
   margin-left: auto;
   margin-right: auto;
 
+  border: var(--border-grey);
   border-radius: var(--radius);
-  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
-
   background-color: var(--lighter2-color);
+
+  box-shadow: var(--shadow-intern);
 
   word-wrap: break-word;
 }
@@ -197,7 +193,7 @@ h1 {
 
 .button-copy {
   width: 40px;
-  height: 40px;
+  height: 36px;
 
   text-align: center;
   vertical-align: sub;
@@ -218,9 +214,11 @@ h1 {
   padding: 24px 36px 24px 36px;
 
   border-radius: var(--radius);
-  border: none;
+  border: var(--border-grey);
   background-color: var(--color);
   color: var(--lighter-color);
+
+  box-shadow: var(--shadow-intern);
 
   text-align: center !important;
   font-weight: bold;
@@ -242,6 +240,7 @@ input, .text-copiable {
 
   border-radius: var(--radius);
   border: var(--border-grey);
+  box-shadow: var(--shadow-intern);
 
   background-color: var(--lighter-color);
   color: var(--darker-color);
@@ -257,6 +256,10 @@ input {
   width: 250px;
 }
 
+.input:focus {
+  border-color: var(--color) !important;
+}
+
 .text-copiable {
   border: var(--border-grey);
 
@@ -265,8 +268,8 @@ input {
 }
 
 .dark * input, .dark * .text-copiable {
-  color: var(--darker-color) !important;
-  background-color: var(--lighter2-color);
+  color: var(--lighter2-color);
+  background-color: var(--darker2-color);
 }
 
 .main-input-width {
@@ -397,7 +400,6 @@ input {
 .container-file:hover,
 .container-file.drag-active {
   background-color: var(--lighter2-color);
-  outline: var(--border-size) var(--color) dashed;
 }
 
 input[type="file"] {
@@ -459,3 +461,6 @@ input[type="number"] {
   background-color: var(--darker2-color);
 }
 
+.dark * .input-number-button {
+  color: var(--lighter2-color);
+}

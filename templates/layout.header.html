@@ -2,6 +2,7 @@
 
 <head>
   <meta charset="UTF-8" />
+
   <title>Share</title>
 
   <link rel="icon" type="image/x-icon" href="../static/default-logo.png" />
@@ -9,6 +10,7 @@
   <link rel="stylesheet" href="../static/css/variables.css" />
   <link rel="stylesheet" href="../static/css/main.css" />
   <link rel="stylesheet" href="../static/css/navigation.css" />
+  <link rel="stylesheet" href="../static/css/screens.css" />
 
   <link rel="stylesheet" href="../static/custom/theme.css" />
 
@@ -19,25 +21,32 @@
 
 <body>
   <script>
-    function getDarkmodeStatus() {
+    function getDarkmodeVariable() {
       var boolean = localStorage.getItem("darkmode") === "true";
       return boolean;
     }
 
-    function setDarkmode() {
-      document.body.classList.toggle("dark", getDarkmodeStatus());
+    function setDarkmode(boolean) {
+      document.body.classList.toggle("dark", boolean);
+      localStorage.setItem("darkmode", boolean);
     }
 
-    // Set the darkmode when entering navigation
-    setDarkmode();
+    // Set dark/light modes according to computer theme
+    // Fallback to darkmode localStorage variable if it exists
+    if (localStorage.getItem("darkmode") == null) {
+      if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        setDarkmode(true);
+      }
+    } else {
+      setDarkmode(getDarkmodeVariable());
+    }
 
     window.onload = function () {
-      // Darkmode
+      // Toggle darkmode checkbox according to current mode
       const darkmode = document.getElementById("darkmode");
-      darkmode.checked = getDarkmodeStatus(); // Check the checkbox according to what's stored in the session storage
+      darkmode.checked = getDarkmodeVariable(); // Toggle checkbox
       darkmode.addEventListener("change", (event) => {
-        localStorage.setItem("darkmode", event.target.checked);
-        setDarkmode();
+        setDarkmode(event.target.checked);
       });
 
       // Set a color on current active page menu
@@ -62,7 +71,35 @@
       } else {
         logo.classList.add("default-logo");
       }
+
+      // Remove href from logo to avoid miss click in small screens
+      removeHrefFromLogo()
     };
+
+
+    // Remove href from logo to avoid miss click in small screens
+    function removeHrefFromLogo() {
+      var logo = document.getElementById("logo")
+      if (window.innerWidth <= 800) {
+        logo.removeAttribute("href");
+      } else {
+        logo.href = '/';
+      }
+    }
+    window.onresize = (event) => {
+      removeHrefFromLogo()
+    }
+
+
+    // Display a icon to open menu for small screens
+    function smallScreenMenu() {
+      var navigation = document.getElementById("navigation");
+      if (navigation.className === "nav-ul") {
+        navigation.classList.add("responsive-menu");
+      } else {
+        navigation.className = "nav-ul";
+      }
+    }
   </script>
 
   <ul id="navigation" class="nav-ul">
@@ -93,13 +130,15 @@
         &nbsp; Snippet
       </a>
     </li>
-    <li class="right">
-      <div class="toggle">
-        <input id="darkmode" type="checkbox" />
-        <label for="darkmode" class="toggle-darkmode"></label>
-      </div>
+    <li class="right toggle">
+      <input id="darkmode" type="checkbox" />
+      <label for="darkmode" class="toggle-darkmode"></label>
     </li>
   </ul>
+
+  <a href="javascript:void(0);" id="nav-mobile-icon" class="text" onclick="smallScreenMenu()">
+    <i class="fa fa-bars"></i>
+  </a>
 
   <div class="content">
     <div class="container">

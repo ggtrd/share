@@ -95,7 +95,19 @@
                         shareFile.innerHTML = fileName;
                         shareFile.href = result.shareContentValue;
 
+                        // Download button
+                        downloadButton = document.createElement('button');
+                        downloadButton.className = 'button-copy';
+                        downloadButtonIcon = document.createElement('i');
+                        downloadButtonIcon.className = 'fas fa-download fa-lg';
+                        downloadButton.addEventListener("click", function () {
+                            result.shareContentValue;
+                        });
+
+                        // Display elements in order (button is inside the link)
                         shareContent.appendChild(shareFile);
+                        shareFile.appendChild(downloadButton);
+                        downloadButton.appendChild(downloadButtonIcon);
                     }
 
                     future.replaceWith(shareContent)

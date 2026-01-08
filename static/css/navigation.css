@@ -2,8 +2,11 @@
   margin-left: 0;
   margin-right: 0;
   margin-top: 0;
-  margin-bottom: 30px;
-  padding: 0;
+  margin-bottom: 0px;
+  padding-left: 0;
+  padding-right: 0;
+  padding-top: 0;
+  padding-bottom: 30px;
 
   list-style-type: none;
   overflow: hidden;
@@ -31,6 +34,7 @@
 .nav-ul li:hover .text {
   background-color: var(--color);
   color: var(--lighter-color);
+  box-shadow: var(--shadow-intern);
 }
 
 .dark * li:hover .text {
@@ -61,7 +65,7 @@
   border: var(--debug);
 }
 
-.nav-ul li .toggle {
+.nav-ul li.toggle {
   padding-left: 16px;
   padding-right: 16px;
   padding-top: 16px;
@@ -74,6 +78,8 @@
 
 .active {
   background-color: var(--lighter2-color);
+  box-shadow: var(--shadow-intern);
+  outline: var(--border-grey);
 }
 
 .dark * .active {
@@ -153,3 +159,4 @@
 .toggle-darkmode {
   margin-top: 6px;
 }
+
