@@ -65,7 +65,7 @@
   border: var(--debug);
 }
 
-.nav-ul li .toggle {
+.nav-ul li.toggle {
   padding-left: 16px;
   padding-right: 16px;
   padding-top: 16px;
@@ -79,6 +79,7 @@
 .active {
   background-color: var(--lighter2-color);
   box-shadow: var(--shadow-intern);
+  outline: var(--border-grey);
 }
 
 .dark * .active {

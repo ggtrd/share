@@ -6,7 +6,7 @@
 
   --darker-color: color-mix(in srgb, #000, var(--color) 40%);
   --darker2-color: color-mix(in srgb, #000, var(--color) 80%);
-  --darker3-color: color-mix(in srgb, #000, var(--color) 10%);
+  --darker3-color: color-mix(in srgb, #000, var(--color) 20%);
   --lighter-color: color-mix(in srgb, #fff, var(--color) 10%);
   --lighter2-color: color-mix(in srgb, #fff, var(--color) 40%);
   --error-color: #ff4141;
@@ -14,7 +14,7 @@
 
   --radius: 12px;
   --border-size: 2px;
-  --border-grey: 2px solid var(--lighter-color);
+  --border-grey: var(--border-size) #fff solid;
 
   --main-input-width: 1000px;
   --main-input-height: 200px;
@@ -26,5 +26,9 @@
 
   --shadow-extern: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px, rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;
   /* --shadow-intern: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset; */
-  --shadow-intern: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+  --shadow-intern: rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+}
+
+.dark * {
+  --border-grey: var(--border-size) #000 solid;
 }

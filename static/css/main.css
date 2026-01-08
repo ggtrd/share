@@ -40,7 +40,11 @@ body {
 .dark * .textarea {
   background-color: transparent;
   color: var(--lighter2-color) !important;
-  border-color: var(--darker-color) !important;
+  border-color: var(--color) !important;
+}
+
+.dark * .textarea:focus {
+  border-color: var(--lighter2-color) !important;
 }
 
 .dark * input[type="file"] {
@@ -66,7 +70,6 @@ body {
 
 .dark * .button-copy {
   background-color: var(--lighter2-color);
-  outline-color: var(--lighter2-color);
 }
 
 .hidden {
@@ -173,14 +176,14 @@ h1 {
   margin-left: auto;
   margin-right: auto;
 
+  border: var(--border-grey);
   border-radius: var(--radius);
   background-color: var(--lighter2-color);
 
-  box-shadow: var(--shadow-extern);
+  box-shadow: var(--shadow-intern);
 
   word-wrap: break-word;
 }
-
 
 * > .button-copy {
   float: right;
@@ -190,7 +193,7 @@ h1 {
 
 .button-copy {
   width: 40px;
-  height: 40px;
+  height: 36px;
 
   text-align: center;
   vertical-align: sub;
@@ -236,8 +239,7 @@ input, .text-copiable {
   padding: 12px 20px 12px 20px;
 
   border-radius: var(--radius);
-  /* border: var(--border-grey); */
-  border: none;
+  border: var(--border-grey);
   box-shadow: var(--shadow-intern);
 
   background-color: var(--lighter-color);
@@ -252,7 +254,6 @@ input, .text-copiable {
 
 input {
   width: 250px;
-  border: var(--border-grey);
 }
 
 .input:focus {
@@ -267,8 +268,8 @@ input {
 }
 
 .dark * input, .dark * .text-copiable {
-  color: var(--darker-color) !important;
-  background-color: var(--lighter2-color);
+  color: var(--lighter2-color);
+  background-color: var(--darker2-color);
 }
 
 .main-input-width {
@@ -399,7 +400,6 @@ input {
 .container-file:hover,
 .container-file.drag-active {
   background-color: var(--lighter2-color);
-  outline: var(--border-size) var(--color) dashed;
 }
 
 input[type="file"] {
@@ -461,3 +461,6 @@ input[type="number"] {
   background-color: var(--darker2-color);
 }
 
+.dark * .input-number-button {
+  color: var(--lighter2-color);
+}
