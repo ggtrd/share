@@ -24,16 +24,28 @@
 
 #nav-mobile-icon {
   display: none;
+  background-color: transparent !important;
+}
+
+#nav-mobile-icon i {
+  font-size: 30px;
+  color: var(--darker2-color);
+}
+
+#nav-mobile-icon:hover, #nav-mobile-icon:active {
+  background-color: transparent !important;
+  /* color: transparent !important; */
 }
 
 @media screen and (max-width: 800px) {
   #nav-mobile-icon {
     display: block;
     position: fixed;
-    padding-top: 20px;
+    padding-top: 40px;
     padding-bottom: 40px;
-    padding-left: 200px;
-    padding-right: 20px;
+    padding-left: 40px;
+    padding-right: 40px;
+    margin: 0;
     right: 0;
     top: 0;
   }
@@ -41,10 +53,17 @@
   .nav-ul li {
     float: none;
   }
-/* 
-  .nav-ul li.toggle {
-    padding: 0;
-  } */
+
+  .toggle {
+    position: fixed;
+    padding-top: 0;
+    padding-bottom: 40px;
+    padding-left: 40px;
+    padding-right: 40px;
+    margin: 0;
+    left: 0;
+    top: 0;
+  }
 
   .nav-ul li:not(:first-child) {
     display: none;
@@ -52,6 +71,8 @@
 
   .nav-ul.responsive-menu {
     position: relative;
+    border-bottom: var(--border-grey);
+    margin-bottom: 60px;
   }
 
   .nav-ul.responsive-menu .icon {

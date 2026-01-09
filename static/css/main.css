@@ -4,8 +4,15 @@
   transition: ease 0.2s;
 }
 
+html {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
 body {
   background-color: var(--lighter-color);
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 .dark {
