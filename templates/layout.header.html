@@ -2,10 +2,12 @@
 
 <head>
   <meta charset="UTF-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
 
   <title>Share</title>
 
-  <link rel="icon" type="image/x-icon" href="../static/default-logo.png" />
+  <link rel="icon" type="image/x-icon" href="../static/default-logo.svg" />
+  <link rel="icon" type="image/x-icon" href="../static/default-logo-darkmode.svg" media="(prefers-color-scheme: dark)" />
 
   <link rel="stylesheet" href="../static/css/variables.css" />
   <link rel="stylesheet" href="../static/css/main.css" />
@@ -27,13 +29,30 @@
     }
 
     function setDarkmode(boolean) {
-      document.body.classList.toggle("dark", boolean);
-      localStorage.setItem("darkmode", boolean);
+      document.body.classList.toggle('dark', boolean);
+      localStorage.setItem('darkmode', boolean);
+    }
+
+    function setIconSun(icon) {
+      icon.className = 'fa fa-sun';
+    }
+
+    function setIconMoon(icon) {
+      icon.className = 'fa fa-moon';
+    }
+
+    function setDarkmodeIcon(boolean) {
+      var icon = document.getElementById('nav-darkmode-icon');
+      if (boolean) {
+        setIconMoon(icon);
+      } else {
+        setIconSun(icon);
+      }
     }
 
     // Set dark/light modes according to computer theme
     // Fallback to darkmode localStorage variable if it exists
-    if (localStorage.getItem("darkmode") == null) {
+    if (localStorage.getItem('darkmode') == null) {
       if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
         setDarkmode(true);
       }
@@ -42,38 +61,74 @@
     }
 
     window.onload = function () {
+      // Set custom logo or fallback on default logo
+      function setLogoImage(path) {
+        var logo = document.getElementById('logo')
+        logoCustom = document.createElement('img');
+        logoCustom.src = path
+        logo.appendChild(logoCustom);
+      }
+
+      // Display default or custom logo according to darkmode
+      //  - darkmode true  => custom-logo-darkmode (png -> svg) -> custom-logo (png -> svg) -> default-logo
+      //  - darkmode false => custom-logo (png -> svg) -> default-logo
+      function setLogo() {
+        if (getDarkmodeVariable()) {
+          if (checkUrl("/static/custom/logo-darkmode.png")) {
+            setLogoImage("../static/custom/logo-darkmode.png");
+          } else if (checkUrl("/static/custom/logo-darkmode.svg")) {
+            setLogoImage("../static/custom/logo-darkmode.svg");
+          } else if (checkUrl("/static/custom/logo.png")) {
+            setLogoImage("../static/custom/logo.png");
+          } else if (checkUrl("/static/custom/logo.svg")) {
+            setLogoImage("../static/custom/logo.svg");
+          } else {
+            logo.classList.add("default-logo");
+          }
+        } else {
+          if (checkUrl("/static/custom/logo.png")) {
+            setLogoImage("../static/custom/logo.png");
+          } else if (checkUrl("/static/custom/logo.svg")) {
+            setLogoImage("../static/custom/logo.svg");
+          } else {
+            logo.classList.add("default-logo");
+          }
+        }
+      }
+
       // Toggle darkmode checkbox according to current mode
-      const darkmode = document.getElementById("darkmode");
-      darkmode.checked = getDarkmodeVariable(); // Toggle checkbox
-      darkmode.addEventListener("change", (event) => {
+      const darkmodeInput = document.getElementById('nav-darkmode-input');
+      darkmodeInput.checked = getDarkmodeVariable(); // Toggle checkbox
+      darkmodeInput.addEventListener("change", (event) => {
         setDarkmode(event.target.checked);
+        setDarkmodeIcon(event.target.checked);
+
+        // Change logo according to darkmode
+        var logo = document.getElementById('logo')
+        var existingLogo = logo.children[0]
+        if (existingLogo) {
+          existingLogo.remove();
+          setLogo();
+        }
       });
 
       // Set a color on current active page menu
-      const navigation = document.getElementById("navigation");
-      const navigationLinks = Array.from(navigation.querySelectorAll("a"));
+      const navigation = document.getElementById('navigation');
+      const navigationLinks = Array.from(navigation.querySelectorAll('a'));
       navigationLinks.forEach((link = 'a.href') => {
         if (link == document.URL) {
           link.classList.add('active');
         } 
       });
 
-      // Logo
-      var logo = document.getElementById('logo')
-      if (checkUrl("/static/custom/logo.png")) {
-        logoCustom = document.createElement('img');
-        logoCustom.src = "../static/custom/logo.png"
-        logo.appendChild(logoCustom);
-      } else if (checkUrl("/static/custom/logo.svg")) {
-        logoCustom = document.createElement('img');
-        logoCustom.src = "../static/custom/logo.svg"
-        logo.appendChild(logoCustom);
-      } else {
-        logo.classList.add("default-logo");
-      }
+      // Display logo a first time
+      setLogo();
 
       // Remove href from logo to avoid miss click in small screens
-      removeHrefFromLogo()
+      removeHrefFromLogo();
+
+      // Set darkmode icon a first time
+      setDarkmodeIcon(getDarkmodeVariable())
     };
 
 
@@ -89,7 +144,6 @@
     window.onresize = (event) => {
       removeHrefFromLogo()
     }
-
 
     // Display a icon to open menu for small screens
     function smallScreenMenu() {
@@ -130,13 +184,15 @@
         &nbsp; Snippet
       </a>
     </li>
-    <li class="right toggle">
-      <input id="darkmode" type="checkbox" />
-      <label for="darkmode" class="toggle-darkmode"></label>
+    <li class="right text nav-icon">
+      <label for="nav-darkmode-input" id="nav-darkmode-button">
+        <i id="nav-darkmode-icon" class="fa"></i>
+      </label>
+      <input id="nav-darkmode-input" type="checkbox" onclick="setDarkmode()"/>
     </li>
   </ul>
 
-  <a href="javascript:void(0);" id="nav-mobile-icon" class="text" onclick="smallScreenMenu()">
+  <a href="javascript:void(0);" id="nav-mobile-button" class="nav-icon" onclick="smallScreenMenu()">
     <i class="fa fa-bars"></i>
   </a>
 

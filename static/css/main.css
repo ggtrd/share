@@ -4,8 +4,15 @@
   transition: ease 0.2s;
 }
 
+html {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
 body {
   background-color: var(--lighter-color);
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 .dark {
@@ -17,10 +24,6 @@ body {
 }
 
 .dark * .title {
-  color: var(--darker2-color);
-}
-
-.dark * .label {
   color: var(--darker2-color);
 }
 
@@ -66,10 +69,6 @@ body {
 
 .dark * .container-file:hover .text {
   color: var(--lighter2-color) !important;
-}
-
-.dark * .button-copy {
-  background-color: var(--lighter2-color);
 }
 
 .hidden {
@@ -157,13 +156,6 @@ h1 {
   font-size: 22px;
 }
 
-.label {
-  color: var(--color);
-  font-weight: bold;
-  font-size: 18px;
-  text-align: left !important;
-}
-
 .text {
   color: var(--darker-color);
   font-weight: bold;
@@ -199,14 +191,24 @@ h1 {
   vertical-align: sub;
 
   color: var(--darker-color);
-  background-color: var(--lighter-color);
+  background-color: transparent;
   border: none;
   border-radius: var(--radius);
+
+  cursor: pointer;
 }
 
 .button-copy:hover {
   color: var(--color);
-  cursor: pointer;
+}
+
+.dark * .button-copy {
+  color: var(--lighter2-color);
+}
+
+.dark * .button-copy:hover {
+  color: var(--darker-color);
+  /* transition-delay: 4ms !important; */
 }
 
 .button {
@@ -223,15 +225,16 @@ h1 {
   text-align: center !important;
   font-weight: bold;
   font-size: 20px;
+
+  cursor: pointer;
 }
 
 .button:hover {
   background-color: var(--darker2-color);
-  cursor: pointer;
 }
 
-.button:active {
-  background-color: var(--darker-color);
+.dark * .button:hover {
+  background-color: var(--darker-color) !important;
 }
 
 input, .text-copiable {
@@ -256,8 +259,12 @@ input {
   width: 250px;
 }
 
-.input:focus {
+input:focus {
   border-color: var(--color) !important;
+}
+
+.dark * input:focus {
+  border-color: var(--lighter-color) !important;
 }
 
 .text-copiable {
@@ -270,6 +277,14 @@ input {
 .dark * input, .dark * .text-copiable {
   color: var(--lighter2-color);
   background-color: var(--darker2-color);
+}
+
+.text-copiable a {
+  color: var(--darker-color);
+}
+
+.dark * .text-copiable a {
+  color: var(--lighter2-color);
 }
 
 .main-input-width {
@@ -438,12 +453,13 @@ input[type="number"] {
 
 .input-number-button {
   position: relative;
-  right: 80px;
+  right: 94px;
+  top: 2px;
 
   width: 12px;
   height: 12px;
-  padding: 12px;
-  margin: auto;
+  padding: 14px;
+  margin: 2px;
 
   color: var(--darker-color);
 
@@ -463,4 +479,8 @@ input[type="number"] {
 
 .dark * .input-number-button {
   color: var(--lighter2-color);
+}
+
+.dark * .input-number-button:hover {
+  background-color: var(--color);
 }
