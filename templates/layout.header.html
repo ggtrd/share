@@ -28,13 +28,30 @@
     }
 
     function setDarkmode(boolean) {
-      document.body.classList.toggle("dark", boolean);
-      localStorage.setItem("darkmode", boolean);
+      document.body.classList.toggle('dark', boolean);
+      localStorage.setItem('darkmode', boolean);
+    }
+
+    function setIconSun(icon) {
+      icon.className = 'fa fa-sun';
+    }
+
+    function setIconMoon(icon) {
+      icon.className = 'fa fa-moon';
+    }
+
+    function setDarkmodeIcon(boolean) {
+      var icon = document.getElementById('nav-darkmode-icon');
+      if (boolean) {
+        setIconMoon(icon);
+      } else {
+        setIconSun(icon);
+      }
     }
 
     // Set dark/light modes according to computer theme
     // Fallback to darkmode localStorage variable if it exists
-    if (localStorage.getItem("darkmode") == null) {
+    if (localStorage.getItem('darkmode') == null) {
       if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
         setDarkmode(true);
       }
@@ -43,7 +60,6 @@
     }
 
     window.onload = function () {
-
       // Set custom logo or fallback on default logo
       function setLogoImage(path) {
         var logo = document.getElementById('logo')
@@ -79,36 +95,39 @@
         }
       }
 
-      // Display logo a first time
-      setLogo()
-
       // Toggle darkmode checkbox according to current mode
-      const darkmode = document.getElementById("darkmode");
-      darkmode.checked = getDarkmodeVariable(); // Toggle checkbox
-      darkmode.addEventListener("change", (event) => {
+      const darkmodeInput = document.getElementById('nav-darkmode-input');
+      darkmodeInput.checked = getDarkmodeVariable(); // Toggle checkbox
+      darkmodeInput.addEventListener("change", (event) => {
         setDarkmode(event.target.checked);
+        setDarkmodeIcon(event.target.checked);
 
         // Change logo according to darkmode
         var logo = document.getElementById('logo')
         var existingLogo = logo.children[0]
         if (existingLogo) {
           existingLogo.remove();
-          setLogo()
+          setLogo();
         }
       });
 
       // Set a color on current active page menu
-      const navigation = document.getElementById("navigation");
-      const navigationLinks = Array.from(navigation.querySelectorAll("a"));
+      const navigation = document.getElementById('navigation');
+      const navigationLinks = Array.from(navigation.querySelectorAll('a'));
       navigationLinks.forEach((link = 'a.href') => {
         if (link == document.URL) {
           link.classList.add('active');
         } 
       });
 
+      // Display logo a first time
+      setLogo();
 
       // Remove href from logo to avoid miss click in small screens
-      removeHrefFromLogo()
+      removeHrefFromLogo();
+
+      // Set darkmode icon a first time
+      setDarkmodeIcon(getDarkmodeVariable())
     };
 
 
@@ -124,7 +143,6 @@
     window.onresize = (event) => {
       removeHrefFromLogo()
     }
-
 
     // Display a icon to open menu for small screens
     function smallScreenMenu() {
@@ -165,13 +183,15 @@
         &nbsp; Snippet
       </a>
     </li>
-    <li class="right toggle">
-      <input id="darkmode" type="checkbox" />
-      <label for="darkmode" class="toggle-darkmode"></label>
+    <li class="right text nav-icon">
+      <label for="nav-darkmode-input" id="nav-darkmode-button">
+        <i id="nav-darkmode-icon" class="fa"></i>
+      </label>
+      <input id="nav-darkmode-input" type="checkbox" onclick="setDarkmode()"/>
     </li>
   </ul>
 
-  <a href="javascript:void(0);" id="nav-mobile-icon" class="text" onclick="smallScreenMenu()">
+  <a href="javascript:void(0);" id="nav-mobile-button" class="nav-icon" onclick="smallScreenMenu()">
     <i class="fa fa-bars"></i>
   </a>
 

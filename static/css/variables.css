@@ -19,13 +19,10 @@
   --main-input-width: 1000px;
   --main-input-height: 200px;
 
-  --toggle-size: 36px;
-
   --navigation-height: 30px;
   --logo-height: var(--navigation-height);
 
   --shadow-extern: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px, rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;
-  /* --shadow-intern: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset; */
   --shadow-intern: rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
 }
 

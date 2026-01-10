@@ -27,10 +27,6 @@ body {
   color: var(--darker2-color);
 }
 
-.dark * .label {
-  color: var(--darker2-color);
-}
-
 .dark * .text {
   color: var(--lighter2-color);
 }
@@ -158,13 +154,6 @@ h1 {
   color: var(--color);
   font-weight: bold;
   font-size: 22px;
-}
-
-.label {
-  color: var(--color);
-  font-weight: bold;
-  font-size: 18px;
-  text-align: left !important;
 }
 
 .text {
@@ -464,12 +453,13 @@ input[type="number"] {
 
 .input-number-button {
   position: relative;
-  right: 80px;
+  right: 94px;
+  top: 2px;
 
   width: 12px;
   height: 12px;
-  padding: 12px;
-  margin: auto;
+  padding: 14px;
+  margin: 2px;
 
   color: var(--darker-color);
 
