@@ -1,7 +1,7 @@
 <div align="center">
 
 <a href="https://github.com/ggtrd/share" target="_blank" title="Share" style="display: inline;">
-	<img height="90px" alt="Share logo" src="static/default-logo.png">
+	<img height="90px" alt="Share logo" src="static/default-logo-blue.svg">
 </a>
 
 # Share
@@ -43,11 +43,6 @@ Share is a web service that allows to securely share files and secrets to anyone
 	&& cd share \
 	&& go mod tidy \
 	&& go build
-	```
-* Install Javascript dependencies
-	```
-	curl --create-dirs -Lk https://unpkg.com/openpgp@latest/dist/openpgp.min.js -o static/dynamic/openpgp.min.js \
-	curl --create-dirs -Lk https://unpkg.com/slate@latest/dist/index.js -o static/dynamic/slate.js \
 	```
 * Initialize database
 	```
