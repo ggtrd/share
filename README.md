@@ -1,32 +1,37 @@
 <div align="center">
 
-<a href="https://github.com/ggtrd/share" target="_blank" title="Share" style="display: inline;">
-	<img height="90px" alt="Share logo" src="static/default-logo-blue.svg">
-</a>
-
+![logo](static/default-logo-blue.svg)
 # Share
 
-Share is a web service that allows to securely share files and secrets to anyone.
+**:octocat: [Github](https://github.com/ggtrd/share) &nbsp; &nbsp; 🐳 [Docker Hub](https://hub.docker.com/r/ggtrd/share)** \
+**🚀 [Demo](https://share-lt4u.onrender.com)** *(wait for Render to instanciate it)*
 
-[Github](https://github.com/ggtrd/share)
-|
-[Docker Hub](https://hub.docker.com/r/ggtrd/share)
+Share is a secure web service designed to safely **transfer passwords**, **rich text**, **code snippets**, and **large files**.
+<br>
+➡️ Simply **paste** your content or upload a file, generate a secure **link**, and **deliver** it safely to your recipient !
 
 </div>
 
 ## Features
 
-- Share secrets
-- Share large files
-- Automatic expiration based on given date or maximum unlock allowed
-- Basic links and passwords, and also one-click links
-- Automatic strong password generation
-- [GopenPGP](https://gopenpgp.org/) and [OpenPGP.js](https://openpgpjs.org/) encryption to ensure security of the share password
-- Customizable with your own logo and color
-- Self-hosted solution
-- No account management
-- CLI available to perform admin tasks
-- Reverse proxy example that shows how to protect share creations and set public access on the unlock pages
+* Securely send:
+	* Passwords
+	* Rich text
+	* Code snippets
+	* Large files (to bypass email provider attachments size limitation)
+* Send simple one-clicks links to your recipient (basic links and passwords supported too)
+* Automatic self-destruction
+* Automatic strong password generation
+* Fully customizable (logo and colors)
+* Responsive interface 
+* No account required
+* Self-hosted solution
+* CLI available for administrative tasks
+* Share passwords are protected using OpenPGP encryption ([GopenPGP](https://gopenpgp.org/) & [OpenPGP.js](https://openpgpjs.org/))
+
+**Tips** \
+➡️ Share integrates seamlessly with reverse proxy authentication. For example, you can allow internal-only share creation while keeping unlock pages publicly accessible.
+See the [example below](#reverse-proxy-example).
 
 <br>
 
