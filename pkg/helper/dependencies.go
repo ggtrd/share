@@ -40,5 +40,9 @@ func DownloadStaticDependencies() {
 				log.Println("error:", err)
 			}
 		}
+
+		if FileExists(dependency.localPath) {
+			log.Println("static dependency installed:", dependency)
+		}
 	}
 }
