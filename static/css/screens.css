@@ -41,6 +41,11 @@
   display: none;
 }
 
+.button-copy-qrcode {
+  margin-top: 6px;
+  margin-left: -100px;
+}
+
 @media screen and (max-width: 800px) {
   #logo {
     margin-bottom: 30px;
@@ -126,5 +131,9 @@
 
     padding: 12px;
     margin: 2px;
+  }
+
+  .button-copy-qrcode {
+    margin-left: 6px;
   }
 }

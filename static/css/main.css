@@ -232,7 +232,7 @@ h1 {
   background-color: var(--darker-color) !important;
 }
 
-input, .text-copiable {
+input, .text-copiable{
   display: block;
   padding: 12px 20px 12px 20px;
 
@@ -263,6 +263,7 @@ input:focus {
 }
 
 .text-copiable {
+  margin-bottom: 10px;
   border: var(--border-grey);
 
   font-weight: bold;
@@ -478,4 +479,16 @@ input[type="number"] {
 
 .dark * .input-number-button:hover {
   background-color: var(--color);
+}
+
+.qrcode {
+  width: 200px;
+  height: 200px;
+  padding: 14px;
+
+  border: var(--border-grey);
+  border-radius: var(--radius);
+  background-color: var(--lighter-color);
+
+  box-shadow: var(--shadow-intern);
 }
