@@ -4,11 +4,6 @@
   transition: ease 0.2s;
 }
 
-html {
-  max-width: 100%;
-  overflow-x: hidden;
-}
-
 body {
   background-color: var(--lighter-color);
   max-width: 100%;
@@ -112,7 +107,7 @@ body {
 }
 
 .content {
-  min-height: calc(100vh - 150px);
+  min-height: calc(100vh - 160px);
 }
 
 .footer {
@@ -237,7 +232,7 @@ h1 {
   background-color: var(--darker-color) !important;
 }
 
-input, .text-copiable {
+input, .text-copiable{
   display: block;
   padding: 12px 20px 12px 20px;
 
@@ -268,6 +263,7 @@ input:focus {
 }
 
 .text-copiable {
+  margin-bottom: 10px;
   border: var(--border-grey);
 
   font-weight: bold;
@@ -483,4 +479,16 @@ input[type="number"] {
 
 .dark * .input-number-button:hover {
   background-color: var(--color);
+}
+
+.qrcode {
+  width: 200px;
+  height: 200px;
+  padding: 14px;
+
+  border: var(--border-grey);
+  border-radius: var(--radius);
+  background-color: var(--lighter-color);
+
+  box-shadow: var(--shadow-intern);
 }
