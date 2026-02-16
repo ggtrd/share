@@ -4,11 +4,6 @@
   transition: ease 0.2s;
 }
 
-html {
-  max-width: 100%;
-  overflow-x: hidden;
-}
-
 body {
   background-color: var(--lighter-color);
   max-width: 100%;
@@ -112,7 +107,7 @@ body {
 }
 
 .content {
-  min-height: calc(100vh - 150px);
+  min-height: calc(100vh - 160px);
 }
 
 .footer {
