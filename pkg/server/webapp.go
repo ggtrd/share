@@ -191,7 +191,12 @@ func unlockShare(w http.ResponseWriter, r *http.Request)  {
 				log.Printf("err : could not marshal json: %s\n", err)
 				return
 			}
-		
+
+			// In case of file, store the download token cookie
+			if shareContentType == "file" {
+				setDownloadTokenCookie(w, r, idToUnlock)
+			}
+
 			// write JSON to JS
 			w.Write(jsonData)
 
@@ -356,14 +361,34 @@ func uploadShareFile(w http.ResponseWriter, r *http.Request) {
 
 
 func downloadShareFile(w http.ResponseWriter, r *http.Request) {
-	url:= r.Header.Get("Referer")
-	shareId := url[len(url)-36:]	// Just get the last 36 char of the url because the IDs are 36 char length
+	shareId := r.PathValue("id")
+	requestedFile := r.PathValue("file")
+
+	cookie, err := r.Cookie(downloadCookieName)
+	if err != nil || !consumeDownloadToken(cookie.Value, shareId) {
+		http.Error(w, "unauthorized", http.StatusUnauthorized)
+		return
+	}
+
 	shareContentMap := backend.GetShareContent(shareId)
+	if shareContentMap["type"] != "file" {
+		http.Error(w, "not found", http.StatusNotFound)
+		return
+	}
 	filePath := shareContentMap["value"]
-	fileName := strings.Split(filePath, "/")[2]
 
-	w.Header().Set("Content-Type", "application/json")
-	w.Header().Set("Content-Disposition", "attachment; filename=" + fileName)
+	filePathClean := filepath.Clean(filePath)
+	if !strings.HasPrefix(filePathClean, "uploads"+string(os.PathSeparator)) {
+		http.Error(w, "not found", http.StatusNotFound)
+		return
+	}
+	fileName := filepath.Base(filePathClean)
+	if fileName != requestedFile {
+		http.Error(w, "not found", http.StatusNotFound)
+		return
+	}
 
-	http.ServeFile(w, r, filePath)
+	w.Header().Set("Content-Type", "application/octet-stream")
+	w.Header().Set("Content-Disposition", `attachment; filename="`+fileName+`"`)
+	http.ServeFile(w, r, filePathClean)
 }

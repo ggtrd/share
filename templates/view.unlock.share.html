@@ -93,6 +93,7 @@
 
                         shareFile = document.createElement('a');
                         shareFile.innerHTML = fileName;
+                        shareFile.setAttribute('download', fileName);
                         shareFile.href = result.shareContentValue;
 
                         // Download button

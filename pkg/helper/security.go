@@ -11,6 +11,7 @@ import (
 	"crypto/sha256"
 	"time"
 	"strconv"
+	"net/http"
 )
 
 
@@ -63,4 +64,10 @@ func GeneratePassword() string {
 	token = strings.TrimRight(token, "=")
 
 	return token
+}
+
+
+// Check if HTTPS
+func IsSecureRequest(r *http.Request) bool {
+	return r.TLS != nil || r.Header.Get("X-Forwarded-Proto") == "https"
 }
