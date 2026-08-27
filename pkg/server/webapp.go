@@ -43,7 +43,7 @@ func (a *App) Start() {
 	http.Handle("/secret/shared", logRequest(uploadShareSecret))				// Confirmation + display the link of the share to the creator
 
 	http.Handle("/share/{id}", logRequest(viewUnlockShare))						// Ask for password to unlock the share
-	http.Handle("/share/unlock", logRequest(unlockShare))						// Non browsable url - verify password to unlock the share
+	http.Handle("/share/unlock/{id}", logRequest(unlockShare))					// Non browsable url - verify password to unlock the share
 	http.Handle("/share/uploads/{id}/{file}", logRequest(downloadShareFile))	// Download a shared file
 	
 	addr := fmt.Sprintf(":%s", a.Port)
@@ -139,8 +139,7 @@ func viewUnlockShare(w http.ResponseWriter, r *http.Request) {
 func unlockShare(w http.ResponseWriter, r *http.Request)  {
 	r.ParseForm()
 
-	url:= r.Header.Get("Referer")
-	idToUnlock := url[len(url)-36:] // Just get the last 36 char of the url because the IDs are 36 char length
+	idToUnlock := r.PathValue("id")
 	pgpMessageEncrypted := r.FormValue("pgpMessageEncrypted")
 
 	// Decrypt PGP message
