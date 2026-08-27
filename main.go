@@ -34,7 +34,7 @@ func main() {
 		// go run share web
 		if string(os.Args[1]) == "web" {
 			go backend.PeriodicCleanExpiredShares()		// Goroutine to clean expired shares
-			// go periodicCleanOrphansFiles()		// Goroutine to clean orphans files
+			go backend.PeriodicCleanOrphanFiles()		// Goroutine to clean orphans files
 			os.Setenv("DELETE_DB", "false")
 			backend.CreateDatabase()
 			webapp.Start()

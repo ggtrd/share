@@ -167,18 +167,10 @@ func unlockShare(w http.ResponseWriter, r *http.Request)  {
 	shareContentType := shareContentMap["type"]
 	shareContentValue := shareContentMap["value"]
 
-	shareOpenMap := backend.GetShareOpen(idToUnlock)
-	shareCurrentOpen, _ := strconv.Atoi(shareOpenMap["currentopen"])
-	shareMaxOpen, _ := strconv.Atoi(shareOpenMap["maxopen"])
-	
 	// Check if password match
 	if decrypted.String() == backend.GetSharePassword(idToUnlock) {
 
-		// Check if the share has not expired
-		if shareCurrentOpen < shareMaxOpen {
-
-			// Increment opened count
-			backend.UpdateShareOpen(idToUnlock)
+		if backend.TryIncrementShareOpen(idToUnlock) {
 
 			data := map[string]interface{}{
 				// "sharePasswordHash": sharePasswordHash,
@@ -200,12 +192,12 @@ func unlockShare(w http.ResponseWriter, r *http.Request)  {
 			// write JSON to JS
 			w.Write(jsonData)
 
-			// Check if this open is the last allowed and delete it, if it is (many 2 letters "i" words here ^^)
+
+			// Check if this unlock is the last allowed and delete if yes
 			shareOpenMap := backend.GetShareOpen(idToUnlock)
 			shareCurrentOpen, _ := strconv.Atoi(shareOpenMap["currentopen"])
 			shareMaxOpen, _ := strconv.Atoi(shareOpenMap["maxopen"])
-			// if shareCurrentOpen >= shareMaxOpen {
-			if shareCurrentOpen > shareMaxOpen {
+			if shareCurrentOpen >= shareMaxOpen {
 				go backend.DeleteShare(idToUnlock)
 			}
 		} else {

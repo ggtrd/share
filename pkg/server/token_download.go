@@ -46,9 +46,13 @@ func consumeDownloadToken(token, shareId string) bool {
 	if !ok {
 		return false
 	}
-	delete(downloadTokens, token) // always consume, even if expired/mismatched
 
-	return time.Now().Before(t.expires) && t.shareId == shareId
+	if time.Now().After(t.expires) {
+		delete(downloadTokens, token) // clean up expired tokens
+		return false
+	}
+
+	return t.shareId == shareId
 }
 
 
