@@ -48,7 +48,7 @@
                     formBody.push(encodedKey + "=" + encodedValue);
                 }
                 formBody = formBody.join("&");
-                let response = await fetch('/share/unlock', {
+                let response = await fetch('/share/unlock/{{ .ShareId }}', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
@@ -93,6 +93,7 @@
 
                         shareFile = document.createElement('a');
                         shareFile.innerHTML = fileName;
+                        shareFile.setAttribute('download', fileName);
                         shareFile.href = result.shareContentValue;
 
                         // Download button

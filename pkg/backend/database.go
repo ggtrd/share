@@ -310,7 +310,29 @@ func UpdateShareOpen(shareId string) {
 }
 
 
-// Delete a share and also its related secrets and files (and delete file from filesystem aswell)
+// Increments currentopen only if the share still has opens left.
+// Doing the check and the update in a single SQL statement avoids a check-then-update race (TOCTOU) between concurrent unlocks.
+func TryIncrementShareOpen(shareId string) bool {
+	db := openDatabase()
+	defer db.Close()
+
+	res, err := db.Exec("UPDATE share SET currentopen = currentopen + 1 WHERE id = :share_id AND currentopen < maxopen", shareId)
+	if err != nil {
+		log.Println(" err:", err)
+		return false
+	}
+
+	affected, err := res.RowsAffected()
+	if err != nil {
+		log.Println(" err:", err)
+		return false
+	}
+
+	return affected == 1
+}
+
+
+// Delete a share and also its related secrets (in case of related files => deleted from filesystem with a periodic task)
 func DeleteShare(shareId string) {
 	db := openDatabase()
 	defer db.Close()
@@ -348,9 +370,6 @@ func DeleteShare(shareId string) {
 		default:
 			log.Println(" err:", err)
 	}
-
-	// Delete the directory containing files of the share
-	helper.DeletePath("uploads/" + shareId)	
 }
 
 
