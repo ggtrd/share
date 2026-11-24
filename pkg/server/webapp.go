@@ -5,15 +5,18 @@ import (
 	"log"
 	"os"
 	"io"
+	"mime"
 	"strconv"
 	"strings"
 	"path/filepath"
+	"html"
 	"html/template"
 	"net/http"
 	"encoding/json"
 	"errors"
 
 	"github.com/google/uuid"
+	"github.com/microcosm-cc/bluemonday"
 	"github.com/ProtonMail/gopenpgp/v3/crypto"
 
 	"share/pkg/helper"
@@ -142,11 +145,17 @@ func unlockShare(w http.ResponseWriter, r *http.Request)  {
 	idToUnlock := r.PathValue("id")
 	pgpMessageEncrypted := r.FormValue("pgpMessageEncrypted")
 
+	// Every unlock attempt is logged with its origin, to be able to identify automated openings (mail scanners, link previews...)
+	logUnlock := func(result string) {
+		log.Printf(" unlock: share=%s result=%s ip=%s ua=%q", idToUnlock, result, clientIP(r), r.UserAgent())
+	}
+
 	// Decrypt PGP message
 	// Using GopenPGP
 	privateKey, err := crypto.NewKeyFromArmored(backend.GetShareKeyPrivate(idToUnlock))
 	if err != nil {
-		log.Println("err :", err)
+		logUnlock("unknown-share")
+		http.Error(w, "not found", http.StatusNotFound)
 		return
 	}
 	defer privateKey.ClearPrivateParams()
@@ -154,11 +163,20 @@ func unlockShare(w http.ResponseWriter, r *http.Request)  {
 	decHandle, err := pgp.Decryption().DecryptionKey(privateKey).New()
 	if err != nil {
 		log.Println("err :", err)
+		http.Error(w, "internal error", http.StatusInternalServerError)
 		return
 	}
 	decrypted, err := decHandle.Decrypt([]byte(pgpMessageEncrypted), crypto.Armor)
 	if err != nil {
-		log.Println("err :", err)
+		logUnlock("invalid-message")
+		http.Error(w, "bad request", http.StatusBadRequest)
+		return
+	}
+
+	// Check if password match
+	if decrypted.String() != backend.GetSharePassword(idToUnlock) {
+		logUnlock("password-mismatch")
+		http.Error(w, "unauthorized", http.StatusUnauthorized)
 		return
 	}
 
@@ -166,46 +184,93 @@ func unlockShare(w http.ResponseWriter, r *http.Request)  {
 	shareContentType := shareContentMap["type"]
 	shareContentValue := shareContentMap["value"]
 
-	// Check if password match
-	if decrypted.String() == backend.GetSharePassword(idToUnlock) {
+	switch shareContentType {
 
-		if backend.TryIncrementShareOpen(idToUnlock) {
-
-			data := map[string]interface{}{
-				// "sharePasswordHash": sharePasswordHash,
-				"shareContentType": shareContentType,
-				"shareContentValue": shareContentValue,
-			}
-			
-			jsonData, err := json.Marshal(data)
-			if err != nil {
-				log.Printf("err : could not marshal json: %s\n", err)
-				return
-			}
-
-			// In case of file, store the download token cookie
-			if shareContentType == "file" {
-				setDownloadTokenCookie(w, r, idToUnlock)
-			}
-
-			// write JSON to JS
-			w.Write(jsonData)
-
-
-			// Check if this unlock is the last allowed and delete if yes
-			shareOpenMap := backend.GetShareOpen(idToUnlock)
-			shareCurrentOpen, _ := strconv.Atoi(shareOpenMap["currentopen"])
-			shareMaxOpen, _ := strconv.Atoi(shareOpenMap["maxopen"])
-			if shareCurrentOpen >= shareMaxOpen {
-				go backend.DeleteShare(idToUnlock)
-			}
-		} else {
-			// Or delete the share because the maxopen has been reached
-			go backend.DeleteShare(idToUnlock) // This should never comes here, but why don't leave this ?
+	// For a file, the view is only counted when the file is actually downloaded (see downloadShareFile).
+	// Unlocking only checks that views are left and gives a single use download token.
+	case "file":
+		shareOpenMap := backend.GetShareOpen(idToUnlock)
+		shareCurrentOpen, _ := strconv.Atoi(shareOpenMap["currentopen"])
+		shareMaxOpen, _ := strconv.Atoi(shareOpenMap["maxopen"])
+		if shareCurrentOpen >= shareMaxOpen {
+			logUnlock("no-view-left")
+			backend.DeleteShare(idToUnlock)
+			http.Error(w, "not found", http.StatusNotFound)
+			return
 		}
-	} else {
-		log.Println("err : password mismatch")
+		setDownloadTokenCookie(w, r, idToUnlock)
+
+	// For a secret, displaying the content is the view
+	case "secret":
+		if !backend.TryIncrementShareOpen(idToUnlock) {
+			logUnlock("no-view-left")
+			backend.DeleteShare(idToUnlock)
+			http.Error(w, "not found", http.StatusNotFound)
+			return
+		}
+		// Sanitize at display time, so that secrets stored before sanitization existed are covered too
+		shareContentValue = sanitizeSecretHTML(shareContentValue)
+
+	default:
+		logUnlock("no-content")
+		http.Error(w, "not found", http.StatusNotFound)
+		return
 	}
+
+	jsonData, err := json.Marshal(map[string]interface{}{
+		"shareContentType": shareContentType,
+		"shareContentValue": shareContentValue,
+	})
+	if err != nil {
+		log.Printf("err : could not marshal json: %s\n", err)
+		http.Error(w, "internal error", http.StatusInternalServerError)
+		return
+	}
+
+	logUnlock("ok-" + shareContentType)
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(jsonData)
+
+	// Delete the secret if this was its last allowed view
+	if shareContentType == "secret" {
+		deleteShareIfLastView(idToUnlock)
+	}
+}
+
+
+// Delete a share (and its uploaded files if any) if all its views have been consumed
+func deleteShareIfLastView(shareId string) {
+	shareOpenMap := backend.GetShareOpen(shareId)
+	shareCurrentOpen, _ := strconv.Atoi(shareOpenMap["currentopen"])
+	shareMaxOpen, _ := strconv.Atoi(shareOpenMap["maxopen"])
+	if shareCurrentOpen >= shareMaxOpen {
+		backend.DeleteShare(shareId)
+		helper.DeletePath(filepath.Join("uploads", filepath.Base(shareId)))
+	}
+}
+
+
+// Real client IP, taking a reverse proxy into account
+func clientIP(r *http.Request) string {
+	if forwarded := r.Header.Get("X-Forwarded-For"); forwarded != "" {
+		return strings.TrimSpace(strings.Split(forwarded, ",")[0])
+	}
+	return r.RemoteAddr
+}
+
+
+// Policy allowing the formatting produced by the rich editor, without scripts, event handlers, etc.
+var secretPolicy = bluemonday.UGCPolicy()
+
+func sanitizeSecretHTML(value string) string {
+	return secretPolicy.Sanitize(value)
+}
+
+
+// Plain text secrets (passwords) are escaped so that they are displayed exactly as typed
+func plainTextToHTML(value string) string {
+	value = strings.ReplaceAll(value, "\r\n", "\n")
+	return strings.ReplaceAll(html.EscapeString(value), "\n", "<br>")
 }
 
 
@@ -234,6 +299,13 @@ func uploadShareSecret(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	expirationFormatted := expirationValidated.Format(helper.GetTimeLayout())
+
+	// Only the rich editor sends HTML, anything else is plain text and must be displayed as typed
+	if r.PostFormValue("format") == "html" {
+		secret = sanitizeSecretHTML(secret)
+	} else {
+		secret = plainTextToHTML(secret)
+	}
 
 	id := uuid.NewString()
 	shared_id := uuid.NewString()
@@ -357,6 +429,7 @@ func downloadShareFile(w http.ResponseWriter, r *http.Request) {
 
 	cookie, err := r.Cookie(downloadCookieName)
 	if err != nil || !consumeDownloadToken(cookie.Value, shareId) {
+		log.Printf(" download: share=%s result=unauthorized ip=%s ua=%q", shareId, clientIP(r), r.UserAgent())
 		http.Error(w, "unauthorized", http.StatusUnauthorized)
 		return
 	}
@@ -379,7 +452,19 @@ func downloadShareFile(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// The download is what consumes a view of a file share
+	if !backend.TryIncrementShareOpen(shareId) {
+		log.Printf(" download: share=%s result=no-view-left ip=%s ua=%q", shareId, clientIP(r), r.UserAgent())
+		deleteShareIfLastView(shareId)
+		http.Error(w, "not found", http.StatusNotFound)
+		return
+	}
+	log.Printf(" download: share=%s result=ok ip=%s ua=%q", shareId, clientIP(r), r.UserAgent())
+
 	w.Header().Set("Content-Type", "application/octet-stream")
-	w.Header().Set("Content-Disposition", `attachment; filename="`+fileName+`"`)
+	w.Header().Set("Content-Disposition", mime.FormatMediaType("attachment", map[string]string{"filename": fileName}))
 	http.ServeFile(w, r, filePathClean)
+
+	// Delete the share and its file once the last allowed download has been served
+	deleteShareIfLastView(shareId)
 }
