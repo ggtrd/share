@@ -25,8 +25,15 @@ const downloadCookieName = "share_token_download"
 // Generates a token linked to the shareId, sent to the client only after a successful password unlock
 func generateDownloadToken(shareId string) string {
 	token := helper.GeneratePassword()
+	now := time.Now()
 	downloadTokensMu.Lock()
-	downloadTokens[token] = downloadToken{shareId: shareId, expires: time.Now().Add(downloadTokenTTL)}
+	// Purge expired tokens that were never used, to avoid the map growing forever
+	for k, t := range downloadTokens {
+		if now.After(t.expires) {
+			delete(downloadTokens, k)
+		}
+	}
+	downloadTokens[token] = downloadToken{shareId: shareId, expires: now.Add(downloadTokenTTL)}
 	downloadTokensMu.Unlock()
 
 	return token
@@ -47,12 +54,14 @@ func consumeDownloadToken(token, shareId string) bool {
 		return false
 	}
 
-	if time.Now().After(t.expires) {
-		delete(downloadTokens, token) // clean up expired tokens
+	if t.shareId != shareId {
 		return false
 	}
 
-	return t.shareId == shareId
+	// Single use: the token is removed as soon as it is presented for its share
+	delete(downloadTokens, token)
+
+	return time.Now().Before(t.expires)
 }
 
 

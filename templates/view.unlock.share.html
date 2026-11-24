@@ -92,7 +92,7 @@
                         fileName = result.shareContentValue.split('/')[2]
 
                         shareFile = document.createElement('a');
-                        shareFile.innerHTML = fileName;
+                        shareFile.textContent = fileName;      // textContent: the file name is chosen by the uploader and must not be interpreted as HTML
                         shareFile.setAttribute('download', fileName);
                         shareFile.href = result.shareContentValue;
 
@@ -129,15 +129,11 @@
             }
         };
 
-        // Read the #fragment again to know if the form must be automatically submitted
+        // Prefill the password from the #fragment of the one click link.
+        // The form is intentionally NOT submitted automatically: mail security scanners and link previews
+        // open links in headless browsers that run JS, which would consume a view before the recipient sees it.
         if (fragment) {
-            // Automatically set the checksum of the password in the hidden input 'givenPasswordHash' to be able to send it through the form
             document.getElementById("givenPassword").value = fragment;
-
-            if (document.getElementById("givenPassword").value) {
-                // requestSubmit permit to use the submit button of the form 
-                form.requestSubmit();
-            }
         }
     </script>
 </div>
